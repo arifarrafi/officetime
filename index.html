@@ -38,6 +38,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
 input,select{font-family:inherit;outline:none}
 ::selection{background:var(--pri-l);color:#fff}
+/* Critical: override CSS specificity so [hidden] always wins */
+[hidden]{display:none!important}
 
 /* ── Loader / Toast ─────────────────────────────── */
 #global-loader{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:linear-gradient(90deg,var(--pri),var(--acc));animation:lb 1.2s ease infinite}
