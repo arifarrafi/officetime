@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -9,17 +10,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════
-   PUNCHTRACK  |  Indigo × Cyan  |  BD Office
-   ═══════════════════════════════════════════════ */
+/* ═══ Variables ══════════════════════════════════════════ */
 :root{
   --pri:#4338CA;--pri-l:#6366F1;--pri-d:#3730A3;
   --acc:#06B6D4;--ok:#10B981;--warn:#F59E0B;--err:#EF4444;
   --bg:#EEF2FF;--surf:#FFFFFF;--surf2:#F5F7FF;
   --bdr:#DDE3F5;--bdr2:#C7D2FE;
   --txt:#0F172A;--txt2:#475569;--txt3:#94A3B8;
-  --sbar-bg:#1E1B4B;--sbar-txt:#C7D2FE;
-  --sbar-w:260px;
+  --nav-bg:#1E1B4B;--nav-h:58px;
   --r:12px;--r-sm:8px;--r-lg:16px;
   --shadow:0 1px 4px rgba(67,56,202,.08),0 4px 16px rgba(67,56,202,.06);
   --shadow-md:0 4px 12px rgba(67,56,202,.12),0 8px 32px rgba(67,56,202,.08);
@@ -29,157 +27,159 @@
   --bg:#060C1A;--surf:#0F1629;--surf2:#131E35;
   --bdr:#1E2D4A;--bdr2:#243354;
   --txt:#F1F5F9;--txt2:#94A3B8;--txt3:#475569;
-  --sbar-bg:#080E1C;--sbar-txt:#8B9FC7;
+  --nav-bg:#080E1C;
   --shadow:0 1px 4px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
   --shadow-md:0 4px 12px rgba(0,0,0,.4),0 8px 32px rgba(0,0,0,.3);
 }
+/* Critical: make [hidden] always win over CSS display rules */
+[hidden]{display:none!important}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.6;min-height:100vh;transition:background var(--t),color var(--t)}
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
-input,select{font-family:inherit;outline:none}
+input,select,textarea{font-family:inherit;outline:none}
 ::selection{background:var(--pri-l);color:#fff}
-/* Critical: override CSS specificity so [hidden] always wins */
-[hidden]{display:none!important}
 
-/* ── Loader / Toast ─────────────────────────────── */
+/* ═══ Loader / Toast ═══════════════════════════════════ */
 #global-loader{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:linear-gradient(90deg,var(--pri),var(--acc));animation:lb 1.2s ease infinite}
 @keyframes lb{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-#toasts{position:fixed;bottom:24px;right:24px;z-index:9998;display:flex;flex-direction:column;gap:10px;max-width:360px}
-.toast{padding:12px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:500;box-shadow:var(--shadow-md);transform:translateX(120%);transition:transform .3s ease}
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9998;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.toast{padding:12px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:500;box-shadow:var(--shadow-md);transform:translateX(120%);transition:transform .3s ease}
 .toast.show{transform:translateX(0)}
-.toast-info   {background:var(--surf);color:var(--txt);border-left:4px solid var(--pri)}
+.toast-info{background:var(--surf);color:var(--txt);border-left:4px solid var(--pri)}
 .toast-success{background:#ECFDF5;color:#065F46;border-left:4px solid var(--ok)}
-.toast-error  {background:#FEF2F2;color:#991B1B;border-left:4px solid var(--err)}
-.toast-warn   {background:#FFFBEB;color:#92400E;border-left:4px solid var(--warn)}
+.toast-error{background:#FEF2F2;color:#991B1B;border-left:4px solid var(--err)}
+.toast-warn{background:#FFFBEB;color:#92400E;border-left:4px solid var(--warn)}
 [data-theme=dark] .toast-success{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .toast-error{background:#2D0E0E;color:#FCA5A5}
 [data-theme=dark] .toast-warn{background:#2D1C00;color:#FCD34D}
 
-/* ── Auth ─────────────────────────────────────── */
+/* ═══ Auth pages ════════════════════════════════════════ */
 #auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
   background:linear-gradient(135deg,#1E1B4B 0%,#312E81 45%,#0E7490 100%)}
 .auth-card{background:var(--surf);border-radius:var(--r-lg);padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 .auth-brand{text-align:center;margin-bottom:28px}
-.auth-logo{width:52px;height:52px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.auth-logo{width:52px;height:52px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px}
 .auth-brand h1{font-size:22px;font-weight:800;color:var(--txt)}
 .auth-brand p{color:var(--txt2);font-size:13px;margin-top:3px}
-.auth-title{font-size:18px;font-weight:700;margin-bottom:6px}
-.auth-sub{color:var(--txt2);font-size:13px;margin-bottom:22px}
-.auth-switch{text-align:center;margin-top:18px;color:var(--txt2);font-size:13px}
+.auth-title{font-size:18px;font-weight:700;margin-bottom:5px}
+.auth-sub{color:var(--txt2);font-size:13px;margin-bottom:20px}
+.auth-switch{text-align:center;margin-top:16px;color:var(--txt2);font-size:13px}
 .auth-switch a{color:var(--pri);font-weight:600;cursor:pointer}
 .pg-msg{text-align:center;padding:16px 0}
 .pg-msg .big-icon{font-size:48px;margin-bottom:12px}
-
-/* ── OTP Input ─────────────────────────────────── */
 .otp-wrap{margin:20px 0}
 .otp-input{width:100%;font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;text-align:center;letter-spacing:18px;padding:14px 10px 14px 28px;border:2px solid var(--bdr);border-radius:12px;background:var(--surf2);color:var(--pri);transition:border-color var(--t)}
 .otp-input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
-.otp-hint{font-size:12px;color:var(--txt3);text-align:center;margin-top:8px}
+.otp-hint{font-size:12px;color:var(--txt3);text-align:center;margin-top:6px}
 
-/* ── Forms ─────────────────────────────────────── */
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.input{width:100%;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:var(--r-sm);background:var(--surf2);color:var(--txt);font-size:14px;transition:border-color var(--t),box-shadow var(--t)}
+/* ═══ Forms / Buttons ═══════════════════════════════════ */
+.form-group{margin-bottom:15px}
+.form-group label{display:block;font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.input{width:100%;padding:10px 13px;border:1.5px solid var(--bdr);border-radius:var(--r-sm);background:var(--surf2);color:var(--txt);font-size:14px;transition:border-color var(--t),box-shadow var(--t)}
 .input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 select.input{cursor:pointer}
-.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
-.hint-text{font-size:12px;color:var(--txt3);margin-top:8px;line-height:1.5}
-
-/* ── Buttons ─────────────────────────────────────── */
-.btn{padding:9px 20px;border-radius:var(--r-sm);font-size:13px;font-weight:600;transition:all var(--t);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.hint-text{font-size:12px;color:var(--txt3);margin-top:7px;line-height:1.5}
+.btn{padding:9px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;transition:all var(--t);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--pri);color:#fff}
 .btn-primary:hover:not(:disabled){background:var(--pri-d);transform:translateY(-1px);box-shadow:0 4px 12px rgba(67,56,202,.35)}
 .btn-ghost{background:transparent;color:var(--txt2);border:1.5px solid var(--bdr)}
 .btn-ghost:hover{background:var(--surf2);border-color:var(--bdr2)}
-.btn-ok {background:#ECFDF5;color:#065F46;border:1.5px solid #A7F3D0}
+.btn-ok{background:#ECFDF5;color:#065F46;border:1.5px solid #A7F3D0}
 .btn-ok:hover{background:#D1FAE5}
 .btn-err{background:#FEF2F2;color:#991B1B;border:1.5px solid #FCA5A5}
 .btn-err:hover{background:#FEE2E2}
-.btn-lg{padding:12px 28px;font-size:15px;border-radius:10px}
 .btn-full{width:100%;justify-content:center;padding:12px}
-.btn-icon{background:none;border:none;padding:4px 8px;border-radius:6px;font-size:13px;color:var(--txt3);transition:all var(--t)}
+.btn-lg{padding:12px 28px;font-size:15px;border-radius:10px}
+.btn-icon{background:none;border:none;padding:4px 8px;border-radius:6px;font-size:12px;color:var(--txt3);transition:all var(--t)}
 .btn-icon:hover{background:var(--surf2)}
 .btn-icon.danger:hover{background:#FEF2F2;color:var(--err)}
-[data-theme=dark] .btn-ok {background:#022C22;color:#6EE7B7;border-color:#065F46}
+[data-theme=dark] .btn-ok{background:#022C22;color:#6EE7B7;border-color:#065F46}
 [data-theme=dark] .btn-err{background:#2D0E0E;color:#FCA5A5;border-color:#991B1B}
 
-/* ── App Shell ─────────────────────────────────── */
-#app{display:none;min-height:100vh}
-#app.visible{display:flex}
-#sidebar{width:var(--sbar-w);position:fixed;top:0;left:0;bottom:0;background:var(--sbar-bg);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
-.sidebar-brand{padding:22px 20px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.08)}
-.brand-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.brand-name{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.brand-sub{font-size:10px;color:var(--sbar-txt);display:block;margin-top:1px}
-.sidebar-nav{flex:1;padding:16px 12px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-sm);color:var(--sbar-txt);font-size:14px;font-weight:500;transition:all var(--t);cursor:pointer;margin-bottom:2px;text-decoration:none;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
-.nav-item.active{background:linear-gradient(135deg,var(--pri),var(--pri-l));color:#fff;box-shadow:0 4px 12px rgba(99,102,241,.4)}
-.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
-.nav-sep{height:1px;background:rgba(255,255,255,.06);margin:10px 0}
-.sidebar-footer{padding:16px 12px;border-top:1px solid rgba(255,255,255,.08)}
-.sidebar-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r-sm);margin-bottom:8px}
-.uava{width:34px;height:34px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
-.uava.sm{width:26px;height:26px;font-size:11px}
-#sb-name{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
-#sb-email{font-size:11px;color:var(--sbar-txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
-#sb-role{font-size:10px;color:var(--acc);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
-.sb-btns{display:flex;gap:6px}
-.sb-btn{flex:1;padding:8px;border-radius:var(--r-sm);font-size:12px;font-weight:600;background:rgba(255,255,255,.07);color:var(--sbar-txt);border:none;cursor:pointer;transition:all var(--t);text-align:center}
-.sb-btn:hover{background:rgba(255,255,255,.14);color:#fff}
-#main-content{margin-left:var(--sbar-w);flex:1;min-height:100vh}
-.tab-content{padding:28px}
+/* ═══ TOP NAVBAR — single unified navigation ════════════ */
+#topnav{
+  height:var(--nav-h);background:var(--nav-bg);
+  display:flex;align-items:center;padding:0 16px;gap:6px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(0,0,0,.3);
+}
+.tnav-brand{display:flex;align-items:center;gap:9px;color:#fff;font-size:16px;font-weight:800;white-space:nowrap;flex-shrink:0;text-decoration:none}
+.tnav-logo{width:30px;height:30px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.tnav-links{display:flex;align-items:center;gap:1px;flex:1;justify-content:center;padding:0 8px}
+.tnav-links .nav-item{padding:6px 11px;border-radius:var(--r-sm);color:rgba(255,255,255,.65);font-size:12.5px;font-weight:500;background:none;border:none;cursor:pointer;white-space:nowrap;transition:all var(--t)}
+.tnav-links .nav-item:hover{background:rgba(255,255,255,.09);color:#fff}
+.tnav-links .nav-item.active{background:rgba(255,255,255,.16);color:#fff;font-weight:600}
+.tnav-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.tnav-user{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:var(--r-sm);background:rgba(255,255,255,.08)}
+.tnav-uname{color:rgba(255,255,255,.85);font-size:12.5px;font-weight:500;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tnav-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.09);border:none;color:#fff;font-size:15px;cursor:pointer;transition:background var(--t);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tnav-btn:hover{background:rgba(255,255,255,.18)}
+.tnav-hamburger{display:none}
+.uava{width:28px;height:28px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.uava.sm{width:22px;height:22px;font-size:10px}
+.uava.lg{width:36px;height:36px;font-size:14px}
+
+/* Mobile: collapse nav-links into slide-down panel */
+@media(max-width:900px){
+  .tnav-links{
+    display:none;position:fixed;top:var(--nav-h);left:0;right:0;
+    background:var(--nav-bg);flex-direction:column;align-items:stretch;
+    padding:8px 14px 18px;z-index:99;gap:3px;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+    border-top:1px solid rgba(255,255,255,.07);
+  }
+  .tnav-links.open{display:flex}
+  .tnav-links .nav-item{padding:10px 14px;font-size:14px;border-radius:var(--r-sm)}
+  .tnav-hamburger{display:flex}
+  .tnav-uname{display:none}
+}
+
+/* ═══ Content area ══════════════════════════════════════ */
+#app{min-height:100vh;display:flex;flex-direction:column}
+#content{flex:1;padding:24px;max-width:1100px;margin:0 auto;width:100%}
 .tab-content[hidden]{display:none!important}
+@media(max-width:768px){#content{padding:16px}}
 
-/* ── Mobile Header ─────────────────────────────── */
-#mob-hdr{display:none;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--sbar-bg);position:sticky;top:0;z-index:90}
-.mob-brand{display:flex;align-items:center;gap:8px;color:#fff;font-size:16px;font-weight:800}
-.mob-brand-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-.mob-acts{display:flex;gap:8px}
-.mob-btn{background:rgba(255,255,255,.1);border:none;color:#fff;width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background var(--t)}
-.mob-btn:hover{background:rgba(255,255,255,.2)}
-#bot-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surf);border-top:1px solid var(--bdr);z-index:100;padding:4px 0 max(4px,env(safe-area-inset-bottom))}
-.bot-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;color:var(--txt3);font-size:10px;font-weight:500;background:none;border:none;cursor:pointer;transition:color var(--t)}
-.bot-item.active{color:var(--pri)}
-.bot-icon{font-size:18px;line-height:1}
-
-/* ── Page Layout ──────────────────────────────── */
+/* ═══ Cards / Badges ════════════════════════════════════ */
+.card{background:var(--surf);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);border:1px solid var(--bdr);margin-bottom:20px;transition:background var(--t),border-color var(--t)}
+.card-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.section-title{font-size:15px;font-weight:700;margin-bottom:14px}
 .page-hdr{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .page-title{font-size:22px;font-weight:800;line-height:1.2}
 .page-sub{font-size:13px;color:var(--txt2);margin-top:3px}
-.card{background:var(--surf);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);border:1px solid var(--bdr);margin-bottom:20px;transition:background var(--t),border-color var(--t)}
-.card-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.section-title{font-size:15px;font-weight:700;margin-bottom:16px}
-.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-ok {background:#D1FAE5;color:#065F46}
+.badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-ok{background:#D1FAE5;color:#065F46}
 .badge-err{background:#FEE2E2;color:#991B1B}
 .badge-warn{background:#FEF3C7;color:#92400E}
 .badge-pri{background:#E0E7FF;color:#3730A3}
-[data-theme=dark] .badge-ok {background:#022C22;color:#6EE7B7}
+.badge-neu{background:var(--surf2);color:var(--txt2);border:1px solid var(--bdr)}
+[data-theme=dark] .badge-ok{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .badge-err{background:#2D0E0E;color:#FCA5A5}
 [data-theme=dark] .badge-warn{background:#2D1C00;color:#FCD34D}
 [data-theme=dark] .badge-pri{background:#1E1B4B;color:#A5B4FC}
-.admin-tag{font-size:10px;font-weight:600;background:var(--pri);color:#fff;padding:2px 8px;border-radius:10px;vertical-align:middle}
-.spinner{width:36px;height:36px;border:3px solid var(--bdr2);border-top-color:var(--pri);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-ph{display:flex;align-items:center;justify-content:center;min-height:280px}
-.empty-state{text-align:center;padding:60px 20px;color:var(--txt3)}
-.empty-icon{font-size:48px;margin-bottom:12px;opacity:.6}
+.admin-tag{font-size:10px;font-weight:600;background:var(--pri);color:#fff;padding:2px 7px;border-radius:10px;vertical-align:middle;margin-left:6px}
 .text-muted{color:var(--txt2)}
 .text-err{color:var(--err)}
+.loading-ph{display:flex;align-items:center;justify-content:center;min-height:260px}
+.spinner{width:34px;height:34px;border:3px solid var(--bdr2);border-top-color:var(--pri);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:56px 20px;color:var(--txt3)}
+.empty-icon{font-size:44px;margin-bottom:12px;opacity:.55}
 
-/* ── Dashboard ─────────────────────────────────── */
-.stats-top{display:grid;grid-template-columns:220px 1fr;gap:20px;margin-bottom:20px}
-.ring-card{background:var(--surf);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
-.progress-ring{width:130px;height:130px}
+/* ═══ Dashboard ═════════════════════════════════════════ */
+.stats-top{display:grid;grid-template-columns:210px 1fr;gap:18px;margin-bottom:20px}
+.ring-card{background:var(--surf);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.progress-ring{width:126px;height:126px}
 .ring-info{text-align:center}
-.ring-hours{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--pri)}
+.ring-hours{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:var(--pri)}
 .ring-hours span{font-size:13px;color:var(--txt2);font-weight:400}
 .ring-cap{font-size:12px;color:var(--txt2);margin-top:2px}
-.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat-card{background:var(--surf);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;gap:12px}
-.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.stat-card{background:var(--surf);border-radius:var(--r);padding:15px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;gap:11px}
+.stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .si-c{background:#ECFEFF;color:#0E7490}
 .si-a{background:#FFFBEB;color:#B45309}
 .si-i{background:#EEF2FF;color:#4338CA}
@@ -188,180 +188,193 @@ select.input{cursor:pointer}
 [data-theme=dark] .si-a{background:#2D1C00}
 [data-theme=dark] .si-i{background:#1E1B4B}
 [data-theme=dark] .si-g{background:#022C22}
-.stat-val{font-size:19px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1.2}
-.stat-lbl{font-size:11px;color:var(--txt2);font-weight:500;margin-top:2px}
-.pulse-dot{width:8px;height:8px;background:var(--ok);border-radius:50%;animation:pd 1.4s ease infinite;display:inline-block}
-@keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.live-badge{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surf);border:1.5px solid #A7F3D0;border-radius:20px;font-size:12px;font-weight:600;color:#065F46;box-shadow:var(--shadow)}
+.stat-val{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1.2}
+.stat-lbl{font-size:11px;color:var(--txt2);font-weight:500;margin-top:1px}
+.live-badge{display:flex;align-items:center;gap:7px;padding:7px 13px;background:var(--surf);border:1.5px solid #A7F3D0;border-radius:20px;font-size:12px;font-weight:600;color:#065F46}
 [data-theme=dark] .live-badge{background:#022C22;border-color:#065F46;color:#6EE7B7}
-.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
-.day-cell{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:11px;text-align:center}
-.day-cell.today{border-color:var(--pri-l);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(6,182,212,.04));box-shadow:0 0 0 3px rgba(99,102,241,.12)}
-.day-cell.absent:not(.future){border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.02)}
+.pulse-dot{width:7px;height:7px;background:var(--ok);border-radius:50%;animation:pd 1.4s ease infinite;display:inline-block}
+@keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:9px}
+.day-cell{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:10px;text-align:center}
+.day-cell.today{border-color:var(--pri-l);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(6,182,212,.04));box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+.day-cell.absent:not(.future){border-color:rgba(239,68,68,.18);background:rgba(239,68,68,.02)}
 .day-name{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2)}
-.day-date{font-size:15px;font-weight:800;color:var(--txt);margin:3px 0 7px;font-family:'JetBrains Mono',monospace}
-.day-in {font-size:11px;color:var(--ok);font-weight:600}
+.day-date{font-size:15px;font-weight:800;color:var(--txt);margin:3px 0 6px;font-family:'JetBrains Mono',monospace}
+.day-in{font-size:11px;color:var(--ok);font-weight:600}
 .day-out{font-size:11px;color:var(--txt2);font-weight:600}
 .day-out.pending{color:var(--warn)}
-.day-hrs{font-size:11px;font-weight:700;margin-top:5px;padding:2px 7px;border-radius:10px;display:inline-block}
-.hrs-ok {background:#D1FAE5;color:#065F46}
+.day-hrs{font-size:11px;font-weight:700;margin-top:4px;padding:1px 6px;border-radius:10px;display:inline-block}
+.hrs-ok{background:#D1FAE5;color:#065F46}
 .hrs-low{background:#FEF3C7;color:#92400E}
-[data-theme=dark] .hrs-ok {background:#022C22;color:#6EE7B7}
+[data-theme=dark] .hrs-ok{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .hrs-low{background:#2D1C00;color:#FCD34D}
-.day-future{color:var(--txt3);font-size:18px;margin-top:4px}
-.day-absent{font-size:11px;color:var(--err);font-weight:600;opacity:.7;margin-top:4px}
-.lm-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.lm-icon{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;margin-right:8px}
+.day-future{color:var(--txt3);font-size:16px;margin-top:4px}
+.day-absent{font-size:11px;color:var(--err);font-weight:600;opacity:.65;margin-top:4px}
+.lm-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.lm-icon{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-right:7px}
 .lm-icon.ok{background:#D1FAE5;color:#065F46}
 .lm-icon.err{background:#FEE2E2;color:#991B1B}
 [data-theme=dark] .lm-icon.ok{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .lm-icon.err{background:#2D0E0E;color:#FCA5A5}
-.lm-title{font-size:15px;font-weight:700}
-.deduction-badge{padding:5px 14px;background:var(--err);color:#fff;border-radius:20px;font-size:12px;font-weight:700}
-.ok-badge{padding:5px 14px;background:var(--ok);color:#fff;border-radius:20px;font-size:12px;font-weight:700}
-.lm-stats{display:flex;flex-wrap:wrap;gap:16px}
+.lm-title{font-size:14px;font-weight:700}
+.deduction-badge{padding:4px 13px;background:var(--err);color:#fff;border-radius:20px;font-size:12px;font-weight:700}
+.ok-badge{padding:4px 13px;background:var(--ok);color:#fff;border-radius:20px;font-size:12px;font-weight:700}
+.lm-stats{display:flex;flex-wrap:wrap;gap:14px}
 .lm-stats>div{display:flex;flex-direction:column;gap:2px}
 .lm-stats span{font-size:11px;color:var(--txt2);font-weight:500}
-.lm-stats strong{font-size:14px;font-weight:700}
+.lm-stats strong{font-size:13px;font-weight:700}
 .card-warn{border-left:4px solid var(--warn)}
-.card-ok  {border-left:4px solid var(--ok)}
+.card-ok{border-left:4px solid var(--ok)}
 
-/* ── PUNCH / TAP PAGE ──────────────────────────── */
-.punch-page{max-width:680px;margin:0 auto}
-.clock-card{background:linear-gradient(135deg,var(--sbar-bg) 0%,#312E81 100%);border-radius:var(--r-lg);padding:28px;text-align:center;margin-bottom:20px;box-shadow:var(--shadow-md)}
-.clock-time{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:600;color:#fff;letter-spacing:.06em;line-height:1}
-.clock-date-txt{font-size:13px;color:rgba(255,255,255,.6);margin-top:8px}
-
-/* Session summary bar */
-.session-bar{background:var(--surf);border-radius:var(--r);padding:16px 22px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.session-stat{display:flex;flex-direction:column;gap:3px;text-align:center}
-.session-stat span{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);font-weight:600}
-.session-stat strong{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:var(--txt)}
-.session-stat strong.in-time {color:var(--ok)}
-.session-stat strong.out-time{color:var(--err)}
-.session-stat strong.dur-time{color:var(--pri)}
-.session-sep{font-size:24px;color:var(--bdr2)}
-
-/* Record time button */
-.record-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:24px;padding:8px 0}
-.record-btn{background:linear-gradient(135deg,var(--pri),var(--pri-l));color:#fff;border:none;border-radius:18px;padding:0 36px;min-width:260px;height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;box-shadow:0 8px 28px rgba(67,56,202,.4);transition:all .2s ease;position:relative;overflow:hidden}
-.record-btn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .2s}
-.record-btn:hover::before{background:rgba(255,255,255,.08)}
-.record-btn:active{transform:scale(.97)}
-.record-btn-label{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.8}
-.record-btn-time{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:600;letter-spacing:.06em;line-height:1}
-.tap-count-txt{font-size:12px;color:var(--txt2)}
-
-/* Tap log */
-.tap-log-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--surf2);margin-bottom:6px;border:1px solid var(--bdr);transition:all var(--t)}
-.tap-log-item:hover{border-color:var(--bdr2)}
-.tap-seq-badge{width:24px;height:24px;border-radius:50%;background:var(--bdr2);color:var(--txt2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tap-time-disp{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--txt);flex:1}
-.tap-role-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px}
-.tap-role-in {background:#D1FAE5;color:#065F46}
-.tap-role-out{background:#FEE2E2;color:#991B1B}
-.tap-role-mid{background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr)}
-[data-theme=dark] .tap-role-in {background:#022C22;color:#6EE7B7}
-[data-theme=dark] .tap-role-out{background:#2D0E0E;color:#FCA5A5}
-.tap-anim{animation:tapbounce .4s cubic-bezier(.36,.07,.19,.97) both}
-@keyframes tapbounce{0%,100%{transform:scale(1)}30%{transform:scale(1.06)}70%{transform:scale(.97)}}
-
-/* Manual punch form */
-.manual-form{display:flex;flex-direction:column;gap:12px}
-.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
-
-/* Punch record row */
-.punch-record-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.pr-item{display:flex;flex-direction:column;gap:2px}
+/* ═══ Punch / Tap page ══════════════════════════════════ */
+.punch-page{max-width:660px;margin:0 auto}
+.clock-card{background:linear-gradient(135deg,var(--nav-bg) 0%,#312E81 100%);border-radius:var(--r-lg);padding:26px;text-align:center;margin-bottom:18px;box-shadow:var(--shadow-md)}
+.clock-time{font-family:'JetBrains Mono',monospace;font-size:50px;font-weight:600;color:#fff;letter-spacing:.06em;line-height:1}
+.clock-date-txt{font-size:13px;color:rgba(255,255,255,.6);margin-top:7px}
+.session-bar{background:var(--surf);border-radius:var(--r);padding:14px 20px;margin-bottom:18px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.session-stat{display:flex;flex-direction:column;gap:2px;text-align:center}
+.session-stat span{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);font-weight:700}
+.session-stat strong{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--txt)}
+.in-t{color:var(--ok)!important}.out-t{color:var(--err)!important}.dur-t{color:var(--pri)!important}
+.session-sep{font-size:20px;color:var(--bdr2)}
+.record-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:22px}
+.record-btn{background:linear-gradient(135deg,var(--pri),var(--pri-l));color:#fff;border:none;border-radius:18px;padding:0 32px;min-width:250px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;box-shadow:0 8px 28px rgba(67,56,202,.4);transition:all .2s ease;position:relative;overflow:hidden}
+.record-btn:active{transform:scale(.97);box-shadow:0 4px 14px rgba(67,56,202,.3)}
+.record-btn-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.8}
+.record-btn-time{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;letter-spacing:.06em;line-height:1}
+.tap-count-txt{font-size:12px;color:var(--txt2);text-align:center}
+.tap-log-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:8px;background:var(--surf2);margin-bottom:5px;border:1px solid var(--bdr);transition:all var(--t)}
+.tap-seq{width:22px;height:22px;border-radius:50%;background:var(--bdr2);color:var(--txt2);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tap-time{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;flex:1}
+.tap-role{font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px}
+.tap-in{background:#D1FAE5;color:#065F46}
+.tap-out{background:#FEE2E2;color:#991B1B}
+.tap-mid{background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr)}
+[data-theme=dark] .tap-in{background:#022C22;color:#6EE7B7}
+[data-theme=dark] .tap-out{background:#2D0E0E;color:#FCA5A5}
+.tap-new-anim{animation:tapb .4s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes tapb{0%,100%{transform:scale(1)}30%{transform:scale(1.05)}70%{transform:scale(.97)}}
+.pr-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pr-item{display:flex;flex-direction:column;gap:1px}
 .pr-item span{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);font-weight:700}
-.pr-item strong{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600}
-.pr-sep{color:var(--txt3);font-size:18px}
+.pr-item strong{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600}
+.pr-sep{color:var(--txt3);font-size:16px}
+.manual-form{display:flex;flex-direction:column;gap:11px}
+.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
 
-/* ── History ────────────────────────────────────── */
-.history-list{display:flex;flex-direction:column;gap:12px}
+/* ═══ Schedule / Class Routine ══════════════════════════ */
+.sch-add-form{display:grid;grid-template-columns:1fr auto auto auto auto;gap:10px;align-items:flex-end;margin-bottom:16px}
+.sch-add-form .input{min-width:0}
+@media(max-width:700px){.sch-add-form{grid-template-columns:1fr 1fr;gap:9px}}
+.routine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:8px}
+.rday-card{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:12px;min-height:90px}
+.rday-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.rday-name{font-size:12px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px}
+.rday-hol{font-size:10px;color:var(--err);font-weight:600}
+.class-chip{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;padding:4px 7px;margin-bottom:4px;font-size:11px;display:flex;align-items:center;gap:6px;color:var(--txt)}
+.class-chip-time{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:10px;color:var(--err)}
+.class-chip-sub{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.no-class-txt{font-size:12px;color:var(--txt3);margin-top:4px}
+/* Suggestion result */
+.sug-row{padding:14px 0;border-bottom:1px solid var(--bdr)}
+.sug-row:last-child{border-bottom:none}
+.sug-day-name{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+/* Timeline bar */
+.tl-wrap{position:relative;height:28px;background:var(--surf2);border-radius:6px;overflow:hidden;margin:6px 0}
+.tl-seg{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;white-space:nowrap;overflow:hidden;letter-spacing:.3px}
+.tl-class{background:rgba(239,68,68,.2);border-right:1px solid rgba(239,68,68,.35);color:#991B1B}
+.tl-work{background:rgba(99,102,241,.2);border-left:2px solid var(--pri);color:#3730A3}
+[data-theme=dark] .tl-class{background:rgba(239,68,68,.15);color:#FCA5A5}
+[data-theme=dark] .tl-work{background:rgba(99,102,241,.15);color:#A5B4FC}
+.tl-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-top:1px}
+.sug-slot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.sug-slot-time{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--pri)}
+.sug-slot-dur{font-size:13px;color:var(--txt2)}
+.sug-total-bar{background:var(--surf2);border-radius:var(--r);padding:16px 20px;margin-top:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border:1.5px solid var(--bdr)}
+.sug-total-hrs{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--pri)}
+.sug-total-meta{font-size:12px;color:var(--txt2)}
+
+/* ═══ History ════════════════════════════════════════════ */
+.history-list{display:flex;flex-direction:column;gap:10px}
 .week-card{background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--bdr)}
-.week-card.week-met {border-left:4px solid var(--ok)}
-.week-card.week-miss{border-left:4px solid var(--warn)}
-.week-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;gap:12px;flex-wrap:wrap;transition:background var(--t)}
+.week-card.wk-met{border-left:4px solid var(--ok)}
+.week-card.wk-miss{border-left:4px solid var(--warn)}
+.week-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;cursor:pointer;gap:10px;flex-wrap:wrap;transition:background var(--t)}
 .week-hdr:hover{background:var(--surf2)}
-.week-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.week-left{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .week-dates{font-size:12px;color:var(--txt2)}
-.week-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.week-hrs{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+.week-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.week-hrs{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700}
 .wk-target{font-size:12px;color:var(--txt2);font-weight:400}
-.wk-bar-out{width:100px;height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.wk-bar-out{width:90px;height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
 .wk-bar-in{height:100%;border-radius:3px}
-.bar-ok {background:linear-gradient(90deg,var(--ok),#34D399)}
+.bar-ok{background:linear-gradient(90deg,var(--ok),#34D399)}
 .bar-err{background:linear-gradient(90deg,var(--warn),var(--err))}
 .week-chev{color:var(--txt3);font-size:11px}
-.week-body{padding:0 18px 18px;border-top:1px solid var(--bdr)}
-.dt-hdr,.dt-row{display:grid;grid-template-columns:50px 70px 70px 70px 1fr;padding:7px 10px;font-size:13px}
-.dt-hdr{background:var(--surf2);border-radius:8px;font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin:14px 0 4px}
+.week-body{padding:0 17px 17px;border-top:1px solid var(--bdr)}
+.dt-hdr,.dt-row{display:grid;grid-template-columns:50px 68px 68px 68px 1fr;padding:7px 9px;font-size:13px;gap:4px}
+.dt-hdr{background:var(--surf2);border-radius:8px;font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin:12px 0 4px}
 .dt-row{border-radius:6px;transition:background var(--t);align-items:center}
 .dt-row:hover{background:var(--surf2)}
-.dt-row.dt-absent{opacity:.45}
+.dt-row.dt-absent{opacity:.42}
 .dt-day{font-weight:600}
 .dt-hrs{font-weight:600;color:var(--pri);font-family:'JetBrains Mono',monospace}
 .wk-sum{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);font-size:12px;color:var(--txt2);flex-wrap:wrap;gap:8px}
 
-/* ── Settings ───────────────────────────────────── */
-.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.day-checkboxes{display:flex;flex-wrap:wrap;gap:8px}
-.day-check{padding:8px 16px;border:1.5px solid var(--bdr);border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--txt2);transition:all var(--t);display:flex;align-items:center;gap:6px}
+/* ═══ Settings ═══════════════════════════════════════════ */
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px}
+.day-checkboxes{display:flex;flex-wrap:wrap;gap:7px}
+.day-check{padding:7px 14px;border:1.5px solid var(--bdr);border-radius:20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--txt2);transition:all var(--t);display:flex;align-items:center;gap:5px}
 .day-check input{appearance:none;width:0;margin:0;padding:0}
 .day-check.checked,.day-check:has(input:checked){background:var(--pri);border-color:var(--pri);color:#fff}
-.add-hol-form{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:flex-end}
+.add-hol-form{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px;align-items:flex-end}
 .add-hol-form .input{flex:1;min-width:130px}
-.hols-list{display:flex;flex-direction:column;gap:6px}
-.hol-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surf2);border-radius:8px;border:1px solid var(--bdr);font-size:13px}
+.hols-list{display:flex;flex-direction:column;gap:5px}
+.hol-item{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:var(--surf2);border-radius:8px;border:1px solid var(--bdr);font-size:13px}
 .hol-item.hol-ded{border-left:3px solid var(--err)}
-.hol-type{margin-left:8px;font-size:11px;background:var(--surf);border:1px solid var(--bdr);padding:1px 7px;border-radius:10px;color:var(--txt2)}
-.hol-reason{margin-left:8px;color:var(--txt2);font-size:12px}
-.save-bar{position:sticky;bottom:0;background:var(--bg);padding:16px 0 4px;border-top:1px solid var(--bdr);margin-top:4px}
+.hol-type{margin-left:7px;font-size:11px;background:var(--surf);border:1px solid var(--bdr);padding:1px 6px;border-radius:10px;color:var(--txt2)}
+.hol-reason{margin-left:7px;color:var(--txt2);font-size:12px}
+.save-bar{position:sticky;bottom:0;background:var(--bg);padding:14px 0 4px;border-top:1px solid var(--bdr);margin-top:4px}
 
-/* ── Admin ──────────────────────────────────────── */
-.approval-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--bdr);gap:12px;flex-wrap:wrap}
+/* ═══ Admin ══════════════════════════════════════════════ */
+.approval-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--bdr);gap:10px;flex-wrap:wrap}
 .approval-row:last-child{border-bottom:none}
-.user-info{display:flex;align-items:flex-start;gap:12px}
+.user-info{display:flex;align-items:flex-start;gap:11px}
 .u-name{font-size:14px;font-weight:600}
 .u-email{font-size:12px;color:var(--txt2)}
 .u-meta{font-size:11px;color:var(--txt3);margin-top:3px}
-.approval-btns{display:flex;gap:8px;flex-shrink:0}
-.ut-hdr,.ut-row{display:grid;grid-template-columns:1.5fr 2fr 80px 90px 100px;padding:8px 12px;align-items:center;gap:8px;font-size:13px}
+.approval-btns{display:flex;gap:7px;flex-shrink:0}
+.ut-hdr,.ut-row{display:grid;grid-template-columns:1.5fr 2fr 80px 90px 100px;padding:8px 11px;align-items:center;gap:8px;font-size:13px}
 .ut-hdr{background:var(--surf2);border-radius:8px;font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
 .ut-row{border-radius:6px;transition:background var(--t)}
 .ut-row:hover{background:var(--surf2)}
-.ut-name{display:flex;align-items:center;gap:8px;font-weight:500}
+.ut-name{display:flex;align-items:center;gap:7px;font-weight:500}
 .ut-email{color:var(--txt2);font-size:12px;word-break:break-all}
 
-/* ── Responsive ─────────────────────────────────── */
+/* ═══ Responsive ═════════════════════════════════════════ */
 @media(max-width:768px){
-  :root{--sbar-w:0px}
-  #sidebar{display:none!important}
-  #main-content{margin-left:0;padding-bottom:72px}
-  #mob-hdr{display:flex}
-  #bot-nav{display:flex}
-  .tab-content{padding:16px}
+  #toasts{right:12px;left:12px;bottom:16px}
   .stats-top{grid-template-columns:1fr}
   .mini-stats{grid-template-columns:1fr 1fr}
-  .ring-card{flex-direction:row;gap:20px;padding:18px}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+  .ring-card{flex-direction:row;gap:18px;padding:16px}
+  .week-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
   .clock-time{font-size:38px}
-  .record-btn{min-width:220px;height:80px}
-  .record-btn-time{font-size:28px}
-  #toasts{right:12px;left:12px;bottom:80px}
+  .record-btn{min-width:210px;height:78px}
+  .record-btn-time{font-size:26px}
   .form-row{grid-template-columns:1fr}
-  .dt-hdr,.dt-row{grid-template-columns:44px 60px 58px 58px 1fr;font-size:12px}
-  .save-bar{padding-bottom:80px}
+  .dt-hdr,.dt-row{grid-template-columns:44px 62px 58px 58px 1fr;font-size:12px}
+  .save-bar{padding-bottom:12px}
   .ut-hdr span:nth-child(n+4),.ut-row span:nth-child(n+4){display:none}
   .ut-hdr,.ut-row{grid-template-columns:1.4fr 1.8fr 80px}
+  .sch-add-form{grid-template-columns:1fr 1fr}
+  .routine-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
-@media(max-width:420px){
-  .record-btn{min-width:180px}
-  .record-btn-time{font-size:24px}
-  .mini-stats{grid-template-columns:1fr 1fr}
-  .stat-card{padding:12px 10px;gap:8px}
+@media(max-width:480px){
+  .stats-top{gap:12px}
+  .stat-card{padding:11px 10px;gap:8px}
   .stat-val{font-size:16px}
+  .auth-card{padding:28px 22px}
+  .week-grid{grid-template-columns:repeat(auto-fill,minmax(84px,1fr))}
 }
 </style>
 </head>
@@ -370,96 +383,57 @@ select.input{cursor:pointer}
 <div id="toasts"></div>
 <div id="global-loader" hidden></div>
 
-<!-- ══ AUTH ══════════════════════════════════════ -->
+<!-- ══ AUTH ══════════════════════════════════════════════ -->
 <div id="auth" hidden>
 
-  <!-- Login -->
   <div id="pg-login">
     <div class="auth-card">
-      <div class="auth-brand">
-        <div class="auth-logo">⏱</div>
-        <h1>PunchTrack</h1>
-        <p>Office Time Management System</p>
-      </div>
+      <div class="auth-brand"><div class="auth-logo">⏱</div><h1>PunchTrack</h1><p>Office Time Management System</p></div>
       <h2 class="auth-title">Sign In</h2>
-      <p class="auth-sub">Use your registered email and password.</p>
+      <p class="auth-sub">Enter your registered email and password.</p>
       <form onsubmit="doLogin(event)">
-        <div class="form-group">
-          <label>Email Address</label>
-          <input id="login-email" type="email" class="input" placeholder="you@example.com" required autocomplete="email">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input id="login-pass" type="password" class="input" placeholder="••••••••" required autocomplete="current-password">
-        </div>
+        <div class="form-group"><label>Email</label><input id="login-email" type="email" class="input" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="form-group"><label>Password</label><input id="login-pass" type="password" class="input" placeholder="••••••••" required autocomplete="current-password"></div>
         <button id="login-btn" class="btn btn-primary btn-full" type="submit">Sign In</button>
       </form>
       <div class="auth-switch">No account? <a onclick="showAuthPage('pg-register')">Register here</a></div>
     </div>
   </div>
 
-  <!-- Register -->
   <div id="pg-register" hidden>
     <div class="auth-card">
-      <div class="auth-brand">
-        <div class="auth-logo">⏱</div>
-        <h1>PunchTrack</h1>
-        <p>Create your account</p>
-      </div>
+      <div class="auth-brand"><div class="auth-logo">⏱</div><h1>PunchTrack</h1><p>Create your account</p></div>
       <h2 class="auth-title">Register</h2>
-      <p class="auth-sub">Fill in your details. After email verification, an admin will approve your account.</p>
+      <p class="auth-sub">After email verification an admin will approve your account.</p>
       <form onsubmit="doRegister(event)">
-        <div class="form-group">
-          <label>Full Name *</label>
-          <input id="reg-name" type="text" class="input" placeholder="Your full name" required>
-        </div>
-        <div class="form-group">
-          <label>Email Address *</label>
-          <input id="reg-email" type="email" class="input" placeholder="you@example.com" required>
-        </div>
-        <div class="form-group">
-          <label>Phone Number</label>
-          <input id="reg-phone" type="tel" class="input" placeholder="+880 1X XX XXX XXX">
-        </div>
+        <div class="form-group"><label>Full Name *</label><input id="reg-name" type="text" class="input" placeholder="Your full name" required></div>
+        <div class="form-group"><label>Email Address *</label><input id="reg-email" type="email" class="input" placeholder="you@example.com" required></div>
+        <div class="form-group"><label>Phone Number</label><input id="reg-phone" type="tel" class="input" placeholder="+880 1X XX XXX XXX"></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Password *</label>
-            <input id="reg-pass" type="password" class="input" placeholder="Min 6 characters" required>
-          </div>
-          <div class="form-group">
-            <label>Confirm Password *</label>
-            <input id="reg-pass2" type="password" class="input" placeholder="Repeat" required>
-          </div>
+          <div class="form-group"><label>Password *</label><input id="reg-pass" type="password" class="input" placeholder="Min 6 chars" required></div>
+          <div class="form-group"><label>Confirm *</label><input id="reg-pass2" type="password" class="input" placeholder="Repeat" required></div>
         </div>
-        <button id="reg-btn" class="btn btn-primary btn-full" type="submit">Create Account & Send Code</button>
+        <button id="reg-btn" class="btn btn-primary btn-full" type="submit">Create Account &amp; Send Code</button>
       </form>
       <div class="auth-switch">Already registered? <a onclick="showAuthPage('pg-login')">Sign in</a></div>
     </div>
   </div>
 
-  <!-- OTP Verification -->
   <div id="pg-otp" hidden>
     <div class="auth-card">
-      <div class="auth-brand">
-        <div class="auth-logo">✉</div>
-        <h1>PunchTrack</h1>
-        <p>Email Verification</p>
-      </div>
-      <h2 class="auth-title">Enter Verification Code</h2>
-      <p class="auth-sub" id="otp-info">A 6-digit code was sent to your email address.</p>
+      <div class="auth-brand"><div class="auth-logo">✉</div><h1>PunchTrack</h1><p>Email Verification</p></div>
+      <h2 class="auth-title">Verification Code</h2>
+      <p class="auth-sub" id="otp-info">A 6-digit code was sent to your email.</p>
       <div class="otp-wrap">
-        <input type="text" id="otp-input" class="otp-input" maxlength="6"
-               placeholder="000000" inputmode="numeric" autocomplete="one-time-code"
-               oninput="this.value=this.value.replace(/\D/g,'')">
-        <div class="otp-hint">Enter the 6-digit code from your email</div>
+        <input type="text" id="otp-input" class="otp-input" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code" oninput="this.value=this.value.replace(/\D/g,'')">
+        <div class="otp-hint">Enter the 6-digit code — it auto-submits</div>
       </div>
       <button id="otp-btn" class="btn btn-primary btn-full" onclick="submitOTP()">Verify Code</button>
-      <div class="auth-switch" style="margin-top:12px">Didn't get it? <a onclick="resendOTPCode()">Resend code</a></div>
-      <div class="auth-switch"><a onclick="showAuthPage('pg-register')">← Back to Registration</a></div>
+      <div class="auth-switch" style="margin-top:11px">Didn't get it? <a onclick="resendOTPCode()">Resend code</a></div>
+      <div class="auth-switch"><a onclick="showAuthPage('pg-register')">← Back</a></div>
     </div>
   </div>
 
-  <!-- Pending Approval -->
   <div id="pg-pending" hidden>
     <div class="auth-card">
       <div class="auth-brand"><div class="auth-logo">⏱</div><h1>PunchTrack</h1></div>
@@ -474,114 +448,110 @@ select.input{cursor:pointer}
 
 </div><!-- /#auth -->
 
-<!-- ══ MAIN APP ═══════════════════════════════════ -->
-<div id="app">
+<!-- ══ MAIN APP ════════════════════════════════════════ -->
+<div id="app" hidden>
 
-  <aside id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-icon">⏱</div>
-      <div>
-        <span class="brand-name">PunchTrack</span>
-        <span class="brand-sub">Office Time Manager</span>
-      </div>
-    </div>
-    <nav class="sidebar-nav">
-      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
-      <button class="nav-item" data-tab="punch"     onclick="switchTab('punch')">    <span class="nav-icon">⏱</span>Punch / Record Time</button>
-      <button class="nav-item" data-tab="history"   onclick="switchTab('history')">  <span class="nav-icon">📅</span>History</button>
-      <button class="nav-item" data-tab="settings"  onclick="switchTab('settings')"> <span class="nav-icon">⚙</span>Rules & Settings</button>
-      <div class="nav-sep"></div>
-      <button class="nav-item" data-tab="admin" onclick="switchTab('admin')"><span class="nav-icon">👥</span>Admin Panel</button>
-    </nav>
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="uava" id="sb-ava">?</div>
-        <div style="flex:1;min-width:0">
-          <div id="sb-name">—</div>
-          <div id="sb-email">—</div>
-          <div id="sb-role"></div>
-        </div>
-      </div>
-      <div class="sb-btns">
-        <button class="sb-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
-        <button class="sb-btn" onclick="doLogout()">⏻ Sign Out</button>
-      </div>
-    </div>
-  </aside>
+  <!-- Single Top Navbar -->
+  <nav id="topnav">
+    <div class="tnav-brand"><div class="tnav-logo">⏱</div><span>PunchTrack</span></div>
 
-  <header id="mob-hdr">
-    <div class="mob-brand">
-      <div class="mob-brand-icon">⏱</div>PunchTrack
+    <!-- Nav links — collapses to hamburger on mobile -->
+    <div class="tnav-links" id="tnav-links">
+      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard');closeMobileMenu()">⊞ Dashboard</button>
+      <button class="nav-item" data-tab="punch"    onclick="switchTab('punch');closeMobileMenu()">⏱ Punch</button>
+      <button class="nav-item" data-tab="schedule" onclick="switchTab('schedule');closeMobileMenu()">📚 Schedule</button>
+      <button class="nav-item" data-tab="history"  onclick="switchTab('history');closeMobileMenu()">📅 History</button>
+      <button class="nav-item" data-tab="settings" onclick="switchTab('settings');closeMobileMenu()">⚙ Settings</button>
+      <button class="nav-item" data-tab="admin" id="admin-nav-btn" onclick="switchTab('admin');closeMobileMenu()">👥 Admin</button>
     </div>
-    <div class="mob-acts">
-      <button class="mob-btn" id="mob-theme-btn" onclick="toggleTheme()">🌙</button>
-      <button class="mob-btn" onclick="doLogout()">⏻</button>
-    </div>
-  </header>
 
-  <div id="main-content">
+    <div class="tnav-right">
+      <!-- Single theme toggle -->
+      <button class="tnav-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button>
+      <div class="tnav-user">
+        <div class="uava" id="nav-ava">?</div>
+        <span class="tnav-uname" id="nav-name">—</span>
+      </div>
+      <button class="tnav-btn" onclick="doLogout()" title="Sign out" style="font-size:14px">⏻</button>
+      <!-- Hamburger — visible on mobile only -->
+      <button class="tnav-btn tnav-hamburger" id="hamburger" onclick="toggleMobileMenu()" title="Menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Tab content -->
+  <div id="content">
     <div id="tab-dashboard" class="tab-content"><div class="loading-ph"><div class="spinner"></div></div></div>
     <div id="tab-punch"     class="tab-content" hidden><div class="loading-ph"><div class="spinner"></div></div></div>
+    <div id="tab-schedule"  class="tab-content" hidden><div class="loading-ph"><div class="spinner"></div></div></div>
     <div id="tab-history"   class="tab-content" hidden><div class="loading-ph"><div class="spinner"></div></div></div>
     <div id="tab-settings"  class="tab-content" hidden><div class="loading-ph"><div class="spinner"></div></div></div>
     <div id="tab-admin"     class="tab-content" hidden><div class="loading-ph"><div class="spinner"></div></div></div>
   </div>
 </div>
 
-<nav id="bot-nav" style="display:none;justify-content:space-around">
-  <button class="bot-item nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="bot-icon">⊞</span>Home</button>
-  <button class="bot-item nav-item"        data-tab="punch"     onclick="switchTab('punch')">    <span class="bot-icon">⏱</span>Punch</button>
-  <button class="bot-item nav-item"        data-tab="history"   onclick="switchTab('history')">  <span class="bot-icon">📅</span>History</button>
-  <button class="bot-item nav-item"        data-tab="settings"  onclick="switchTab('settings')"> <span class="bot-icon">⚙</span>Settings</button>
-  <button class="bot-item nav-item"        data-tab="admin"  id="bot-admin" onclick="switchTab('admin')"><span class="bot-icon">👥</span>Admin</button>
-</nav>
-
 <script>
-// ══ CONFIG ════════════════════════════════════════════════
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3-bP6SN7clhD6eO9nODc3ZpHQpfqrZV9-b78dRzziXvl7k3ImUV3Rpmpn9ayZMw5B/exec';  // ← REPLACE THIS
+// ═══ CONFIG — replace with your deployed Apps Script URL ══
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3-bP6SN7clhD6eO9nODc3ZpHQpfqrZV9-b78dRzziXvl7k3ImUV3Rpmpn9ayZMw5B/exec';
 
-// ══ HELPERS ══════════════════════════════════════════════
-const pad = n => String(n).padStart(2,'0');
-const $   = id => document.getElementById(id);
-const LS  = { get:k=>localStorage.getItem(k), set:(k,v)=>localStorage.setItem(k,v), del:k=>localStorage.removeItem(k) };
+// ═══ HELPERS ══════════════════════════════════════════════
+const pad   = n => String(n).padStart(2,'0');
+const $     = id => document.getElementById(id);
+const LS    = {get:k=>localStorage.getItem(k),set:(k,v)=>localStorage.setItem(k,v),del:k=>localStorage.removeItem(k)};
+const pMin  = t => { if(!t||typeof t!=='string') return 0; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
+const mToT  = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
+const toHrsMin = m => { if(!m||isNaN(m)) return '—'; const h=Math.floor(m/60),mi=m%60; return h&&mi?`${h}h ${mi}m`:h?`${h}h`:`${mi}m`; };
+const fmtRange = (s,e) => { const f=d=>new Date(d+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric'}); return `${f(s)} — ${new Date(e+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric',year:'numeric'})}`; };
+const fmtDate  = d => new Date(d+'T00:00:00').toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'});
+function greeting(){ const h=new Date().getHours(); return h<12?'Morning':h<17?'Afternoon':'Evening'; }
 
-// ══ API ══════════════════════════════════════════════════
+// ═══ API ══════════════════════════════════════════════════
 const API = {
   async call(params) {
-    if (!SCRIPT_URL || SCRIPT_URL.startsWith('YOUR_')) {
-      showToast('⚠ SCRIPT_URL not configured in index.html','error',9000);
+    if(!SCRIPT_URL||SCRIPT_URL.startsWith('YOUR_')){
+      showToast('⚠ Configure SCRIPT_URL in index.html','error',9000);
       throw new Error('SCRIPT_URL not set');
     }
-    const url = new URL(SCRIPT_URL);
+    const url=new URL(SCRIPT_URL);
     Object.entries(params).forEach(([k,v])=>{ if(v!==undefined&&v!==null&&v!=='') url.searchParams.set(k,String(v)); });
     try {
-      const r = await fetch(url.toString(), {redirect:'follow'});
-      const text = await r.text();
-      try { return JSON.parse(text); }
-      catch(_){ console.error('Non-JSON:',text.slice(0,300)); throw new Error('Server returned non-JSON. Check script URL and permissions.'); }
-    } catch(e) { if(e.message==='SCRIPT_URL not set') throw e; throw new Error('Network error: '+e.message); }
+      const r=await fetch(url.toString(),{redirect:'follow'});
+      const text=await r.text();
+      try{ return JSON.parse(text); }
+      catch(_){ console.error('Non-JSON:',text.slice(0,300)); throw new Error('Server returned non-JSON. Check script URL & permissions.'); }
+    } catch(e){ if(e.message==='SCRIPT_URL not set') throw e; throw new Error('Network error: '+e.message); }
   },
-  token() { return LS.get('pt_token'); },
-  async auth(action, extra={}) { return this.call({action, token:this.token(), ...extra}); }
+  token(){ return LS.get('pt_token'); },
+  async auth(action,extra={}){ return this.call({action,token:this.token(),...extra}); }
 };
 
-// ══ STATE ════════════════════════════════════════════════
-const S = { user:null, settings:null, clockInt:null, punchInTime:null, otpEmail:null, currentTaps:[] };
+// ═══ STATE ════════════════════════════════════════════════
+const S = { user:null, settings:null, clockInt:null, punchInTime:null, otpEmail:null, classSlots:[] };
 
-// ══ TOAST ════════════════════════════════════════════════
-function showToast(msg, type='info', dur=4000) {
+// ═══ TOAST ════════════════════════════════════════════════
+function showToast(msg,type='info',dur=4000){
   const t=document.createElement('div'); t.className=`toast toast-${type}`; t.textContent=msg;
   $('toasts').appendChild(t);
   requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
-  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),320); }, dur);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),320); },dur);
 }
-
-// ══ LOADER ═══════════════════════════════════════════════
 let _lc=0;
 function setLoading(on){ _lc=Math.max(0,_lc+(on?1:-1)); $('global-loader').hidden=_lc===0; }
 
-// ══ NAVIGATION ═══════════════════════════════════════════
-function switchTab(tab) {
+// ═══ MOBILE MENU ══════════════════════════════════════════
+function toggleMobileMenu(){
+  const links=$('tnav-links');
+  links.classList.toggle('open');
+  $('hamburger').textContent=links.classList.contains('open')?'✕':'☰';
+}
+function closeMobileMenu(){
+  $('tnav-links').classList.remove('open');
+  $('hamburger').textContent='☰';
+}
+// Close menu when clicking outside
+document.addEventListener('click',e=>{ if(!e.target.closest('#topnav')) closeMobileMenu(); });
+
+// ═══ NAVIGATION ═══════════════════════════════════════════
+function switchTab(tab){
   S.currentTab=tab;
   document.querySelectorAll('.tab-content').forEach(t=>t.hidden=true);
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -589,42 +559,36 @@ function switchTab(tab) {
   document.querySelectorAll(`[data-tab="${tab}"]`).forEach(n=>n.classList.add('active'));
   if(tab==='dashboard') loadDashboard();
   if(tab==='punch')     setupPunchPage();
+  if(tab==='schedule')  loadSchedule();
   if(tab==='history')   loadHistory();
   if(tab==='settings')  loadSettings();
   if(tab==='admin')     loadAdmin();
 }
 
-// ══ AUTH PAGES ═══════════════════════════════════════════
-function showAuthPage(page) {
+// ═══ AUTH PAGES ═══════════════════════════════════════════
+function showAuthPage(page){
   ['pg-login','pg-register','pg-otp','pg-pending'].forEach(p=>$(p).hidden=true);
   $(page).hidden=false;
 }
 
-async function doLogin(e) {
+async function doLogin(e){
   e.preventDefault();
   const email=$('login-email').value.trim(), pass=$('login-pass').value;
   if(!email||!pass){showToast('Enter email and password','error');return;}
   const btn=$('login-btn'); btn.disabled=true; btn.textContent='Signing in…';
-  try {
+  try{
     const res=await API.call({action:'login',email,password:pass});
-    if(res.success){
-      LS.set('pt_token',res.token);
-      S.user={email:res.email,name:res.name,role:res.role};
-      loadApp();
-    } else {
+    if(res.success){ LS.set('pt_token',res.token); S.user={email:res.email,name:res.name,role:res.role}; loadApp(); }
+    else{
       showToast(res.message||'Login failed','error');
       if(res.code==='PENDING') showAuthPage('pg-pending');
-      if(res.code==='UNVERIFIED'){
-        S.otpEmail=email;
-        $('otp-info').textContent=`Enter the 6-digit code sent to ${email}`;
-        showAuthPage('pg-otp');
-      }
+      if(res.code==='UNVERIFIED'){ S.otpEmail=email; $('otp-info').innerHTML=`Enter the code sent to <strong>${email}</strong>`; showAuthPage('pg-otp'); }
     }
-  } catch(err){ showToast('Login failed. Check connection.','error'); }
-  finally { btn.disabled=false; btn.textContent='Sign In'; }
+  }catch(err){ showToast('Login failed. Check your connection.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Sign In'; }
 }
 
-async function doRegister(e) {
+async function doRegister(e){
   e.preventDefault();
   const name=$('reg-name').value.trim(), email=$('reg-email').value.trim();
   const phone=$('reg-phone').value.trim(), pass=$('reg-pass').value, pass2=$('reg-pass2').value;
@@ -632,143 +596,110 @@ async function doRegister(e) {
   if(pass!==pass2){showToast('Passwords do not match','error');return;}
   if(pass.length<6){showToast('Password must be at least 6 characters','error');return;}
   const btn=$('reg-btn'); btn.disabled=true; btn.textContent='Registering…';
-  try {
+  try{
     const res=await API.call({action:'register',name,email,phone,password:pass});
-    if(res.success){
-      S.otpEmail=email;
-      $('otp-info').innerHTML=`A 6-digit code has been sent to<br><strong>${email}</strong>`;
-      showAuthPage('pg-otp');
-      setTimeout(()=>$('otp-input').focus(),200);
-      showToast('📧 Check your email for the verification code','success',6000);
-    } else { showToast(res.message,'error'); }
-  } catch(err){ showToast('Registration failed. Try again.','error'); }
-  finally { btn.disabled=false; btn.textContent='Create Account & Send Code'; }
+    if(res.success){ S.otpEmail=email; $('otp-info').innerHTML=`Code sent to <strong>${email}</strong>`; showAuthPage('pg-otp'); setTimeout(()=>$('otp-input').focus(),200); showToast('📧 Check your email for the code','success',6000); }
+    else showToast(res.message,'error');
+  }catch(err){ showToast('Registration failed. Try again.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Create Account & Send Code'; }
 }
 
-async function submitOTP() {
+async function submitOTP(){
   const otp=$('otp-input').value.trim(), email=S.otpEmail;
   if(!email){showAuthPage('pg-register');return;}
   if(otp.length!==6){showToast('Enter the complete 6-digit code','error');return;}
   const btn=$('otp-btn'); btn.disabled=true; btn.textContent='Verifying…';
-  try {
+  try{
     const res=await API.call({action:'verifyOTP',email,otp});
-    if(res.success){
-      showToast('✅ Email verified! Awaiting admin approval.','success',7000);
-      $('otp-input').value='';
-      $('login-email').value=email;
-      S.otpEmail=null;
-      showAuthPage('pg-login');
-    } else { showToast(res.message,'error'); }
-  } catch(err){ showToast('Verification failed. Try again.','error'); }
-  finally { btn.disabled=false; btn.textContent='Verify Code'; }
+    if(res.success){ showToast('✅ Email verified! Awaiting admin approval.','success',7000); $('otp-input').value=''; $('login-email').value=email; S.otpEmail=null; showAuthPage('pg-login'); }
+    else showToast(res.message,'error');
+  }catch(err){ showToast('Verification failed. Try again.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Verify Code'; }
+}
+async function resendOTPCode(){
+  const email=S.otpEmail;
+  if(!email){showToast('Email not found. Please register again.','error');return;}
+  try{ const res=await API.call({action:'resendOTP',email}); if(res.success) showToast('📧 New code sent!','success',5000); else showToast(res.message,'error'); }
+  catch(_){ showToast('Failed to resend. Try again.','error'); }
 }
 
-// OTP input — auto-submit when 6 digits entered
+// Auto-submit OTP on 6 digits
 document.addEventListener('DOMContentLoaded',()=>{
   const oi=$('otp-input');
   if(oi) oi.addEventListener('input',()=>{ if(oi.value.length===6) submitOTP(); });
 });
 
-async function resendOTPCode() {
-  const email=S.otpEmail;
-  if(!email){showToast('Email not found. Please register again.','error');return;}
-  try {
-    const res=await API.call({action:'resendOTP',email});
-    if(res.success) showToast('📧 New code sent! Check your email.','success',5000);
-    else showToast(res.message,'error');
-  } catch(err){ showToast('Failed to resend. Try again.','error'); }
+// ═══ THEME ════════════════════════════════════════════════
+function toggleTheme(){
+  const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  LS.set('pt_theme',next);
+  $('theme-btn').textContent=next==='dark'?'☀':'🌙';
 }
 
-// ══ APP INIT ═════════════════════════════════════════════
-async function init() {
+// ═══ LOGOUT ═══════════════════════════════════════════════
+async function doLogout(){
+  try{ await API.auth('logout'); }catch(_){}
+  LS.del('pt_token'); S.user=null; S.punchInTime=null;
+  if(S.clockInt){ clearInterval(S.clockInt); S.clockInt=null; }
+  $('app').style.display='none'; $('app').hidden=true;
+  $('auth').style.display=''; $('auth').hidden=false;
+  showAuthPage('pg-login');
+  showToast('Signed out successfully','info');
+}
+
+// ═══ APP INIT ═════════════════════════════════════════════
+async function init(){
   const theme=LS.get('pt_theme')||'light';
   document.documentElement.setAttribute('data-theme',theme);
-  updateThemeIcon(theme);
+  $('theme-btn').textContent=theme==='dark'?'☀':'🌙';
 
   const token=LS.get('pt_token');
   if(token){
     setLoading(true);
-    try {
+    try{
       const res=await API.call({action:'checkSession',token});
       if(res.valid){ S.user={email:res.email,name:res.name,role:res.role}; loadApp(); return; }
-    } catch(_){}
-    finally{ setLoading(false); }
+    }catch(_){}finally{ setLoading(false); }
     LS.del('pt_token');
   }
-  $('auth').hidden=false;
+  $('auth').style.display=''; $('auth').hidden=false;
   showAuthPage('pg-login');
 }
 
-function loadApp() {
-  $('auth').hidden=true;
+function loadApp(){
+  $('auth').style.display='none'; $('auth').hidden=true;
   $('app').style.display='flex'; $('app').hidden=false;
-  $('bot-nav').style.display='flex';
-  const ini=(S.user.name||'?')[0].toUpperCase();
-  $('sb-ava').textContent=ini;
-  $('sb-name').textContent=S.user.name;
-  $('sb-email').textContent=S.user.email;
-  $('sb-role').textContent=S.user.role==='admin'?'★ Admin':'Team Member';
-  if(S.user.role!=='admin'){
-    document.querySelectorAll('[data-tab="admin"]').forEach(el=>el.style.display='none');
-  }
+  $('nav-ava').textContent=(S.user.name||'?')[0].toUpperCase();
+  $('nav-name').textContent=S.user.name;
+  if(S.user.role!=='admin') $('admin-nav-btn').style.display='none';
   startClock();
   switchTab('dashboard');
 }
 
-// ══ CLOCK ════════════════════════════════════════════════
+// ═══ CLOCK ════════════════════════════════════════════════
 function startClock(){
   if(S.clockInt) clearInterval(S.clockInt);
   const tick=()=>{
-    const now=new Date();
-    const ts=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const now=new Date(), ts=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     const ds=now.toLocaleDateString('en-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    const cd=$('clock-display'), cdt=$('clock-date-txt'), rt=$('record-time-preview');
-    if(cd)  cd.textContent=ts;
+    const cd=$('clock-display'), cdt=$('clock-date-txt'), rp=$('record-time-preview');
+    if(cd) cd.textContent=ts;
     if(cdt) cdt.textContent=ds;
-    if(rt)  rt.textContent=ts;
-    // Elapsed timer for live tap
+    if(rp) rp.textContent=ts;
     if(S.punchInTime){
       const [ph,pm]=S.punchInTime.split(':').map(Number);
-      const start=new Date(); start.setHours(ph,pm,0,0);
-      if(start>now) start.setDate(start.getDate()-1);
-      const secs=Math.max(0,Math.floor((now-start)/1000));
+      const st=new Date(); st.setHours(ph,pm,0,0);
+      if(st>now) st.setDate(st.getDate()-1);
+      const sc=Math.max(0,Math.floor((now-st)/1000));
       const el=$('elapsed-disp');
-      if(el) el.textContent=`${pad(Math.floor(secs/3600))}:${pad(Math.floor(secs%3600/60))}:${pad(secs%60)}`;
+      if(el) el.textContent=`${pad(Math.floor(sc/3600))}:${pad(Math.floor(sc%3600/60))}:${pad(sc%60)}`;
     }
   };
   tick(); S.clockInt=setInterval(tick,1000);
 }
 
-// ══ THEME ════════════════════════════════════════════════
-function toggleTheme(){
-  const curr=document.documentElement.getAttribute('data-theme');
-  const next=curr==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  LS.set('pt_theme',next); updateThemeIcon(next);
-}
-function updateThemeIcon(t){
-  const i=t==='dark'?'☀':'🌙';
-  if($('theme-btn')) $('theme-btn').textContent=i;
-  if($('mob-theme-btn')) $('mob-theme-btn').textContent=i;
-}
-
-// ══ LOGOUT ═══════════════════════════════════════════════
-async function doLogout(){
-  try{ await API.auth('logout'); }catch(_){}
-  LS.del('pt_token'); S.user=null; S.punchInTime=null;
-  if(S.clockInt){ clearInterval(S.clockInt); S.clockInt=null; }
-  $('app').style.display='none'; $('bot-nav').style.display='none';
-  $('auth').hidden=false; showAuthPage('pg-login');
-  showToast('Signed out successfully','info');
-}
-
-// ══ HELPERS ══════════════════════════════════════════════
-function greeting(){ const h=new Date().getHours(); return h<12?'Morning':h<17?'Afternoon':'Evening'; }
-function toHrsMin(m){ if(!m||isNaN(m)) return '—'; const h=Math.floor(m/60),mi=m%60; return h&&mi?`${h}h ${mi}m`:h?`${h}h`:`${mi}m`; }
-function fmtRange(s,e){ const f=d=>new Date(d+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric'}); return `${f(s)} — ${new Date(e+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric',year:'numeric'})}`; }
-function fmtDate(d){ return new Date(d+'T00:00:00').toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'}); }
-
-// ══ DASHBOARD ════════════════════════════════════════════
+// ═══ DASHBOARD ════════════════════════════════════════════
 async function loadDashboard(){
   $('tab-dashboard').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
@@ -784,32 +715,22 @@ function renderDashboard(d){
   const C=326.7, off=C*(1-Math.min(100,d.pct||0)/100);
   const rc=d.pct>=100?'var(--ok)':d.pct>=60?'var(--pri)':'var(--warn)';
   const lm=d.lastMonth||{};
-
   $('tab-dashboard').innerHTML=`
     <div class="page-hdr">
-      <div>
-        <h1 class="page-title">Good ${greeting()}, ${(d.name||'').split(' ')[0]}!</h1>
-        <p class="page-sub">${fmtRange(d.weekStart,d.weekEnd)}</p>
-      </div>
-      ${d.todayPunch&&d.todayPunch.punchIn&&!d.todayPunch.punchOut?
-        `<div class="live-badge"><span class="pulse-dot"></span>Clocked in since ${d.todayPunch.punchIn}</div>`:''
-      }
+      <div><h1 class="page-title">Good ${greeting()}, ${(d.name||'').split(' ')[0]}!</h1><p class="page-sub">${fmtRange(d.weekStart,d.weekEnd)}</p></div>
+      ${d.todayPunch&&d.todayPunch.punchIn&&!d.todayPunch.punchOut?`<div class="live-badge"><span class="pulse-dot"></span>Clocked in since ${d.todayPunch.punchIn}</div>`:''}
     </div>
     <div class="stats-top">
       <div class="ring-card">
         <svg class="progress-ring" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="52" stroke="var(--bdr2)" stroke-width="10" fill="none"/>
-          <circle cx="60" cy="60" r="52" stroke="${rc}" stroke-width="10" fill="none"
-            stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"
-            transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)"/>
+          <circle cx="60" cy="60" r="52" stroke="${rc}" stroke-width="10" fill="none" stroke-linecap="round"
+            stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 60 60)"
+            style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)"/>
           <text x="60" y="57" text-anchor="middle" fill="var(--txt)" font-family="'JetBrains Mono',monospace" font-size="21" font-weight="600">${d.pct}%</text>
           <text x="60" y="73" text-anchor="middle" fill="var(--txt2)" font-size="10" font-weight="500">of target</text>
         </svg>
-        <div class="ring-info">
-          <div class="ring-hours">${d.doneHrs}h <span>/ ${d.targetHrs}h</span></div>
-          <div class="ring-cap">This Week</div>
-          <div style="margin-top:5px;font-size:12px;color:var(--txt2)">${d.workedDays} / ${d.wDaysInWeek} days</div>
-        </div>
+        <div class="ring-info"><div class="ring-hours">${d.doneHrs}h <span>/ ${d.targetHrs}h</span></div><div class="ring-cap">This Week</div><div style="margin-top:4px;font-size:12px;color:var(--txt2)">${d.workedDays}/${d.wDaysInWeek} days</div></div>
       </div>
       <div class="mini-stats">
         <div class="stat-card"><div class="stat-icon si-c">⏳</div><div><div class="stat-val">${d.leftHrs}h</div><div class="stat-lbl">Remaining</div></div></div>
@@ -823,23 +744,14 @@ function renderDashboard(d){
       <div class="week-grid">
         ${(d.weekGrid||[]).map(day=>`
           <div class="day-cell ${day.isToday?'today':''} ${day.isFuture?'future':''} ${!day.punchIn&&!day.isFuture?'absent':''}">
-            <div class="day-name">${day.day}</div>
-            <div class="day-date">${day.date.slice(5)}</div>
-            ${day.punchIn?`
-              <div class="day-in">▶ ${day.punchIn}</div>
-              <div class="day-out${!day.punchOut?' pending':''}">${day.punchOut?'⏹ '+day.punchOut:'● live'}</div>
-              <div class="day-hrs ${day.mins>0?(day.mins>=480?'hrs-ok':'hrs-low'):''}">${day.mins?toHrsMin(day.mins):'—'}</div>
-            `:day.isFuture?`<div class="day-future">—</div>`:`<div class="day-absent">No entry</div>`}
-          </div>
-        `).join('')}
+            <div class="day-name">${day.day}</div><div class="day-date">${day.date.slice(5)}</div>
+            ${day.punchIn?`<div class="day-in">▶ ${day.punchIn}</div><div class="day-out${!day.punchOut?' pending':''}">${day.punchOut?'⏹ '+day.punchOut:'● live'}</div><div class="day-hrs ${day.mins>0?(day.mins>=480?'hrs-ok':'hrs-low'):''}">${day.mins?toHrsMin(day.mins):'—'}</div>`:day.isFuture?`<div class="day-future">—</div>`:`<div class="day-absent">No entry</div>`}
+          </div>`).join('')}
       </div>
     </div>
     <div class="card ${lm.willDeduct?'card-warn':'card-ok'}">
       <div class="lm-header">
-        <div style="display:flex;align-items:center">
-          <span class="lm-icon ${lm.willDeduct?'err':'ok'}">${lm.willDeduct?'⚠':'✓'}</span>
-          <span class="lm-title">Last Month: ${lm.month||'—'}</span>
-        </div>
+        <div style="display:flex;align-items:center"><span class="lm-icon ${lm.willDeduct?'err':'ok'}">${lm.willDeduct?'⚠':'✓'}</span><span class="lm-title">Last Month: ${lm.month||'—'}</span></div>
         ${lm.willDeduct?`<span class="deduction-badge">BDT ${(lm.totalDed||0).toLocaleString()} deduction</span>`:`<span class="ok-badge">No Deduction</span>`}
       </div>
       <div class="lm-stats">
@@ -850,95 +762,55 @@ function renderDashboard(d){
         ${(lm.hourDed||0)>0?`<div><span>Hour deduction</span><strong class="text-err">BDT ${lm.hourDed.toLocaleString()}</strong></div>`:''}
         ${(lm.dedHols||0)>0?`<div><span>Leave deduction (${lm.dedHols}d)</span><strong class="text-err">BDT ${lm.dedHolDed.toLocaleString()}</strong></div>`:''}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
-// ══ PUNCH / TAP PAGE ═════════════════════════════════════
+// ═══ PUNCH / TAP PAGE ════════════════════════════════════
 async function setupPunchPage(){
   setLoading(true);
   try{
-    const [tapRes, punchRes]=await Promise.all([
-      API.auth('getTimeTaps'),
-      API.auth('getTodayPunch'),
-    ]);
-    S.currentTaps=(tapRes.success&&tapRes.taps)||[];
-    renderPunchPage(S.currentTaps, punchRes.success?punchRes.punch:null);
+    const [tR,pR]=await Promise.all([API.auth('getTimeTaps'),API.auth('getTodayPunch')]);
+    const taps=(tR.success&&tR.taps)||[];
+    renderPunchPage(taps,pR.success?pR.punch:null);
   }catch(err){ showToast('Failed to load punch data','error'); }
   finally{ setLoading(false); }
 }
 
-function renderPunchPage(taps, punch){
+function renderPunchPage(taps,punch){
   const today=new Date().toISOString().slice(0,10);
-  const hasTaps=taps&&taps.length>0;
-  const firstTap=hasTaps?taps[0].time:null;
-  const lastTap =hasTaps?taps[taps.length-1].time:null;
-  const isLive  =hasTaps&&taps.length===1; // punched in but not out
-
-  // Set elapsed timer source
-  S.punchInTime = (hasTaps && !punch?.punchOut && firstTap) ? firstTap : null;
-
-  const sessionBarHtml = punch ? `
+  S.punchInTime=(taps.length>0&&punch&&!punch.punchOut)?taps[0].time:null;
+  const sessionBarHtml=punch?`
     <div class="session-bar">
-      <div class="session-stat">
-        <span>In (first tap)</span>
-        <strong class="in-time">${punch.punchIn||'—'}</strong>
-      </div>
+      <div class="session-stat"><span>In (first tap)</span><strong class="in-t">${punch.punchIn||'—'}</strong></div>
       <div class="session-sep">→</div>
-      <div class="session-stat">
-        <span>Out (last tap)</span>
-        <strong class="out-time">${punch.punchOut||'—'}</strong>
-      </div>
+      <div class="session-stat"><span>Out (last tap)</span><strong class="out-t">${punch.punchOut||'—'}</strong></div>
       <div class="session-sep">|</div>
-      <div class="session-stat">
-        <span>Total</span>
-        <strong class="dur-time">${punch.minutes?toHrsMin(punch.minutes):'—'}</strong>
-      </div>
-      ${punch.punchIn&&!punch.punchOut?`
-      <div class="session-stat">
-        <span>Elapsed</span>
-        <strong class="dur-time" id="elapsed-disp">—</strong>
-      </div>`:''}
-    </div>` : '';
-
-  const tapLogHtml = hasTaps ? taps.map((t,i)=>{
-    const isIn  = i===0;
-    const isOut = i===taps.length-1 && taps.length>1;
-    const roleHtml = isIn
-      ? `<span class="tap-role-badge tap-role-in">▶ IN</span>`
-      : isOut
-      ? `<span class="tap-role-badge tap-role-out">⏹ OUT</span>`
-      : `<span class="tap-role-badge tap-role-mid">— mid</span>`;
-    return `<div class="tap-log-item" id="tap-${i}">
-      <div class="tap-seq-badge">${i+1}</div>
-      <div class="tap-time-disp">${t.time}</div>
-      ${roleHtml}
-      <button class="btn-icon danger" onclick="deleteTapEntry('${t.time}')" title="Delete this tap">✕</button>
-    </div>`;
-  }).join('') : `<p class="text-muted" style="font-size:13px">No taps recorded today. Tap the button above when you arrive or leave!</p>`;
-
+      <div class="session-stat"><span>Total</span><strong class="dur-t">${punch.minutes?toHrsMin(punch.minutes):'—'}</strong></div>
+      ${punch.punchIn&&!punch.punchOut?`<div class="session-sep">|</div><div class="session-stat"><span>Elapsed</span><strong class="dur-t" id="elapsed-disp">—</strong></div>`:''}
+    </div>`:'';
+  const tapLogHtml=taps.length?taps.map((t,i)=>{
+    const isIn=i===0, isOut=i===taps.length-1&&taps.length>1;
+    const role=isIn?`<span class="tap-role tap-in">▶ IN</span>`:isOut?`<span class="tap-role tap-out">⏹ OUT</span>`:`<span class="tap-role tap-mid">MID</span>`;
+    return `<div class="tap-log-item"><div class="tap-seq">${i+1}</div><div class="tap-time">${t.time}</div>${role}<button class="btn-icon danger" onclick="deleteTapEntry('${t.time}')">✕</button></div>`;
+  }).join(''):`<p class="text-muted" style="font-size:13px">No taps today. Tap the button when you arrive or leave!</p>`;
+  const tapCount=taps.length;
+  const firstTap=tapCount?taps[0].time:null, lastTap=tapCount?taps[tapCount-1].time:null;
   $('tab-punch').innerHTML=`
     <div class="punch-page">
-      <div class="clock-card">
-        <div class="clock-time" id="clock-display">--:--:--</div>
-        <div class="clock-date-txt" id="clock-date-txt">Loading…</div>
-      </div>
+      <div class="clock-card"><div class="clock-time" id="clock-display">--:--:--</div><div class="clock-date-txt" id="clock-date-txt">Loading…</div></div>
       ${sessionBarHtml}
       <div class="record-wrap">
-        <div class="tap-count-txt" id="tap-count-txt">${hasTaps?`${taps.length} tap${taps.length>1?'s':''} today — first: <strong>${firstTap}</strong>${lastTap&&lastTap!==firstTap?`, last: <strong>${lastTap}</strong>`:''}` : 'No taps recorded today'}</div>
+        <div class="tap-count-txt">${tapCount?`${tapCount} tap${tapCount>1?'s':''} today — IN: <strong>${firstTap}</strong>${lastTap&&lastTap!==firstTap?`  OUT: <strong>${lastTap}</strong>`:'`'}`:'No taps recorded yet'}</div>
         <button class="record-btn" id="record-tap-btn" onclick="doPunchTap()">
           <span class="record-btn-label">📍 RECORD CURRENT TIME</span>
           <span class="record-btn-time" id="record-time-preview">--:--:--</span>
         </button>
-        <div style="font-size:12px;color:var(--txt3);text-align:center">First tap → IN time &nbsp;|&nbsp; Last tap → OUT time</div>
+        <div style="font-size:12px;color:var(--txt3);text-align:center">First tap → IN &nbsp;|&nbsp; Last tap → OUT &nbsp;|&nbsp; Unlimited taps allowed</div>
       </div>
-      <div class="card">
-        <h3 class="card-title">🕐 Today's Tap Log <span style="font-size:12px;font-weight:400;color:var(--txt2)">${hasTaps?`(${taps.length} taps)`:'(empty)'}</span></h3>
-        <div id="tap-log-list">${tapLogHtml}</div>
-      </div>
+      <div class="card"><h3 class="card-title">🕐 Today's Tap Log <span style="font-weight:400;font-size:12px;color:var(--txt2)">${tapCount?`(${tapCount} taps)`:''}</span></h3><div id="tap-log-list">${tapLogHtml}</div></div>
       <div class="card" id="manual-entry-card">
         <h3 class="card-title">✏ Manual Entry &amp; Corrections</h3>
-        <p class="text-muted" style="font-size:13px;margin-bottom:16px">Directly override the IN/OUT times for any date (bypasses tap log).</p>
+        <p class="text-muted" style="font-size:13px;margin-bottom:14px">Directly override IN/OUT for any date (bypasses tap log).</p>
         <div class="manual-form">
           <div class="form-row">
             <div class="form-group"><label>Date</label><input type="date" id="man-date" class="input" value="${today}" max="${today}"></div>
@@ -946,283 +818,340 @@ function renderPunchPage(taps, punch){
             <div class="form-group"><label>Punch Out</label><input type="time" id="man-out" class="input"></div>
           </div>
           <div class="form-group"><label>Notes (optional)</label><input type="text" id="man-notes" class="input" placeholder="e.g. Work from home"></div>
-          <div class="form-actions">
-            <button class="btn btn-primary" onclick="saveManualEntry()">💾 Save Entry</button>
-            <button class="btn btn-ghost" onclick="loadManualDate()">Load Date</button>
-          </div>
+          <div class="form-actions"><button class="btn btn-primary" onclick="saveManualEntry()">💾 Save</button><button class="btn btn-ghost" onclick="loadManualDate()">Load Date</button></div>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
   startClock();
 }
 
 async function doPunchTap(){
   const now=new Date(), time=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
-  const btn=$('record-tap-btn');
-  if(btn){ btn.disabled=true; }
+  const btn=$('record-tap-btn'); if(btn) btn.disabled=true;
   try{
     const res=await API.auth('recordTimeTap',{time});
-    if(res.success){
-      const isFirst=res.totalTaps===1;
-      showToast(
-        isFirst
-          ? `✅ Arrival recorded at ${time} (IN)`
-          : `✅ Time recorded at ${time} (tap #${res.totalTaps})`,
-        'success', 3500
-      );
-      // Animate the new tap in before full reload
-      const tmp=document.createElement('div');
-      tmp.className='tap-log-item tap-anim';
-      tmp.innerHTML=`<div class="tap-seq-badge">${res.totalTaps}</div><div class="tap-time-disp">${time}</div><span class="tap-role-badge tap-role-mid">new</span>`;
-      const list=$('tap-log-list');
-      if(list) list.prepend(tmp);
-      setTimeout(()=>setupPunchPage(), 600);
-    } else { showToast(res.message,'error'); }
-  }catch(err){ showToast('Recording failed. Try again.','error'); }
-  finally{ if(btn) btn.disabled=false; }
+    if(res.success){ showToast(res.totalTaps===1?`✅ Arrival recorded at ${time}`:`✅ Time recorded at ${time} (tap #${res.totalTaps})`,'success',3500); setTimeout(()=>setupPunchPage(),500); }
+    else{ showToast(res.message,'error'); if(btn) btn.disabled=false; }
+  }catch(err){ showToast('Recording failed. Try again.','error'); if(btn) btn.disabled=false; }
 }
-
 async function deleteTapEntry(time){
   if(!confirm(`Remove tap at ${time}?`)) return;
   const today=new Date().toISOString().slice(0,10);
-  try{
-    const res=await API.auth('deleteTap',{time,date:today});
-    if(res.success){ showToast('Tap removed','info'); setupPunchPage(); }
-    else showToast(res.message,'error');
-  }catch(err){ showToast('Delete failed','error'); }
+  const res=await API.auth('deleteTap',{time,date:today});
+  if(res.success){ showToast('Tap removed','info'); setupPunchPage(); } else showToast(res.message,'error');
 }
-
 async function saveManualEntry(){
   const date=$('man-date').value, punchIn=$('man-in').value, punchOut=$('man-out').value, notes=$('man-notes').value;
   if(!date){showToast('Date required','error');return;}
   if(!punchIn){showToast('Punch-in time required','error');return;}
   if(punchOut&&punchOut<=punchIn){showToast('Punch-out must be after punch-in','error');return;}
-  try{
-    const res=await API.auth('updatePunch',{date,punchIn,punchOut,notes});
-    if(res.success){showToast('✅ '+res.message,'success'); if(date===new Date().toISOString().slice(0,10)) setupPunchPage();}
-    else showToast(res.message,'error');
-  }catch(err){ showToast('Save failed','error'); }
+  const res=await API.auth('updatePunch',{date,punchIn,punchOut,notes});
+  if(res.success){ showToast('✅ '+res.message,'success'); if(date===new Date().toISOString().slice(0,10)) setupPunchPage(); }
+  else showToast(res.message,'error');
 }
-
 async function loadManualDate(){
   const date=$('man-date').value;
   if(!date){showToast('Select a date first','error');return;}
-  try{
-    const res=await API.auth('getWeekPunches',{start:date,end:date});
-    if(res.success&&res.punches&&res.punches.length>0){
-      const p=res.punches[0];
-      $('man-in').value=p.punchIn||''; $('man-out').value=p.punchOut||''; $('man-notes').value=p.notes||'';
-      showToast('Existing record loaded','info');
-    } else {
-      $('man-in').value=$('man-out').value=$('man-notes').value='';
-      showToast('No record found — cleared for new entry','info');
-    }
-  }catch(err){}
+  const res=await API.auth('getWeekPunches',{start:date,end:date});
+  if(res.success&&res.punches&&res.punches.length>0){ const p=res.punches[0]; $('man-in').value=p.punchIn||''; $('man-out').value=p.punchOut||''; $('man-notes').value=p.notes||''; showToast('Record loaded','info'); }
+  else{ $('man-in').value=$('man-out').value=$('man-notes').value=''; showToast('No record — cleared for new entry','info'); }
 }
 
-// ══ HISTORY ══════════════════════════════════════════════
+// ═══ SCHEDULE / CLASS ROUTINE ════════════════════════════
+const ALL_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+let _schedResult=null;
+
+async function loadSchedule(){
+  $('tab-schedule').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
+  setLoading(true);
+  try{
+    const [cR,sR]=await Promise.all([API.auth('getClassRoutine'),API.auth('getSettings')]);
+    S.classSlots=(cR.success&&cR.slots)||[];
+    if(sR.success) S.settings=sR.settings;
+    renderScheduleTab();
+  }catch(err){ showToast('Failed to load schedule data','error'); }
+  finally{ setLoading(false); }
+}
+
+function renderScheduleTab(){
+  const cfg=S.settings||{};
+  const hdays=new Set((cfg.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+  $('tab-schedule').innerHTML=`
+    <div class="page-hdr"><div><h1 class="page-title">📚 Class Routine & Schedule Planner</h1><p class="page-sub">Enter your classes — the system suggests optimal work slots to meet your hour targets</p></div></div>
+
+    <div class="card">
+      <h3 class="section-title">Add Class Slot</h3>
+      <div class="sch-add-form">
+        <div class="form-group" style="margin:0"><label>Day</label>
+          <select id="cls-day" class="input">${ALL_DAYS.map(d=>`<option value="${d}" ${hdays.has(d)?'disabled style="color:var(--txt3)"':''}>${d}${hdays.has(d)?' (off)':''}</option>`).join('')}</select>
+        </div>
+        <div class="form-group" style="margin:0"><label>Start</label><input type="time" id="cls-start" class="input"></div>
+        <div class="form-group" style="margin:0"><label>End</label><input type="time" id="cls-end" class="input"></div>
+        <div class="form-group" style="margin:0"><label>Subject / Label</label><input type="text" id="cls-sub" class="input" placeholder="e.g. CSE 3101"></div>
+        <div class="form-group" style="margin:0"><label>&nbsp;</label><button class="btn btn-primary" style="width:100%" onclick="addClassSlot()">+ Add Slot</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="section-title">Your Weekly Class Schedule</h3>
+      <div class="routine-grid" id="routine-grid">${renderRoutineGrid(hdays)}</div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+        <h3 class="section-title" style="margin:0">💼 Suggested Work Schedule</h3>
+        <button class="btn btn-primary" onclick="computeAndRenderSchedule()">⚡ Compute Schedule</button>
+      </div>
+      <div id="sug-result">
+        <div style="text-align:center;padding:32px 0;color:var(--txt3)">
+          <div style="font-size:36px;margin-bottom:10px">🔮</div>
+          <p>Add your class routine above, then click <strong>Compute Schedule</strong> to see your optimal work slots.</p>
+          <p style="margin-top:6px;font-size:12px">Settings used: min ${cfg.minDayHrs||8}h/day · min ${cfg.minWkHrs||40}h/week · target ${cfg.targetHrs||48}h/week</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderRoutineGrid(hdays){
+  return ALL_DAYS.map(day=>{
+    const isHol=hdays.has(day);
+    const slots=S.classSlots.filter(c=>c.day===day).sort((a,b)=>pMin(a.start)-pMin(b.start));
+    return `<div class="rday-card ${isHol?'':''}">
+      <div class="rday-hdr"><span class="rday-name">${day.slice(0,3)}</span>${isHol?'<span class="rday-hol">Off</span>':''}</div>
+      ${slots.length?slots.map(s=>`
+        <div class="class-chip">
+          <span class="class-chip-time">${s.start}–${s.end}</span>
+          <span class="class-chip-sub">${s.subject||'Class'}</span>
+          <button class="btn-icon danger" style="padding:0 3px;font-size:11px" onclick="deleteClassSlot('${day}','${s.start}','${s.end}')">✕</button>
+        </div>`).join(''):`<div class="no-class-txt">${isHol?'—':'No classes'}</div>`}
+    </div>`;
+  }).join('');
+}
+
+async function addClassSlot(){
+  const day=$('cls-day').value, start=$('cls-start').value, end=$('cls-end').value, subject=$('cls-sub').value;
+  if(!start||!end){showToast('Start and end times required','error');return;}
+  if(start>=end){showToast('End must be after start','error');return;}
+  const res=await API.auth('saveClassSlot',{day,start,end,subject});
+  if(res.success){
+    S.classSlots.push({day,start,end,subject});
+    showToast(`Class added for ${day}`,'success');
+    const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+    $('routine-grid').innerHTML=renderRoutineGrid(hdays);
+    $('cls-start').value=$('cls-end').value=$('cls-sub').value='';
+  } else showToast(res.message,'error');
+}
+
+async function deleteClassSlot(day,start,end){
+  if(!confirm(`Remove ${start}–${end} on ${day}?`)) return;
+  const res=await API.auth('deleteClassSlot',{day,start,end});
+  if(res.success){
+    S.classSlots=S.classSlots.filter(c=>!(c.day===day&&c.start===start&&c.end===end));
+    showToast('Slot removed','info');
+    const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+    $('routine-grid').innerHTML=renderRoutineGrid(hdays);
+    if(_schedResult) computeAndRenderSchedule();
+  } else showToast(res.message,'error');
+}
+
+function computeAndRenderSchedule(){
+  const cfg=S.settings||{};
+  const result=computeSchedule(S.classSlots,cfg);
+  _schedResult=result;
+  const totalOk=!result.belowMin&&!result.aboveTarget;
+  const el=$('sug-result');
+
+  const rowsHtml=result.rows.map(r=>{
+    const classDesc=r.cls.length?r.cls.map(c=>`${c.start}–${c.end}${c.subject?' ('+c.subject+')':''}`).join(', '):'No classes';
+    const tlHtml=buildTimeline(r);
+    let slotHtml='';
+    if(r.wMins>0){
+      const slotBadge=r.ok?`<span class="badge badge-ok">${toHrsMin(r.wMins)} ✓</span>`:`<span class="badge badge-warn">${toHrsMin(r.wMins)} ⚠</span>`;
+      slotHtml=`<div class="sug-slot"><span class="sug-slot-time">${r.wStart} → ${r.wEnd}</span><span class="sug-slot-dur">${toHrsMin(r.wMins)}</span>${slotBadge}${r.warn?`<span style="font-size:11px;color:var(--warn)">⚠ ${r.warn}</span>`:''}</div>`;
+    } else {
+      slotHtml=`<div class="sug-slot"><span class="badge badge-err">No free window</span></div>`;
+    }
+    return `<div class="sug-row">
+      <div class="sug-day-name">${r.day}${r.cls.length?`<span class="badge badge-neu" style="font-size:10px">${r.cls.length} class${r.cls.length>1?'es':''}</span>`:''}</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:4px">Classes: ${classDesc}</div>
+      ${tlHtml}
+      <div style="font-size:11px;color:var(--txt3)">Free window: ${r.fStart||'07:00'} – ${r.fEnd||'22:00'} (${toHrsMin(r.fMins||0)} available)</div>
+      ${slotHtml}
+    </div>`;
+  }).join('');
+
+  const statusClass=result.belowMin?'card-warn':result.aboveTarget?'card-warn':'card-ok';
+  const statusMsg=result.belowMin?`⚠ ${toHrsMin(result.minWk-result.total)} short of ${result.minWkHrs}h minimum`:result.aboveTarget?`⚠ ${toHrsMin(result.total-result.tgtWk)} over ${result.tgtWkHrs}h target`:`✓ Meets all requirements`;
+
+  el.innerHTML=`
+    <div style="font-size:12px;color:var(--txt2);margin-bottom:14px">
+      Work window: <strong>07:00 – 22:00</strong> &nbsp;|&nbsp; Min daily: <strong>${cfg.minDayHrs||8}h</strong> &nbsp;|&nbsp; Min weekly: <strong>${cfg.minWkHrs||40}h</strong> &nbsp;|&nbsp; Target: <strong>${cfg.targetHrs||48}h</strong>
+    </div>
+    ${rowsHtml}
+    <div class="sug-total-bar ${statusClass}" style="margin-top:14px">
+      <div><div class="sug-total-hrs">${toHrsMin(result.total)}<span style="font-size:14px;font-weight:400;color:var(--txt2)">/week</span></div><div class="sug-total-meta">Total suggested work hours</div></div>
+      <div style="text-align:right"><div style="font-size:13px;font-weight:600;color:${result.belowMin||result.aboveTarget?'var(--warn)':'var(--ok)'}">${statusMsg}</div><div class="sug-total-meta">Min: ${result.minWkHrs}h &nbsp;|&nbsp; Target: ${result.tgtWkHrs}h</div></div>
+    </div>
+    <div style="margin-top:10px;text-align:right"><button class="btn btn-ghost" onclick="copyScheduleText()" style="font-size:12px">📋 Copy as Text</button></div>`;
+}
+
+function buildTimeline(r){
+  // 07:00 – 22:00 = 900 mins
+  const TSTART=7*60, SPAN=15*60;
+  const tlPct=m=>((m-TSTART)/SPAN*100).toFixed(2)+'%';
+  const tlW  =m=>(m/SPAN*100).toFixed(2)+'%';
+  let segs='';
+  (r.cls||[]).forEach(c=>{
+    const s=pMin(c.start),e=pMin(c.end);
+    if(s>=TSTART&&s<TSTART+SPAN){
+      segs+=`<div class="tl-seg tl-class" style="left:${tlPct(s)};width:${tlW(e-s)}" title="${c.start}–${c.end}${c.subject?' '+c.subject:''}">${c.subject||'Class'}</div>`;
+    }
+  });
+  if(r.wMins>0&&r.wS!==undefined){
+    segs+=`<div class="tl-seg tl-work" style="left:${tlPct(r.wS)};width:${tlW(r.wMins)}" title="Work: ${r.wStart}–${r.wEnd}">Work</div>`;
+  }
+  return `<div class="tl-wrap">${segs}</div><div class="tl-axis"><span>07:00</span><span>10:00</span><span>13:00</span><span>16:00</span><span>19:00</span><span>22:00</span></div>`;
+}
+
+function computeSchedule(classSlots,cfg){
+  const WSTART=7*60, WEND=22*60;
+  const minDay=(cfg.minDayHrs||8)*60, tgtWk=(cfg.targetHrs||48)*60, minWk=(cfg.minWkHrs||40)*60;
+  const hdays=new Set((cfg.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+  const wDays=ALL_DAYS.filter(d=>!hdays.has(d));
+  let rows=[],total=0;
+  for(const day of wDays){
+    const cls=classSlots.filter(c=>c.day===day).sort((a,b)=>pMin(a.start)-pMin(b.start));
+    const free=[]; let cur=WSTART;
+    for(const c of cls){ const s=pMin(c.start),e=pMin(c.end); if(cur<s) free.push({s:cur,e:s,d:s-cur}); cur=Math.max(cur,e); }
+    if(cur<WEND) free.push({s:cur,e:WEND,d:WEND-cur});
+    const lastEnd=cls.length?Math.max(...cls.map(c=>pMin(c.end))):WSTART;
+    let chosen=null;
+    const postFit=free.filter(w=>w.s>=lastEnd&&w.d>=minDay);
+    if(postFit.length) chosen=postFit[0];
+    else{ const fits=free.filter(w=>w.d>=minDay); chosen=fits.length?fits.reduce((a,b)=>b.d>a.d?b:a):free.length?free.reduce((a,b)=>b.d>a.d?b:a):null; }
+    if(!chosen){ rows.push({day,cls,free,chosen:null,wS:null,wE:null,wMins:0,ok:false,fMins:0,fStart:mToT(WSTART),fEnd:mToT(WEND)}); continue; }
+    const wMins=Math.min(chosen.d,minDay), wS=chosen.s, wE=wS+wMins;
+    total+=wMins;
+    rows.push({day,cls,free,chosen,wS,wE,wMins,wStart:mToT(wS),wEnd:mToT(wE),fStart:mToT(chosen.s),fEnd:mToT(chosen.e),fMins:chosen.d,ok:wMins>=minDay,warn:wMins<minDay?`Only ${toHrsMin(wMins)} available`:null});
+  }
+  // Trim if total exceeds target
+  if(total>tgtWk){
+    let excess=total-tgtWk;
+    const sorted=[...rows].filter(r=>r.wMins>0).sort((a,b)=>b.fMins-a.fMins);
+    for(const r of sorted){ if(excess<=0) break; const trim=Math.min(excess,Math.max(0,r.wMins-Math.floor(minDay*0.5))); if(trim>0){r.wMins-=trim;r.wE=r.wS+r.wMins;r.wEnd=mToT(r.wE);total-=trim;excess-=trim;r.ok=r.wMins>=minDay;if(!r.ok)r.warn=`Reduced to ${toHrsMin(r.wMins)} to stay within target`;} }
+  }
+  return{rows,total,totalHrs:toHrsMin(total),minWk,tgtWk,minWkHrs:minWk/60,tgtWkHrs:tgtWk/60,meetsMin:total>=minWk,aboveTarget:total>tgtWk,belowMin:total<minWk};
+}
+
+function copyScheduleText(){
+  if(!_schedResult) return;
+  const lines=['PunchTrack — Suggested Work Schedule','─'.repeat(40)];
+  _schedResult.rows.forEach(r=>{ lines.push(`${r.day.padEnd(12)}: ${r.wMins>0?r.wStart+' → '+r.wEnd+' ('+toHrsMin(r.wMins)+')':`No available window`}`); });
+  lines.push('─'.repeat(40));
+  lines.push(`Total: ${toHrsMin(_schedResult.total)}/week | Min: ${_schedResult.minWkHrs}h | Target: ${_schedResult.tgtWkHrs}h`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Schedule copied to clipboard!','success')).catch(()=>showToast('Copy failed — please copy manually','warn'));
+}
+
+// ═══ HISTORY ══════════════════════════════════════════════
 async function loadHistory(){
   $('tab-history').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try{
-    const res=await API.auth('getHistory',{weeks:8});
-    if(res.success) renderHistory(res.history);
-    else showToast(res.message,'error');
-  }catch(err){ $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load history.</p></div>`; }
+  try{ const res=await API.auth('getHistory',{weeks:8}); if(res.success) renderHistory(res.history); else showToast(res.message,'error'); }
+  catch(err){ $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load history.</p></div>`; }
   finally{ setLoading(false); }
 }
-
 function renderHistory(history){
-  if(!history||!history.length){
-    $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>No history yet. Start recording time to build your record!</p></div>`;
-    return;
-  }
+  if(!history||!history.length){ $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>No history yet.</p></div>`; return; }
   $('tab-history').innerHTML=`
     <div class="page-hdr"><div><h1 class="page-title">Work History</h1><p class="page-sub">Last 8 weeks of attendance</p></div></div>
-    <div class="history-list">
-      ${history.map((wk,i)=>`
-        <div class="week-card ${wk.met?'week-met':'week-miss'}">
-          <div class="week-hdr" onclick="toggleWeek(${i})">
-            <div class="week-left">
-              <span class="badge ${wk.met?'badge-ok':'badge-warn'}">${wk.met?'✓ Met target':'⚠ Below target'}</span>
-              <span class="week-dates">${fmtRange(wk.start,wk.end)}</span>
-            </div>
-            <div class="week-right">
-              <div class="week-hrs">${wk.hrs}h <span class="wk-target">/ ${wk.targetHrs}h</span></div>
-              <div class="wk-bar-out"><div class="wk-bar-in ${wk.met?'bar-ok':'bar-err'}" style="width:${wk.pct}%"></div></div>
-              <span id="chev-${i}" class="week-chev">▼</span>
-            </div>
-          </div>
-          <div class="week-body" id="wk-${i}" hidden>
-            <div class="dt-hdr"><span>Day</span><span>Date</span><span>In</span><span>Out</span><span>Hours</span></div>
-            ${(wk.days||[]).map(day=>`
-              <div class="dt-row ${!day.punchIn?'dt-absent':''}">
-                <span class="dt-day">${day.day}</span>
-                <span>${day.date.slice(5)}</span>
-                <span>${day.punchIn||'—'}</span>
-                <span>${day.punchOut||'—'}</span>
-                <span class="dt-hrs">${day.mins?toHrsMin(day.mins):'—'}</span>
-              </div>
-            `).join('')}
-            <div class="wk-sum">
-              <span>${wk.worked}/${wk.wDays} working days attended</span>
-              <span>${wk.hrs}h of ${wk.targetHrs}h target (${wk.pct}%)</span>
-            </div>
-          </div>
+    <div class="history-list">${history.map((wk,i)=>`
+      <div class="week-card ${wk.met?'wk-met':'wk-miss'}">
+        <div class="week-hdr" onclick="toggleWeek(${i})">
+          <div class="week-left"><span class="badge ${wk.met?'badge-ok':'badge-warn'}">${wk.met?'✓ Met target':'⚠ Below target'}</span><span class="week-dates">${fmtRange(wk.start,wk.end)}</span></div>
+          <div class="week-right"><div class="week-hrs">${wk.hrs}h <span class="wk-target">/ ${wk.targetHrs}h</span></div><div class="wk-bar-out"><div class="wk-bar-in ${wk.met?'bar-ok':'bar-err'}" style="width:${wk.pct}%"></div></div><span id="chev-${i}" class="week-chev">▼</span></div>
         </div>
-      `).join('')}
-    </div>
-  `;
+        <div class="week-body" id="wk-${i}" hidden>
+          <div class="dt-hdr"><span>Day</span><span>Date</span><span>In</span><span>Out</span><span>Hours</span></div>
+          ${(wk.days||[]).map(day=>`<div class="dt-row ${!day.punchIn?'dt-absent':''}"><span class="dt-day">${day.day}</span><span>${day.date.slice(5)}</span><span>${day.punchIn||'—'}</span><span>${day.punchOut||'—'}</span><span class="dt-hrs">${day.mins?toHrsMin(day.mins):'—'}</span></div>`).join('')}
+          <div class="wk-sum"><span>${wk.worked}/${wk.wDays} days attended</span><span>${wk.hrs}h of ${wk.targetHrs}h (${wk.pct}%)</span></div>
+        </div>
+      </div>`).join('')}
+    </div>`;
 }
+function toggleWeek(i){ const d=$(`wk-${i}`),c=$(`chev-${i}`); d.hidden=!d.hidden; c.textContent=d.hidden?'▼':'▲'; }
 
-function toggleWeek(i){
-  const d=$(`wk-${i}`), c=$(`chev-${i}`);
-  d.hidden=!d.hidden; c.textContent=d.hidden?'▼':'▲';
-}
-
-// ══ SETTINGS ═════════════════════════════════════════════
-const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
+// ═══ SETTINGS ═════════════════════════════════════════════
+const WDAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 async function loadSettings(){
   $('tab-settings').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try{
-    const [sR,gR,pR]=await Promise.all([API.auth('getSettings'),API.auth('getGovHols'),API.auth('getPersonalHols')]);
-    if(sR.success){ S.settings=sR.settings; renderSettings(sR.settings,gR.holidays||[],pR.holidays||[]); }
-    else showToast(sR.message,'error');
-  }catch(err){ showToast('Failed to load settings','error'); }
+  try{ const [sR,gR,pR]=await Promise.all([API.auth('getSettings'),API.auth('getGovHols'),API.auth('getPersonalHols')]); if(sR.success){ S.settings=sR.settings; renderSettings(sR.settings,gR.holidays||[],pR.holidays||[]); } else showToast(sR.message,'error'); }
+  catch(err){ showToast('Failed to load settings','error'); }
   finally{ setLoading(false); }
 }
-
-function renderSettings(cfg, govHols, persHols){
-  const chk=(cfg.holidayDays||'').split(',').map(d=>d.trim());
-  const today=new Date().toISOString().slice(0,10);
+function renderSettings(cfg,govHols,persHols){
+  const chk=(cfg.holidayDays||'').split(',').map(d=>d.trim()), today=new Date().toISOString().slice(0,10);
   $('tab-settings').innerHTML=`
     <div class="page-hdr"><h1 class="page-title">Rules & Settings</h1></div>
-    <div class="card">
-      <h3 class="section-title">⏱ Work Schedule</h3>
+    <div class="card"><h3 class="section-title">⏱ Work Schedule</h3>
       <div class="settings-grid">
         <div class="form-group"><label>Target Hours / Week</label><input type="number" id="s-target" class="input" value="${cfg.targetHrs||48}" min="1" max="80" step="0.5"></div>
         <div class="form-group"><label>Min Hours / Day</label><input type="number" id="s-min-day" class="input" value="${cfg.minDayHrs||8}" min="1" max="24" step="0.5"></div>
         <div class="form-group"><label>Min Hours / Week</label><input type="number" id="s-min-wk" class="input" value="${cfg.minWkHrs||40}" min="1" max="80" step="0.5"></div>
-        <div class="form-group"><label>Week Starts On</label><select id="s-week-start" class="input">${DAYS.map(d=>`<option value="${d}"${cfg.weekStart===d?' selected':''}>${d}</option>`).join('')}</select></div>
+        <div class="form-group"><label>Week Starts On</label><select id="s-week-start" class="input">${WDAYS.map(d=>`<option value="${d}"${cfg.weekStart===d?' selected':''}>${d}</option>`).join('')}</select></div>
       </div>
     </div>
-    <div class="card">
-      <h3 class="section-title">💰 Salary & Deduction</h3>
+    <div class="card"><h3 class="section-title">💰 Salary & Deductions</h3>
       <div class="settings-grid">
         <div class="form-group"><label>Monthly Gross Salary (BDT)</label><input type="number" id="s-salary" class="input" value="${cfg.salary||0}" min="0" step="500"></div>
         <div class="form-group"><label>Working Days / Month</label><input type="number" id="s-month-days" class="input" value="${cfg.monthDays||22}" min="18" max="31"></div>
       </div>
-      <p class="hint-text">💡 Deductions are calculated if total hours fall below the minimum at month-end.</p>
+      <p class="hint-text">💡 Deductions apply if total hours fall below the monthly minimum.</p>
     </div>
-    <div class="card">
-      <h3 class="section-title">🗓 Weekly Off Days</h3>
-      <div class="day-checkboxes">
-        ${DAYS.map(d=>`<label class="day-check${chk.includes(d)?' checked':''}"><input type="checkbox" class="hol-day-cb" value="${d}"${chk.includes(d)?' checked':''} onchange="this.closest('label').classList.toggle('checked',this.checked)">${d.slice(0,3)}</label>`).join('')}
-      </div>
+    <div class="card"><h3 class="section-title">🗓 Weekly Off Days</h3>
+      <div class="day-checkboxes">${WDAYS.map(d=>`<label class="day-check${chk.includes(d)?' checked':''}"><input type="checkbox" class="hol-day-cb" value="${d}"${chk.includes(d)?' checked':''} onchange="this.closest('label').classList.toggle('checked',this.checked)">${d.slice(0,3)}</label>`).join('')}</div>
     </div>
-    <div class="card">
-      <h3 class="section-title">🏖 Personal Holidays / Leaves</h3>
-      <div class="add-hol-form">
-        <input type="date" id="ph-date" class="input" max="${today}" style="max-width:180px">
-        <select id="ph-type" class="input" style="max-width:240px"><option value="false">Non-deductible (paid / approved)</option><option value="true">Deductible (unpaid / unapproved)</option></select>
-        <input type="text" id="ph-reason" class="input" placeholder="Reason (optional)">
-        <button class="btn btn-primary" onclick="addPersHol()">Add</button>
-      </div>
-      <div class="hols-list">
-        ${persHols.length?persHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`
-          <div class="hol-item${h.deductible?' hol-ded':''}">
-            <div><strong>${fmtDate(h.date)}</strong><span class="hol-type">${h.deductible?'Deductible':'Approved'}</span>${h.reason?`<span class="hol-reason">${h.reason}</span>`:''}</div>
-            <button class="btn-icon danger" onclick="removePersHol('${h.date}')">✕</button>
-          </div>`).join(''):`<p class="text-muted">No personal holidays recorded.</p>`}
-      </div>
+    <div class="card"><h3 class="section-title">🏖 Personal Leaves</h3>
+      <div class="add-hol-form"><input type="date" id="ph-date" class="input" max="${today}" style="max-width:175px"><select id="ph-type" class="input" style="max-width:230px"><option value="false">Non-deductible (approved/paid)</option><option value="true">Deductible (unpaid/unapproved)</option></select><input type="text" id="ph-reason" class="input" placeholder="Reason"><button class="btn btn-primary" onclick="addPersHol()">Add</button></div>
+      <div class="hols-list">${persHols.length?persHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item${h.deductible?' hol-ded':''}"><div><strong>${fmtDate(h.date)}</strong><span class="hol-type">${h.deductible?'Deductible':'Approved'}</span>${h.reason?`<span class="hol-reason">${h.reason}</span>`:''}</div><button class="btn-icon danger" onclick="removePersHol('${h.date}')">✕</button></div>`).join(''):`<p class="text-muted">No personal holidays recorded.</p>`}</div>
     </div>
-    <div class="card">
-      <h3 class="section-title">🏛 Government Holidays ${S.user.role==='admin'?'<span class="admin-tag">Admin</span>':''}</h3>
-      ${S.user.role==='admin'?`<div class="add-hol-form"><input type="date" id="gh-date" class="input" style="max-width:180px"><input type="text" id="gh-label" class="input" placeholder="Holiday name (e.g. Eid ul-Fitr)"><button class="btn btn-primary" onclick="addGovHol()">Add</button></div>`:''}
-      <div class="hols-list">
-        ${govHols.length?govHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`
-          <div class="hol-item">
-            <div><strong>${fmtDate(h.date)}</strong><span class="hol-reason">${h.label}</span></div>
-            ${S.user.role==='admin'?`<button class="btn-icon danger" onclick="removeGovHol('${h.date}')">✕</button>`:''}
-          </div>`).join(''):`<p class="text-muted">No government holidays on record.</p>`}
-      </div>
+    <div class="card"><h3 class="section-title">🏛 Government Holidays ${S.user?.role==='admin'?'<span class="admin-tag">Admin</span>':''}</h3>
+      ${S.user?.role==='admin'?`<div class="add-hol-form"><input type="date" id="gh-date" class="input" style="max-width:175px"><input type="text" id="gh-label" class="input" placeholder="e.g. Eid ul-Fitr"><button class="btn btn-primary" onclick="addGovHol()">Add</button></div>`:``}
+      <div class="hols-list">${govHols.length?govHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item"><div><strong>${fmtDate(h.date)}</strong><span class="hol-reason">${h.label}</span></div>${S.user?.role==='admin'?`<button class="btn-icon danger" onclick="removeGovHol('${h.date}')">✕</button>`:''}</div>`).join(''):`<p class="text-muted">No government holidays on record.</p>`}</div>
     </div>
-    <div class="save-bar"><button class="btn btn-primary btn-lg" onclick="saveSettings()">💾 Save All Settings</button></div>
-  `;
+    <div class="save-bar"><button class="btn btn-primary btn-lg" onclick="saveSettings()">💾 Save All Settings</button></div>`;
 }
-
-async function saveSettings(){
-  const hd=[...document.querySelectorAll('.hol-day-cb:checked')].map(c=>c.value).join(',');
-  const res=await API.auth('saveSettings',{targetHrs:$('s-target').value,minDayHrs:$('s-min-day').value,minWkHrs:$('s-min-wk').value,weekStart:$('s-week-start').value,salary:$('s-salary').value,monthDays:$('s-month-days').value,holidayDays:hd});
-  if(res.success) showToast('✅ Settings saved!','success'); else showToast(res.message,'error');
-}
-async function addPersHol(){
-  const d=$('ph-date').value,t=$('ph-type').value,r=$('ph-reason').value;
-  if(!d){showToast('Select a date','error');return;}
-  const res=await API.auth('addPersonalHol',{date:d,deductible:t,reason:r});
-  if(res.success){showToast('Holiday added','success');loadSettings();}else showToast(res.message,'error');
-}
+async function saveSettings(){ const hd=[...document.querySelectorAll('.hol-day-cb:checked')].map(c=>c.value).join(','); const res=await API.auth('saveSettings',{targetHrs:$('s-target').value,minDayHrs:$('s-min-day').value,minWkHrs:$('s-min-wk').value,weekStart:$('s-week-start').value,salary:$('s-salary').value,monthDays:$('s-month-days').value,holidayDays:hd}); if(res.success) showToast('✅ Settings saved!','success'); else showToast(res.message,'error'); }
+async function addPersHol(){ const d=$('ph-date').value,t=$('ph-type').value,r=$('ph-reason').value; if(!d){showToast('Select a date','error');return;} const res=await API.auth('addPersonalHol',{date:d,deductible:t,reason:r}); if(res.success){showToast('Holiday added','success');loadSettings();}else showToast(res.message,'error'); }
 async function removePersHol(date){ if(!confirm('Remove this holiday?'))return; const res=await API.auth('removePersonalHol',{date}); if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error'); }
-async function addGovHol(){ const d=$('gh-date').value,l=$('gh-label').value; if(!d){showToast('Date required','error');return;} if(!l){showToast('Enter holiday name','error');return;} const res=await API.auth('addGovHol',{date:d,label:l}); if(res.success){showToast('Added','success');loadSettings();}else showToast(res.message,'error'); }
-async function removeGovHol(date){ if(!confirm('Remove this holiday?'))return; const res=await API.auth('removeGovHol',{date}); if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error'); }
+async function addGovHol(){ const d=$('gh-date').value,l=$('gh-label').value; if(!d||!l){showToast('Date and name required','error');return;} const res=await API.auth('addGovHol',{date:d,label:l}); if(res.success){showToast('Added','success');loadSettings();}else showToast(res.message,'error'); }
+async function removeGovHol(date){ if(!confirm('Remove?'))return; const res=await API.auth('removeGovHol',{date}); if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error'); }
 
-// ══ ADMIN ════════════════════════════════════════════════
+// ═══ ADMIN ════════════════════════════════════════════════
 async function loadAdmin(){
   if(!S.user||S.user.role!=='admin'){$('tab-admin').innerHTML=`<div class="empty-state"><div class="empty-icon">🔒</div><p>Admin access required.</p></div>`;return;}
   $('tab-admin').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try{
-    const [pR,aR]=await Promise.all([API.auth('getPendingUsers'),API.auth('getAllUsers')]);
-    renderAdmin(pR.users||[],aR.users||[]);
-  }catch(err){ showToast('Failed to load admin data','error'); }
+  try{ const [pR,aR]=await Promise.all([API.auth('getPendingUsers'),API.auth('getAllUsers')]); renderAdmin(pR.users||[],aR.users||[]); }
+  catch(err){ showToast('Failed to load admin data','error'); }
   finally{ setLoading(false); }
 }
-
-function renderAdmin(pending, all){
+function renderAdmin(pending,all){
   const sb=s=>{const m={approved:'badge-ok',pending:'badge-warn',rejected:'badge-err'};return `<span class="badge ${m[s]||''}">${s}</span>`;};
   $('tab-admin').innerHTML=`
-    <div class="page-hdr"><div><h1 class="page-title">Admin Panel</h1><p class="page-sub">Manage users and organization settings</p></div></div>
-    <div class="card">
-      <h3 class="card-title">⏳ Pending Approvals ${pending.length?`<span class="badge badge-warn">${pending.length}</span>`:''}</h3>
-      ${pending.length?pending.map(u=>`
-        <div class="approval-row">
-          <div class="user-info">
-            <div class="uava">${(u.name||'?')[0].toUpperCase()}</div>
-            <div>
-              <div class="u-name">${u.name}</div>
-              <div class="u-email">${u.email}</div>
-              ${u.phone?`<div style="font-size:12px;color:var(--txt2)">📞 ${u.phone}</div>`:''}
-              <div class="u-meta">Applied: ${u.date||'—'} | Email: ${u.verified==='true'?'✅ Verified':'⚠ Not verified'}</div>
-            </div>
-          </div>
-          <div class="approval-btns">
-            <button class="btn btn-ok" onclick="approveUser('${u.email}','${u.name.replace(/'/g,"\\'")}')">✓ Approve</button>
-            <button class="btn btn-err" onclick="rejectUser('${u.email}')">✕ Reject</button>
-          </div>
-        </div>`).join(''):`<p class="text-muted">No pending approvals. All clear! ✅</p>`}
+    <div class="page-hdr"><div><h1 class="page-title">Admin Panel</h1><p class="page-sub">Manage users and organisation settings</p></div></div>
+    <div class="card"><h3 class="card-title">⏳ Pending Approvals ${pending.length?`<span class="badge badge-warn">${pending.length}</span>`:''}</h3>
+      ${pending.length?pending.map(u=>`<div class="approval-row"><div class="user-info"><div class="uava lg">${(u.name||'?')[0].toUpperCase()}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div>${u.phone?`<div style="font-size:12px;color:var(--txt2)">📞 ${u.phone}</div>`:''}<div class="u-meta">Applied: ${u.date||'—'} | Email: ${u.verified==='true'?'✅ Verified':'⚠ Not verified'}</div></div></div><div class="approval-btns"><button class="btn btn-ok" onclick="approveUser('${u.email}','${u.name.replace(/'/g,"\\'")}')">✓ Approve</button><button class="btn btn-err" onclick="rejectUser('${u.email}')">✕ Reject</button></div></div>`).join(''):`<p class="text-muted">No pending approvals. All clear! ✅</p>`}
     </div>
-    <div class="card">
-      <h3 class="card-title">👥 All Users <span style="color:var(--txt2);font-weight:400">(${all.length})</span></h3>
+    <div class="card"><h3 class="card-title">👥 All Users <span style="color:var(--txt2);font-weight:400">(${all.length})</span></h3>
       <div class="ut-hdr"><span>Name</span><span>Email</span><span>Role</span><span>Status</span><span>Joined</span></div>
-      ${all.map(u=>`
-        <div class="ut-row">
-          <span class="ut-name"><div class="uava sm">${(u.name||'?')[0].toUpperCase()}</div>${u.name}</span>
-          <span class="ut-email">${u.email}</span>
-          <span><span class="badge ${u.role==='admin'?'badge-pri':''}">${u.role}</span></span>
-          <span>${sb(u.status)}</span>
-          <span style="font-size:12px;color:var(--txt2)">${u.date||'—'}</span>
-        </div>`).join('')}
-    </div>
-  `;
+      ${all.map(u=>`<div class="ut-row"><span class="ut-name"><div class="uava sm">${(u.name||'?')[0].toUpperCase()}</div>${u.name}</span><span class="ut-email">${u.email}</span><span><span class="badge ${u.role==='admin'?'badge-pri':''}">${u.role}</span></span><span>${sb(u.status)}</span><span style="font-size:12px;color:var(--txt2)">${u.date||'—'}</span></div>`).join('')}
+    </div>`;
 }
-
 async function approveUser(email,name){ if(!confirm(`Approve ${name}?`))return; const res=await API.auth('approveUser',{userEmail:email}); if(res.success){showToast('✅ '+res.message,'success');loadAdmin();}else showToast(res.message,'error'); }
 async function rejectUser(email){ if(!confirm('Reject this registration?'))return; const res=await API.auth('rejectUser',{userEmail:email}); if(res.success){showToast('User rejected.','info');loadAdmin();}else showToast(res.message,'error'); }
 
-// ══ START ════════════════════════════════════════════════
+// ═══ START ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
