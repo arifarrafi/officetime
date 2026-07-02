@@ -2,74 +2,63 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1E1B4B">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>PunchTrack — Office Time Manager</title>
 <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1wt8veQjrYCkcVE3B4gY2st1htvEl69c1&sz=w64">
 <link rel="apple-touch-icon" href="https://drive.google.com/thumbnail?id=1wt8veQjrYCkcVE3B4gY2st1htvEl69c1&sz=w64">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ══ DESIGN TOKENS ══════════════════════════════════════ */
-:root {
-  --pri:#4F46E5; --pri-l:#6366F1; --pri-d:#3730A3; --pri-xd:#2E27A4;
-  --acc:#06B6D4; --ok:#059669; --ok-l:#10B981; --warn:#D97706; --warn-l:#F59E0B;
-  --err:#DC2626; --err-l:#EF4444;
-  --bg:#EEF2FF; --surf:#FFFFFF; --surf2:#F5F7FF; --surf3:#EDF0FF;
-  --bdr:#DDE3F5; --bdr2:#C7D2FE;
-  --txt:#0F172A; --txt2:#475569; --txt3:#94A3B8;
-  --nav-bg:#1E1B4B; --nav-h:54px;
-  --r:14px; --r-sm:9px; --r-lg:18px;
-  --shadow:0 1px 3px rgba(67,56,202,.07),0 4px 14px rgba(67,56,202,.07);
-  --shadow-md:0 4px 12px rgba(67,56,202,.12),0 10px 28px rgba(67,56,202,.09);
-  --shadow-lg:0 8px 24px rgba(67,56,202,.15),0 20px 48px rgba(67,56,202,.10);
-  --t:.17s ease;
-  --font-mono:'JetBrains Mono',monospace;
+/* ═══ Variables ══════════════════════════════════════════ */
+:root{
+  --pri:#4338CA;--pri-l:#6366F1;--pri-d:#3730A3;
+  --acc:#06B6D4;--ok:#10B981;--warn:#F59E0B;--err:#EF4444;
+  --bg:#EEF2FF;--surf:#FFFFFF;--surf2:#F5F7FF;
+  --bdr:#DDE3F5;--bdr2:#C7D2FE;
+  --txt:#0F172A;--txt2:#475569;--txt3:#94A3B8;
+  --nav-bg:#1E1B4B;--nav-h:56px;
+  --r:12px;--r-sm:8px;--r-lg:16px;
+  --shadow:0 1px 4px rgba(67,56,202,.08),0 4px 16px rgba(67,56,202,.06);
+  --shadow-md:0 4px 12px rgba(67,56,202,.12),0 8px 32px rgba(67,56,202,.08);
+  --t:.18s ease;
 }
-[data-theme=dark] {
-  --bg:#07091A; --surf:#0D1225; --surf2:#121A30; --surf3:#172038;
-  --bdr:#1C2A45; --bdr2:#243354;
-  --txt:#E8EEFF; --txt2:#8BA3C4; --txt3:#3D5275;
-  --shadow:0 1px 4px rgba(0,0,0,.45),0 4px 18px rgba(0,0,0,.35);
-  --shadow-md:0 4px 14px rgba(0,0,0,.45),0 10px 32px rgba(0,0,0,.35);
-  --shadow-lg:0 8px 28px rgba(0,0,0,.5),0 20px 52px rgba(0,0,0,.4);
+[data-theme=dark]{
+  --bg:#060C1A;--surf:#0F1629;--surf2:#131E35;
+  --bdr:#1E2D4A;--bdr2:#243354;
+  --txt:#F1F5F9;--txt2:#94A3B8;--txt3:#475569;
+  --nav-bg:#080E1C;
+  --shadow:0 1px 4px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --shadow-md:0 4px 12px rgba(0,0,0,.4),0 8px 32px rgba(0,0,0,.3);
 }
 [hidden]{display:none!important}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.55;min-height:100vh;transition:background var(--t),color var(--t);-webkit-tap-highlight-color:transparent}
 button{cursor:pointer;font-family:inherit;border:none;outline:none}
-input,select,textarea{font-family:inherit;outline:none}
+input,select{font-family:inherit;outline:none}
 ::selection{background:var(--pri-l);color:#fff}
-img{max-width:100%}
 
-/* ══ LOADER / TOAST ════════════════════════════════════ */
-#global-loader{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:linear-gradient(90deg,var(--pri),var(--acc),var(--ok-l));animation:lb 1.2s ease infinite}
+/* ── Loader / Toast ─────────────────────────────── */
+#global-loader{position:fixed;top:0;left:0;right:0;z-index:9999;height:3px;background:linear-gradient(90deg,var(--pri),var(--acc));animation:lb 1.1s ease infinite}
 @keyframes lb{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 #toasts{position:fixed;bottom:20px;right:20px;z-index:9998;display:flex;flex-direction:column;gap:8px;max-width:340px}
-.toast{padding:12px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:500;box-shadow:var(--shadow-md);transform:translateX(120%);transition:transform .3s ease;display:flex;align-items:flex-start;gap:10px}
+.toast{padding:12px 16px;border-radius:var(--r-sm);font-size:13px;font-weight:500;box-shadow:var(--shadow-md);transform:translateX(120%);transition:transform .3s ease}
 .toast.show{transform:translateX(0)}
-.toast-icon{font-size:15px;flex-shrink:0;margin-top:1px}
-.toast-info{background:var(--surf);color:var(--txt);border-left:3px solid var(--pri)}
-.toast-success{background:#ECFDF5;color:#065F46;border-left:3px solid var(--ok-l)}
-.toast-error{background:#FEF2F2;color:#991B1B;border-left:3px solid var(--err-l)}
-.toast-warn{background:#FFFBEB;color:#92400E;border-left:3px solid var(--warn-l)}
-[data-theme=dark] .toast-info{background:var(--surf2)}
+.toast-info{background:var(--surf);color:var(--txt);border-left:4px solid var(--pri)}
+.toast-success{background:#ECFDF5;color:#065F46;border-left:4px solid var(--ok)}
+.toast-error{background:#FEF2F2;color:#991B1B;border-left:4px solid var(--err)}
+.toast-warn{background:#FFFBEB;color:#92400E;border-left:4px solid var(--warn)}
 [data-theme=dark] .toast-success{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .toast-error{background:#2D0E0E;color:#FCA5A5}
 [data-theme=dark] .toast-warn{background:#2D1C00;color:#FCD34D}
 
-/* ══ AUTH ═══════════════════════════════════════════════ */
+/* ── Auth ─────────────────────────────────────── */
 #auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
-  background:linear-gradient(150deg,#1E1B4B 0%,#2E2B72 40%,#0C5B6F 100%)}
-.auth-card{background:var(--surf);border-radius:var(--r-lg);padding:38px;width:100%;max-width:410px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  background:linear-gradient(135deg,#1E1B4B 0%,#312E81 45%,#0E7490 100%)}
+.auth-card{background:var(--surf);border-radius:var(--r-lg);padding:38px;width:100%;max-width:410px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
 .auth-brand{text-align:center;margin-bottom:26px}
-.auth-logo{width:52px;height:52px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px;box-shadow:0 6px 20px rgba(79,70,229,.35)}
-.auth-brand h1{font-size:22px;font-weight:800;color:var(--txt)}
+.auth-logo{width:50px;height:50px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:25px;margin:0 auto 10px}
+.auth-brand h1{font-size:21px;font-weight:800;color:var(--txt)}
 .auth-brand p{color:var(--txt2);font-size:12.5px;margin-top:3px}
 .auth-title{font-size:17px;font-weight:700;margin-bottom:5px}
 .auth-sub{color:var(--txt2);font-size:12.5px;margin-bottom:18px}
@@ -78,247 +67,226 @@ img{max-width:100%}
 .pg-msg{text-align:center;padding:14px 0}
 .pg-msg .big-icon{font-size:46px;margin-bottom:10px}
 .otp-wrap{margin:18px 0}
-.otp-input{width:100%;font-family:var(--font-mono);font-size:34px;font-weight:700;text-align:center;letter-spacing:16px;padding:13px 10px 13px 26px;border:2px solid var(--bdr);border-radius:12px;background:var(--surf2);color:var(--pri);transition:border-color var(--t)}
+.otp-input{width:100%;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;text-align:center;letter-spacing:16px;padding:13px 10px 13px 26px;border:2px solid var(--bdr);border-radius:12px;background:var(--surf2);color:var(--pri);transition:border-color var(--t)}
 .otp-input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
 .otp-hint{font-size:11.5px;color:var(--txt3);text-align:center;margin-top:6px}
 
-/* ══ FORM BASE ══════════════════════════════════════════ */
+/* ── Forms / Buttons ─────────────────────────────── */
 .form-group{margin-bottom:14px}
 .form-group label{display:block;font-size:10.5px;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
 .input{width:100%;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:var(--r-sm);background:var(--surf2);color:var(--txt);font-size:13.5px;transition:border-color var(--t),box-shadow var(--t)}
-.input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(79,70,229,.14)}
-.input:disabled{opacity:.5;cursor:not-allowed}
+.input:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
 select.input{cursor:pointer}
-.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:11px}
 .hint-text{font-size:11.5px;color:var(--txt3);margin-top:7px;line-height:1.5}
-
-/* ══ BUTTONS ════════════════════════════════════════════ */
-.btn{padding:8px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:600;transition:all var(--t);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;line-height:1.4}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
-.btn:active:not(:disabled){transform:scale(.97)}
-.btn-primary{background:var(--pri);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,.3)}
-.btn-primary:hover:not(:disabled){background:var(--pri-d);box-shadow:0 4px 14px rgba(79,70,229,.4);transform:translateY(-1px)}
+.btn{padding:8px 17px;border-radius:var(--r-sm);font-size:13px;font-weight:600;transition:all var(--t);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--pri);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--pri-d);transform:translateY(-1px);box-shadow:0 4px 12px rgba(67,56,202,.3)}
 .btn-ghost{background:transparent;color:var(--txt2);border:1.5px solid var(--bdr)}
-.btn-ghost:hover:not(:disabled){background:var(--surf2);border-color:var(--bdr2);color:var(--txt)}
+.btn-ghost:hover{background:var(--surf2);border-color:var(--bdr2)}
 .btn-ok{background:#ECFDF5;color:#065F46;border:1.5px solid #A7F3D0}
 .btn-ok:hover{background:#D1FAE5}
 .btn-err{background:#FEF2F2;color:#991B1B;border:1.5px solid #FCA5A5}
 .btn-err:hover{background:#FEE2E2}
 .btn-full{width:100%;justify-content:center;padding:11px}
 .btn-lg{padding:11px 26px;font-size:14px;border-radius:10px}
-.btn-icon{background:none;border:none;padding:5px 7px;border-radius:7px;font-size:12px;color:var(--txt3);transition:all var(--t);display:inline-flex;align-items:center;gap:4px}
-.btn-icon:hover{background:var(--surf2);color:var(--txt)}
+.btn-icon{background:none;border:none;padding:4px 7px;border-radius:6px;font-size:12px;color:var(--txt3);transition:all var(--t)}
+.btn-icon:hover{background:var(--surf2)}
 .btn-icon.danger:hover{background:#FEF2F2;color:var(--err)}
 [data-theme=dark] .btn-ok{background:#022C22;color:#6EE7B7;border-color:#065F46}
 [data-theme=dark] .btn-err{background:#2D0E0E;color:#FCA5A5;border-color:#991B1B}
 
-/* ══ TOP NAV ════════════════════════════════════════════ */
-#topnav{height:var(--nav-h);background:var(--nav-bg);display:flex;align-items:center;padding:0 14px;gap:5px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+/* ── TOP NAVBAR — single unified navigation ────── */
+#topnav{
+  height:var(--nav-h);background:var(--nav-bg);
+  display:flex;align-items:center;padding:0 14px;gap:6px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 16px rgba(0,0,0,.28);
+}
 .tnav-brand{display:flex;align-items:center;gap:8px;color:#fff;font-size:15px;font-weight:800;white-space:nowrap;flex-shrink:0;text-decoration:none}
-.tnav-logo{width:29px;height:29px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.tnav-logo{width:28px;height:28px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .tnav-links{display:flex;align-items:center;gap:1px;flex:1;justify-content:center;padding:0 6px}
-.tnav-links .nav-item{padding:6px 10px;border-radius:7px;color:rgba(255,255,255,.58);font-size:12px;font-weight:500;background:none;border:none;cursor:pointer;white-space:nowrap;transition:all var(--t)}
+.tnav-links .nav-item{padding:6px 10px;border-radius:var(--r-sm);color:rgba(255,255,255,.62);font-size:12px;font-weight:500;background:none;border:none;cursor:pointer;white-space:nowrap;transition:all var(--t)}
 .tnav-links .nav-item:hover{background:rgba(255,255,255,.09);color:#fff}
-.tnav-links .nav-item.active{background:rgba(255,255,255,.15);color:#fff;font-weight:700}
+.tnav-links .nav-item.active{background:rgba(255,255,255,.16);color:#fff;font-weight:600}
 .tnav-right{display:flex;align-items:center;gap:5px;flex-shrink:0}
-.tnav-user{display:flex;align-items:center;gap:6px;padding:4px 9px;border-radius:7px;background:rgba(255,255,255,.08)}
-.tnav-uname{color:rgba(255,255,255,.82);font-size:12px;font-weight:500;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tnav-user{display:flex;align-items:center;gap:6px;padding:4px 9px;border-radius:var(--r-sm);background:rgba(255,255,255,.08)}
+.tnav-uname{color:rgba(255,255,255,.85);font-size:12px;font-weight:500;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tnav-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.09);border:none;color:#fff;font-size:14px;cursor:pointer;transition:background var(--t);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .tnav-btn:hover{background:rgba(255,255,255,.18)}
 .tnav-hamburger{display:none}
 .uava{width:26px;height:26px;background:linear-gradient(135deg,var(--pri-l),var(--acc));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
-.uava.sm{width:22px;height:22px;font-size:10px}
-.uava.lg{width:36px;height:36px;font-size:14px}
-/* ══ CONTENT ════════════════════════════════════════════ */
+.uava.sm{width:21px;height:21px;font-size:9.5px}
+.uava.lg{width:34px;height:34px;font-size:13px}
+
+@media(max-width:900px){
+  .tnav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--nav-bg);flex-direction:column;align-items:stretch;padding:8px 14px 16px;z-index:99;gap:3px;box-shadow:0 8px 24px rgba(0,0,0,.32);border-top:1px solid rgba(255,255,255,.07)}
+  .tnav-links.open{display:flex}
+  .tnav-links .nav-item{padding:10px 14px;font-size:13.5px;border-radius:var(--r-sm)}
+  .tnav-hamburger{display:flex}
+  .tnav-uname{display:none}
+}
+
+/* ── Content ─────────────────────────────────────── */
 #app{min-height:100vh;display:flex;flex-direction:column}
 #content{flex:1;padding:20px;max-width:1080px;margin:0 auto;width:100%}
 .tab-content[hidden]{display:none!important}
+@media(max-width:768px){#content{padding:14px}}
 
-/* ══ CARDS / BADGES ═════════════════════════════════════ */
+/* ── Cards / Badges ──────────────────────────────── */
 .card{background:var(--surf);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);border:1px solid var(--bdr);margin-bottom:16px;transition:background var(--t),border-color var(--t)}
-.card-title{font-size:13.5px;font-weight:700;margin-bottom:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--txt)}
-.section-title{font-size:14px;font-weight:700;margin-bottom:13px;color:var(--txt)}
+.card-title{font-size:13.5px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.section-title{font-size:14.5px;font-weight:700;margin-bottom:13px}
 .page-hdr{margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.page-title{font-size:21px;font-weight:800;line-height:1.2;color:var(--txt)}
+.page-title{font-size:20px;font-weight:800;line-height:1.2}
 .page-sub{font-size:12.5px;color:var(--txt2);margin-top:3px}
-.badge{padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;display:inline-block}
+.badge{padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600}
 .badge-ok{background:#D1FAE5;color:#065F46}
 .badge-err{background:#FEE2E2;color:#991B1B}
 .badge-warn{background:#FEF3C7;color:#92400E}
 .badge-pri{background:#E0E7FF;color:#3730A3}
 .badge-neu{background:var(--surf2);color:var(--txt2);border:1px solid var(--bdr)}
-.badge-acc{background:#CFFAFE;color:#0E7490}
 [data-theme=dark] .badge-ok{background:#022C22;color:#6EE7B7}
 [data-theme=dark] .badge-err{background:#2D0E0E;color:#FCA5A5}
 [data-theme=dark] .badge-warn{background:#2D1C00;color:#FCD34D}
 [data-theme=dark] .badge-pri{background:#1E1B4B;color:#A5B4FC}
-[data-theme=dark] .badge-acc{background:#083344;color:#67E8F9}
-.admin-tag{font-size:9.5px;font-weight:600;background:var(--pri);color:#fff;padding:2px 7px;border-radius:10px;vertical-align:middle;margin-left:5px}
-.text-muted{color:var(--txt2)} .text-err{color:var(--err)} .text-ok{color:var(--ok-l)} .text-warn{color:var(--warn-l)}
-.loading-ph{display:flex;align-items:center;justify-content:center;min-height:220px}
-.spinner{width:30px;height:30px;border:3px solid var(--bdr2);border-top-color:var(--pri);border-radius:50%;animation:spin .65s linear infinite}
-.spinner.sm{width:18px;height:18px;border-width:2px}
+.admin-tag{font-size:9.5px;font-weight:600;background:var(--pri);color:#fff;padding:2px 7px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.text-muted{color:var(--txt2)}
+.text-err{color:var(--err)}
+.loading-ph{display:flex;align-items:center;justify-content:center;min-height:240px}
+.spinner{width:32px;height:32px;border:3px solid var(--bdr2);border-top-color:var(--pri);border-radius:50%;animation:spin .65s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:48px 20px;color:var(--txt3)}
-.empty-icon{font-size:40px;margin-bottom:10px;opacity:.5}
-.card-ok{border-left:4px solid var(--ok-l)}
-.card-warn{border-left:4px solid var(--warn-l)}
-.card-err{border-left:4px solid var(--err-l)}
-.card-pri{border-left:4px solid var(--pri)}
-.divider{border:none;border-top:1px solid var(--bdr);margin:14px 0}
+.empty-state{text-align:center;padding:50px 20px;color:var(--txt3)}
+.empty-icon{font-size:42px;margin-bottom:10px;opacity:.55}
 
-/* ══ PUNCH PAGE ═════════════════════════════════════════ */
+/* ── HOME / PUNCH PAGE (sleek hero) ──────────────── */
 .punch-page{max-width:600px;margin:0 auto}
-.hero-clock{background:linear-gradient(150deg,#1E1B4B 0%,#2E2B72 50%,#0C5B6F 100%);border-radius:20px;padding:28px 24px;text-align:center;margin-bottom:16px;box-shadow:0 12px 36px rgba(30,27,75,.3);position:relative;overflow:hidden}
-.hero-clock::after{content:'';position:absolute;top:-40%;right:-10%;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);border-radius:50%}
-.hero-time{font-family:var(--font-mono);font-size:46px;font-weight:600;color:#fff;letter-spacing:.05em;line-height:1;position:relative;z-index:1}
-.hero-date{font-size:12.5px;color:rgba(255,255,255,.58);margin-top:6px;position:relative;z-index:1}
+.hero-clock{background:linear-gradient(150deg,var(--nav-bg) 0%,#2E2A6B 55%,#0E7490 100%);border-radius:22px;padding:30px 24px;text-align:center;margin-bottom:18px;box-shadow:0 12px 36px rgba(30,27,75,.32);position:relative;overflow:hidden}
+.hero-clock::before{content:'';position:absolute;top:-40%;right:-15%;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);border-radius:50%}
+.hero-time{font-family:'JetBrains Mono',monospace;font-size:46px;font-weight:600;color:#fff;letter-spacing:.05em;line-height:1;position:relative}
+.hero-date{font-size:12.5px;color:rgba(255,255,255,.62);margin-top:6px;position:relative}
+
 .session-bar{background:var(--surf);border-radius:var(--r);padding:13px 18px;margin-bottom:16px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:8px}
-.session-stat{display:flex;flex-direction:column;gap:2px;text-align:center;min-width:60px}
+.session-stat{display:flex;flex-direction:column;gap:2px;text-align:center;min-width:64px}
 .session-stat span{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);font-weight:700}
-.session-stat strong{font-family:var(--font-mono);font-size:17px;font-weight:600}
-.in-t{color:var(--ok-l)!important} .out-t{color:var(--err-l)!important} .dur-t{color:var(--pri-l)!important}
-.session-sep{font-size:16px;color:var(--bdr2)}
-.record-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
-.record-btn{background:linear-gradient(135deg,var(--pri) 0%,var(--pri-l) 55%,var(--acc) 130%);color:#fff;border:none;border-radius:50%;width:168px;height:168px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;position:relative;box-shadow:0 0 0 0 rgba(99,102,241,.5),0 14px 34px rgba(67,56,202,.38);transition:transform .15s ease,box-shadow .25s ease;animation:rpulse 2.8s ease-in-out infinite}
-.record-btn:active{transform:scale(.94)}
-.record-btn:disabled{animation:none;opacity:.65}
-@keyframes rpulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.45),0 14px 34px rgba(67,56,202,.38)}50%{box-shadow:0 0 0 18px rgba(99,102,241,0),0 14px 34px rgba(67,56,202,.38)}}
-.record-btn-icon{font-size:28px;line-height:1}
-.record-btn-label{font-size:9.5px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;opacity:.85}
-.record-btn-time{font-family:var(--font-mono);font-size:24px;font-weight:700;letter-spacing:.04em;line-height:1.1}
+.session-stat strong{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:600;color:var(--txt)}
+.in-t{color:var(--ok)!important}.out-t{color:var(--err)!important}.dur-t{color:var(--pri)!important}
+.session-sep{font-size:18px;color:var(--bdr2)}
+
+/* Hero record button — animated, the centerpiece */
+.record-wrap{display:flex;flex-direction:column;align-items:center;gap:11px;margin-bottom:20px}
+.record-btn{
+  background:linear-gradient(135deg,var(--pri) 0%,var(--pri-l) 55%,var(--acc) 130%);
+  color:#fff;border:none;border-radius:50%;
+  width:172px;height:172px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  cursor:pointer;position:relative;
+  box-shadow:0 0 0 0 rgba(99,102,241,.5), 0 14px 34px rgba(67,56,202,.38);
+  transition:transform .15s ease, box-shadow .25s ease;
+  animation:rpulse 2.6s ease-in-out infinite;
+}
+.record-btn:active{transform:scale(.95)}
+.record-btn:disabled{animation:none;opacity:.7}
+@keyframes rpulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.45), 0 14px 34px rgba(67,56,202,.38)}
+  50%{box-shadow:0 0 0 16px rgba(99,102,241,0), 0 14px 34px rgba(67,56,202,.38)}
+}
+.record-btn-icon{font-size:30px;line-height:1}
+.record-btn-label{font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;opacity:.88}
+.record-btn-time{font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;letter-spacing:.04em;line-height:1.1}
 .tap-count-txt{font-size:12px;color:var(--txt2);text-align:center}
 .tap-count-txt strong{color:var(--txt)}
 .record-sub-hint{font-size:11px;color:var(--txt3);text-align:center}
-.tap-log-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:9px;background:var(--surf2);margin-bottom:5px;border:1px solid var(--bdr);transition:all var(--t)}
-.tap-seq{width:22px;height:22px;border-radius:50%;background:var(--bdr2);color:var(--txt2);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.tap-time{font-family:var(--font-mono);font-size:17px;font-weight:600;flex:1}
+
+/* Tap log */
+.tap-log-item{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:8px;background:var(--surf2);margin-bottom:5px;border:1px solid var(--bdr);transition:all var(--t)}
+.tap-seq{width:20px;height:20px;border-radius:50%;background:var(--bdr2);color:var(--txt2);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tap-time{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;flex:1}
 .tap-role{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px}
-.tap-in{background:#D1FAE5;color:#065F46} .tap-out{background:#FEE2E2;color:#991B1B} .tap-mid{background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr)}
-[data-theme=dark] .tap-in{background:#022C22;color:#6EE7B7} [data-theme=dark] .tap-out{background:#2D0E0E;color:#FCA5A5}
+.tap-in{background:#D1FAE5;color:#065F46}
+.tap-out{background:#FEE2E2;color:#991B1B}
+.tap-mid{background:var(--surf2);color:var(--txt3);border:1px solid var(--bdr)}
+[data-theme=dark] .tap-in{background:#022C22;color:#6EE7B7}
+[data-theme=dark] .tap-out{background:#2D0E0E;color:#FCA5A5}
+
+/* Collapsible manual entry */
 .collapse-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
 .collapse-chev{font-size:11px;color:var(--txt3);transition:transform var(--t)}
 .collapse-chev.open{transform:rotate(180deg)}
-.collapse-body{overflow:hidden;max-height:0;transition:max-height .32s ease}
-.collapse-body.open{max-height:1200px}
+.collapse-body{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.collapse-body.open{max-height:600px}
 .manual-form{display:flex;flex-direction:column;gap:10px;padding-top:14px}
 .form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
-/* Punch history log table */
-.plog-table{width:100%;border-collapse:collapse;font-size:12.5px}
-.plog-table th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--txt2);padding:6px 8px;background:var(--surf2);text-align:left}
-.plog-table th:first-child{border-radius:8px 0 0 8px} .plog-table th:last-child{border-radius:0 8px 8px 0}
-.plog-table td{padding:8px 8px;border-bottom:1px solid var(--bdr);color:var(--txt);vertical-align:middle}
-.plog-table tr:last-child td{border-bottom:none}
-.plog-table tr:hover td{background:var(--surf2)}
-.plog-in{color:var(--ok-l);font-family:var(--font-mono);font-weight:600}
-.plog-out{color:var(--txt2);font-family:var(--font-mono);font-weight:600}
-.plog-hrs{color:var(--pri);font-family:var(--font-mono);font-weight:700}
-.plog-absent{color:var(--txt3);font-style:italic}
 
-/* ══ DASHBOARD ══════════════════════════════════════════ */
-.stats-top{display:grid;grid-template-columns:190px 1fr;gap:14px;margin-bottom:14px}
+/* ── Dashboard ─────────────────────────────────── */
+.stats-top{display:grid;grid-template-columns:200px 1fr;gap:16px;margin-bottom:16px}
 .ring-card{background:var(--surf);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
-.progress-ring{width:114px;height:114px}
+.progress-ring{width:118px;height:118px}
 .ring-info{text-align:center}
-.ring-hours{font-family:var(--font-mono);font-size:19px;font-weight:600;color:var(--pri)}
+.ring-hours{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;color:var(--pri)}
 .ring-hours span{font-size:12.5px;color:var(--txt2);font-weight:400}
 .ring-cap{font-size:11.5px;color:var(--txt2);margin-top:2px}
-.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.stat-card{background:var(--surf);border-radius:var(--r);padding:13px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:var(--surf);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);border:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
 .stat-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.si-c{background:#CFFAFE;color:#0E7490} .si-a{background:#FEF3C7;color:#B45309} .si-i{background:#EEF2FF;color:#4338CA} .si-g{background:#D1FAE5;color:#065F46}
-[data-theme=dark] .si-c{background:#083344;color:#67E8F9} [data-theme=dark] .si-a{background:#2D1C00;color:#FCD34D} [data-theme=dark] .si-i{background:#1E1B4B;color:#A5B4FC} [data-theme=dark] .si-g{background:#022C22;color:#6EE7B7}
-.stat-val{font-size:17px;font-weight:700;font-family:var(--font-mono);line-height:1.2;color:var(--txt)}
+.si-c{background:#ECFEFF;color:#0E7490}
+.si-a{background:#FFFBEB;color:#B45309}
+.si-i{background:#EEF2FF;color:#4338CA}
+.si-g{background:#ECFDF5;color:#065F46}
+[data-theme=dark] .si-c{background:#083344}
+[data-theme=dark] .si-a{background:#2D1C00}
+[data-theme=dark] .si-i{background:#1E1B4B}
+[data-theme=dark] .si-g{background:#022C22}
+.stat-val{font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1.2}
 .stat-lbl{font-size:10.5px;color:var(--txt2);font-weight:500;margin-top:1px}
-.live-badge{display:flex;align-items:center;gap:7px;padding:5px 12px;background:var(--surf);border:1.5px solid #A7F3D0;border-radius:20px;font-size:11.5px;font-weight:600;color:#065F46}
+.live-badge{display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--surf);border:1.5px solid #A7F3D0;border-radius:20px;font-size:11.5px;font-weight:600;color:#065F46}
 [data-theme=dark] .live-badge{background:#022C22;border-color:#065F46;color:#6EE7B7}
-.pulse-dot{width:7px;height:7px;background:var(--ok-l);border-radius:50%;animation:pd 1.4s ease infinite;display:inline-block}
+.pulse-dot{width:7px;height:7px;background:var(--ok);border-radius:50%;animation:pd 1.4s ease infinite;display:inline-block}
 @keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
-.day-cell{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:11px;padding:10px;text-align:center;transition:all var(--t)}
-.day-cell.today{border-color:var(--pri-l);background:linear-gradient(135deg,rgba(99,102,241,.07),rgba(6,182,212,.04));box-shadow:0 0 0 3px rgba(99,102,241,.1)}
-.day-cell.absent:not(.future){border-color:rgba(239,68,68,.2);background:rgba(239,68,68,.02)}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:8px}
+.day-cell{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:10px;text-align:center}
+.day-cell.today{border-color:var(--pri-l);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(6,182,212,.04));box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+.day-cell.absent:not(.future){border-color:rgba(239,68,68,.18);background:rgba(239,68,68,.02)}
 .day-name{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2)}
-.day-date{font-size:14px;font-weight:800;color:var(--txt);margin:3px 0 6px;font-family:var(--font-mono)}
-.day-in{font-size:10.5px;color:var(--ok-l);font-weight:600} .day-out{font-size:10.5px;color:var(--txt2);font-weight:600} .day-out.pending{color:var(--warn-l)}
+.day-date{font-size:14px;font-weight:800;color:var(--txt);margin:3px 0 6px;font-family:'JetBrains Mono',monospace}
+.day-in{font-size:10.5px;color:var(--ok);font-weight:600}
+.day-out{font-size:10.5px;color:var(--txt2);font-weight:600}
+.day-out.pending{color:var(--warn)}
 .day-hrs{font-size:10.5px;font-weight:700;margin-top:4px;padding:1px 6px;border-radius:10px;display:inline-block}
-.hrs-ok{background:#D1FAE5;color:#065F46} .hrs-low{background:#FEF3C7;color:#92400E}
-[data-theme=dark] .hrs-ok{background:#022C22;color:#6EE7B7} [data-theme=dark] .hrs-low{background:#2D1C00;color:#FCD34D}
-.day-future{color:var(--txt3);font-size:15px;margin-top:4px} .day-absent{font-size:10.5px;color:var(--err);font-weight:600;opacity:.6;margin-top:4px}
+.hrs-ok{background:#D1FAE5;color:#065F46}
+.hrs-low{background:#FEF3C7;color:#92400E}
+[data-theme=dark] .hrs-ok{background:#022C22;color:#6EE7B7}
+[data-theme=dark] .hrs-low{background:#2D1C00;color:#FCD34D}
+.day-future{color:var(--txt3);font-size:15px;margin-top:4px}
+.day-absent{font-size:10.5px;color:var(--err);font-weight:600;opacity:.65;margin-top:4px}
 .lm-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:13px}
-.lm-icon{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-right:7px}
-.lm-icon.ok{background:#D1FAE5;color:#065F46} .lm-icon.err{background:#FEE2E2;color:#991B1B}
-[data-theme=dark] .lm-icon.ok{background:#022C22;color:#6EE7B7} [data-theme=dark] .lm-icon.err{background:#2D0E0E;color:#FCA5A5}
+.lm-icon{width:25px;height:25px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-right:7px}
+.lm-icon.ok{background:#D1FAE5;color:#065F46}
+.lm-icon.err{background:#FEE2E2;color:#991B1B}
+[data-theme=dark] .lm-icon.ok{background:#022C22;color:#6EE7B7}
+[data-theme=dark] .lm-icon.err{background:#2D0E0E;color:#FCA5A5}
 .lm-title{font-size:13.5px;font-weight:700}
 .deduction-badge{padding:4px 12px;background:var(--err);color:#fff;border-radius:20px;font-size:11.5px;font-weight:700}
-.ok-badge{padding:4px 12px;background:var(--ok-l);color:#fff;border-radius:20px;font-size:11.5px;font-weight:700}
-.lm-stats{display:flex;flex-wrap:wrap;gap:14px}
+.ok-badge{padding:4px 12px;background:var(--ok);color:#fff;border-radius:20px;font-size:11.5px;font-weight:700}
+.lm-stats{display:flex;flex-wrap:wrap;gap:13px}
 .lm-stats>div{display:flex;flex-direction:column;gap:2px}
 .lm-stats span{font-size:10.5px;color:var(--txt2);font-weight:500}
 .lm-stats strong{font-size:12.5px;font-weight:700}
+.card-warn{border-left:4px solid var(--warn)}
+.card-ok{border-left:4px solid var(--ok)}
 
-/* ══ BAR CHART ══════════════════════════════════════════ */
-.chart-card{margin-bottom:14px}
-.chart-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.chart-hdr h3{font-size:13.5px;font-weight:700;margin:0;display:flex;align-items:center;gap:7px}
-.range-pills{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-.range-pill{padding:4px 11px;border-radius:20px;font-size:11.5px;font-weight:600;border:1.5px solid var(--bdr);background:transparent;color:var(--txt2);cursor:pointer;transition:all var(--t)}
-.range-pill:hover{border-color:var(--pri-l);color:var(--pri)}
-.range-pill.active{background:var(--pri);border-color:var(--pri);color:#fff;box-shadow:0 2px 8px rgba(79,70,229,.3)}
-.custom-range-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:9px;padding:10px 12px;background:var(--surf2);border-radius:9px;border:1px solid var(--bdr)}
-.custom-range-row .input{max-width:145px;padding:6px 10px;font-size:12.5px}
-.custom-range-row span{color:var(--txt2);font-size:12.5px}
-.chart-wrap{position:relative;overflow:hidden}
-.chart-svg-container{width:100%;overflow-x:auto}
-.chart-loading{display:flex;align-items:center;justify-content:center;height:160px}
-.chart-meta{font-size:11.5px;color:var(--txt3);margin-top:6px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.chart-legend-dot{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
-.chart-summary-bar{display:flex;flex-wrap:wrap;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bdr)}
-.chart-sum-item{display:flex;flex-direction:column;gap:2px}
-.chart-sum-item span{font-size:10px;text-transform:uppercase;letter-spacing:.4px;font-weight:700;color:var(--txt3)}
-.chart-sum-item strong{font-size:15px;font-weight:700;font-family:var(--font-mono);color:var(--txt)}
-/* tooltip */
-#chart-tip{position:fixed;z-index:8000;background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;box-shadow:var(--shadow-md);min-width:160px;pointer-events:none;font-size:12.5px}
-.ct-date{font-weight:700;margin-bottom:7px;color:var(--txt);font-size:13px}
-.ct-row{display:flex;justify-content:space-between;gap:14px;margin-bottom:3px}
-.ct-row span{color:var(--txt2)} .ct-row strong{color:var(--txt);font-family:var(--font-mono)}
-.ct-hol{color:var(--txt3);font-style:italic} .ct-absent{color:var(--err);font-size:11.5px}
-/* bar animation */
-.chart-bar{transform-box:fill-box;transform-origin:bottom;animation:barRise .42s cubic-bezier(.22,1,.36,1) both}
-@keyframes barRise{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
-
-/* ══ HISTORY ════════════════════════════════════════════ */
-.history-list{display:flex;flex-direction:column;gap:9px}
-.week-card{background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--bdr)}
-.week-card.wk-met{border-left:4px solid var(--ok-l)} .week-card.wk-miss{border-left:4px solid var(--warn-l)}
-.week-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;flex-wrap:wrap;transition:background var(--t)}
-.week-hdr:hover{background:var(--surf2)}
-.week-left{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.week-dates{font-size:11.5px;color:var(--txt2)}
-.week-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.week-hrs{font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--txt)}
-.wk-target{font-size:11.5px;color:var(--txt2);font-weight:400}
-.wk-bar-out{width:80px;height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
-.wk-bar-in{height:100%;border-radius:3px}
-.bar-ok{background:linear-gradient(90deg,var(--ok-l),#34D399)} .bar-err{background:linear-gradient(90deg,var(--warn-l),var(--err-l))}
-.week-chev{color:var(--txt3);font-size:11px}
-.week-body{padding:0 16px 16px;border-top:1px solid var(--bdr)}
-.dt-hdr,.dt-row{display:grid;grid-template-columns:44px 62px 64px 64px 1fr;padding:6px 8px;font-size:12.5px;gap:4px}
-.dt-hdr{background:var(--surf2);border-radius:8px;font-size:10.5px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin:11px 0 4px}
-.dt-row{border-radius:6px;transition:background var(--t);align-items:center}
-.dt-row:hover{background:var(--surf2)} .dt-row.dt-absent{opacity:.4}
-.dt-day{font-weight:600} .dt-hrs{font-weight:600;color:var(--pri);font-family:var(--font-mono)}
-.wk-sum{display:flex;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--bdr);font-size:11.5px;color:var(--txt2);flex-wrap:wrap;gap:8px}
-
-/* ══ SCHEDULE ═══════════════════════════════════════════ */
+/* ── Schedule / Class Routine ────────────────────── */
 .sch-add-form{display:grid;grid-template-columns:1fr auto auto auto auto;gap:9px;align-items:flex-end;margin-bottom:14px}
-.routine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:6px}
-.rday-card{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:11px;min-height:80px}
+.sch-add-form .input{min-width:0}
+@media(max-width:700px){.sch-add-form{grid-template-columns:1fr 1fr;gap:8px}}
+.routine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(134px,1fr));gap:9px;margin-bottom:6px}
+.rday-card{background:var(--surf2);border:1.5px solid var(--bdr);border-radius:10px;padding:11px;min-height:84px}
 .rday-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
 .rday-name{font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px}
 .rday-hol{font-size:9.5px;color:var(--err);font-weight:600}
-.class-chip{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);border-radius:7px;padding:4px 6px;margin-bottom:4px;font-size:10.5px;display:flex;align-items:center;gap:5px;color:var(--txt)}
-.class-chip-time{font-family:var(--font-mono);font-weight:600;font-size:9.5px;color:var(--err-l)}
+.class-chip{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;padding:4px 6px;margin-bottom:4px;font-size:10.5px;display:flex;align-items:center;gap:5px;color:var(--txt)}
+.class-chip-time{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:9.5px;color:var(--err)}
 .class-chip-sub{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .no-class-txt{font-size:11px;color:var(--txt3);margin-top:4px}
 .sug-row{padding:13px 0;border-bottom:1px solid var(--bdr)}
@@ -326,319 +294,140 @@ select.input{cursor:pointer}
 .sug-day-name{font-size:12.5px;font-weight:700;color:var(--txt);margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .tl-wrap{position:relative;height:26px;background:var(--surf2);border-radius:6px;overflow:hidden;margin:6px 0}
 .tl-seg{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;white-space:nowrap;overflow:hidden;letter-spacing:.3px}
-.tl-class{background:rgba(220,38,38,.18);border-right:1px solid rgba(220,38,38,.3);color:#991B1B}
-.tl-work{background:rgba(79,70,229,.18);border-left:2px solid var(--pri);color:#3730A3}
-[data-theme=dark] .tl-class{background:rgba(239,68,68,.15);color:#FCA5A5} [data-theme=dark] .tl-work{background:rgba(99,102,241,.15);color:#A5B4FC}
+.tl-class{background:rgba(239,68,68,.2);border-right:1px solid rgba(239,68,68,.35);color:#991B1B}
+.tl-work{background:rgba(99,102,241,.2);border-left:2px solid var(--pri);color:#3730A3}
+[data-theme=dark] .tl-class{background:rgba(239,68,68,.15);color:#FCA5A5}
+[data-theme=dark] .tl-work{background:rgba(99,102,241,.15);color:#A5B4FC}
 .tl-axis{display:flex;justify-content:space-between;font-size:9.5px;color:var(--txt3);margin-top:1px}
 .sug-slot{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:8px}
-.sug-slot-time{font-family:var(--font-mono);font-size:15px;font-weight:600;color:var(--pri)}
+.sug-slot-time{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--pri)}
 .sug-slot-dur{font-size:12.5px;color:var(--txt2)}
 .sug-total-bar{background:var(--surf2);border-radius:var(--r);padding:15px 18px;margin-top:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px;border:1.5px solid var(--bdr)}
-.sug-total-hrs{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--pri)}
+.sug-total-hrs{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--pri)}
 .sug-total-meta{font-size:11.5px;color:var(--txt2)}
 
-/* ══ SETTINGS ═══════════════════════════════════════════ */
+/* ── History ──────────────────────────────────────── */
+.history-list{display:flex;flex-direction:column;gap:9px}
+.week-card{background:var(--surf);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--bdr)}
+.week-card.wk-met{border-left:4px solid var(--ok)}
+.week-card.wk-miss{border-left:4px solid var(--warn)}
+.week-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;gap:10px;flex-wrap:wrap;transition:background var(--t)}
+.week-hdr:hover{background:var(--surf2)}
+.week-left{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.week-dates{font-size:11.5px;color:var(--txt2)}
+.week-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.week-hrs{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700}
+.wk-target{font-size:11.5px;color:var(--txt2);font-weight:400}
+.wk-bar-out{width:84px;height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.wk-bar-in{height:100%;border-radius:3px}
+.bar-ok{background:linear-gradient(90deg,var(--ok),#34D399)}
+.bar-err{background:linear-gradient(90deg,var(--warn),var(--err))}
+.week-chev{color:var(--txt3);font-size:11px}
+.week-body{padding:0 16px 16px;border-top:1px solid var(--bdr)}
+.dt-hdr,.dt-row{display:grid;grid-template-columns:46px 64px 64px 64px 1fr;padding:6px 8px;font-size:12.5px;gap:4px}
+.dt-hdr{background:var(--surf2);border-radius:8px;font-size:10.5px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin:11px 0 4px}
+.dt-row{border-radius:6px;transition:background var(--t);align-items:center}
+.dt-row:hover{background:var(--surf2)}
+.dt-row.dt-absent{opacity:.42}
+.dt-day{font-weight:600}
+.dt-hrs{font-weight:600;color:var(--pri);font-family:'JetBrains Mono',monospace}
+.wk-sum{display:flex;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--bdr);font-size:11.5px;color:var(--txt2);flex-wrap:wrap;gap:8px}
+
+/* ── Settings ─────────────────────────────────────── */
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:13px}
-.day-checkboxes{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:9px}
-.day-check{padding:7px 13px;border:1.5px solid var(--bdr);border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--txt2);transition:all var(--t);display:flex;align-items:center;gap:5px;user-select:none}
+.day-checkboxes{display:flex;flex-wrap:wrap;gap:7px}
+.day-check{padding:7px 13px;border:1.5px solid var(--bdr);border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--txt2);transition:all var(--t);display:flex;align-items:center;gap:5px}
 .day-check input{appearance:none;width:0;margin:0;padding:0}
-.day-check.checked{background:var(--pri);border-color:var(--pri);color:#fff}
-.holiday-count-display{font-size:12px;color:var(--txt2);margin-top:5px}
-.holiday-count-display strong{color:var(--pri);font-weight:700}
+.day-check.checked,.day-check:has(input:checked){background:var(--pri);border-color:var(--pri);color:#fff}
 .add-hol-form{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px;align-items:flex-end}
 .add-hol-form .input{flex:1;min-width:125px}
 .hols-list{display:flex;flex-direction:column;gap:5px}
-.hol-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--surf2);border-radius:9px;border:1px solid var(--bdr);font-size:12.5px}
-.hol-item.hol-ded{border-left:3px solid var(--err-l)}
+.hol-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--surf2);border-radius:8px;border:1px solid var(--bdr);font-size:12.5px}
+.hol-item.hol-ded{border-left:3px solid var(--err)}
 .hol-type{margin-left:7px;font-size:10.5px;background:var(--surf);border:1px solid var(--bdr);padding:1px 6px;border-radius:10px;color:var(--txt2)}
 .hol-reason{margin-left:7px;color:var(--txt2);font-size:11.5px}
-.save-bar{position:sticky;bottom:0;background:var(--bg);padding:12px 0 4px;border-top:1px solid var(--bdr);margin-top:4px;z-index:10}
+.save-bar{position:sticky;bottom:0;background:var(--bg);padding:13px 0 4px;border-top:1px solid var(--bdr);margin-top:4px}
 .cycle-toggle{display:flex;gap:8px;margin-bottom:13px}
 .cycle-opt{flex:1;padding:10px 14px;border:1.5px solid var(--bdr);border-radius:10px;cursor:pointer;text-align:center;font-size:12.5px;font-weight:600;color:var(--txt2);transition:all var(--t)}
-.cycle-opt.active{border-color:var(--pri);background:rgba(79,70,229,.07);color:var(--pri)}
+.cycle-opt.active{border-color:var(--pri);background:rgba(99,102,241,.08);color:var(--pri)}
 .cycle-opt-sub{display:block;font-size:10.5px;font-weight:400;color:var(--txt3);margin-top:2px}
 
-/* ══ ADMIN ══════════════════════════════════════════════ */
+/* ── Admin ────────────────────────────────────────── */
 .approval-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr);gap:10px;flex-wrap:wrap}
 .approval-row:last-child{border-bottom:none}
 .user-info{display:flex;align-items:flex-start;gap:11px}
-.u-name{font-size:13.5px;font-weight:600} .u-email{font-size:11.5px;color:var(--txt2)} .u-meta{font-size:10.5px;color:var(--txt3);margin-top:3px}
+.u-name{font-size:13.5px;font-weight:600}
+.u-email{font-size:11.5px;color:var(--txt2)}
+.u-meta{font-size:10.5px;color:var(--txt3);margin-top:3px}
 .approval-btns{display:flex;gap:7px;flex-shrink:0}
 .ut-hdr,.ut-row{display:grid;grid-template-columns:1.5fr 2fr 80px 90px 100px;padding:8px 11px;align-items:center;gap:8px;font-size:12.5px}
 .ut-hdr{background:var(--surf2);border-radius:8px;font-size:10.5px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.ut-row{border-radius:6px;transition:background var(--t)} .ut-row:hover{background:var(--surf2)}
+.ut-row{border-radius:6px;transition:background var(--t)}
+.ut-row:hover{background:var(--surf2)}
 .ut-name{display:flex;align-items:center;gap:7px;font-weight:500}
 .ut-email{color:var(--txt2);font-size:11.5px;word-break:break-all}
 
-/* ══ TOUCH & INTERACTION BASE ═══════════════════════════ */
-button,.btn,.day-check,.nav-item,.range-pill,.collapse-toggle,.week-hdr{touch-action:manipulation}
-.btn{min-height:40px}
-.btn-full,.btn-lg{min-height:44px}
-.input{min-height:40px}
-.range-pill{min-height:34px;display:inline-flex;align-items:center;justify-content:center}
-.day-check{min-height:38px}
-.nav-item{min-height:44px}
-.btn-icon{min-width:34px;min-height:34px;justify-content:center}
-.tap-log-item .btn-icon{min-width:36px;min-height:36px}
-
-/* ══ iOS SAFE AREA (iPhone notch / home bar) ════════════ */
-@supports(padding:max(0px)){
-  #topnav{
-    padding-left:max(14px,calc(14px + env(safe-area-inset-left)));
-    padding-right:max(14px,calc(14px + env(safe-area-inset-right)));
-  }
-  .save-bar{padding-bottom:max(4px,env(safe-area-inset-bottom))}
-  #content{padding-bottom:max(20px,calc(12px + env(safe-area-inset-bottom)))}
-  #auth{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
-  #toasts{bottom:max(20px,calc(14px + env(safe-area-inset-bottom)))}
-}
-
-/* ══ DESKTOP & WIDE LAPTOP ≥ 1280px ═════════════════════ */
-@media(min-width:1280px){
-  #content{max-width:1160px;padding:24px 28px}
-  .stats-top{grid-template-columns:210px 1fr}
-  .mini-stats{grid-template-columns:repeat(4,1fr)}
-  .settings-grid{grid-template-columns:repeat(3,1fr)}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(114px,1fr))}
-  .card{padding:22px 24px}
-  .routine-grid{grid-template-columns:repeat(7,1fr)}
-}
-
-/* ══ LAPTOP 1024 – 1279px ═══════════════════════════════ */
-@media(min-width:1024px) and (max-width:1279px){
-  .mini-stats{grid-template-columns:repeat(4,1fr)}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(106px,1fr))}
-  .settings-grid{grid-template-columns:repeat(2,1fr)}
-}
-
-/* ══ TABLET LANDSCAPE 900 – 1023px ══════════════════════ */
-@media(min-width:900px) and (max-width:1023px){
-  .mini-stats{grid-template-columns:repeat(4,1fr)}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
-  .stats-top{grid-template-columns:195px 1fr}
-}
-
-/* ══ NAV COLLAPSE ≤ 900px ═══════════════════════════════ */
-@media(max-width:900px){
-  .tnav-links{
-    display:none;position:fixed;top:var(--nav-h);left:0;right:0;
-    background:var(--nav-bg);flex-direction:column;align-items:stretch;
-    padding:8px 14px max(18px,calc(14px + env(safe-area-inset-bottom)));
-    z-index:99;gap:3px;box-shadow:0 10px 28px rgba(0,0,0,.35);
-    border-top:1px solid rgba(255,255,255,.07);max-height:calc(100vh - var(--nav-h));
-    overflow-y:auto
-  }
-  .tnav-links.open{display:flex}
-  .tnav-links .nav-item{padding:11px 14px;font-size:13.5px;border-radius:var(--r-sm)}
-  .tnav-hamburger{display:flex}
-  .tnav-uname{display:none}
-}
-
-/* ══ TABLET PORTRAIT 768 – 899px ════════════════════════ */
-@media(max-width:899px) and (min-width:600px){
-  #content{padding:16px 16px}
-  .stats-top{grid-template-columns:1fr}
-  .ring-card{flex-direction:row;gap:18px;padding:16px;align-items:center}
-  .progress-ring{width:100px;height:100px;flex-shrink:0}
-  .ring-info{text-align:left}
-  .mini-stats{grid-template-columns:repeat(4,1fr)}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))}
-  .form-row{grid-template-columns:1fr 1fr}
-  .dt-hdr,.dt-row{grid-template-columns:44px 62px 64px 64px 1fr;font-size:12.5px}
-}
-
-/* ══ LARGE PHONE 600 – 767px ════════════════════════════ */
-@media(max-width:767px){
-  #content{padding:14px 12px}
+/* ── Responsive ───────────────────────────────────── */
+@media(max-width:768px){
   #toasts{right:10px;left:10px;bottom:14px}
-  .stats-top{grid-template-columns:1fr;gap:11px}
-  .ring-card{flex-direction:row;gap:16px;padding:15px}
-  .progress-ring{width:96px;height:96px;flex-shrink:0}
-  .ring-info{text-align:left}
+  .stats-top{grid-template-columns:1fr}
   .mini-stats{grid-template-columns:1fr 1fr}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(86px,1fr))}
+  .ring-card{flex-direction:row;gap:16px;padding:15px}
+  .week-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
   .hero-time{font-size:36px}
   .record-btn{width:148px;height:148px}
   .record-btn-time{font-size:21px}
   .record-btn-icon{font-size:24px}
   .form-row{grid-template-columns:1fr}
-  .dt-hdr,.dt-row{grid-template-columns:38px 58px 54px 54px 1fr;font-size:11.5px}
+  .dt-hdr,.dt-row{grid-template-columns:40px 58px 54px 54px 1fr;font-size:11.5px}
   .ut-hdr span:nth-child(n+4),.ut-row span:nth-child(n+4){display:none}
   .ut-hdr,.ut-row{grid-template-columns:1.4fr 1.8fr 80px}
   .sch-add-form{grid-template-columns:1fr 1fr}
-  .routine-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
-  .chart-hdr{gap:8px}
-  .lm-stats{gap:10px}
-  .page-title{font-size:19px}
-  /* chart: stack header vertically, allow scroll */
-  .chart-hdr{flex-direction:column;align-items:flex-start}
-  .chart-svg-container{-webkit-overflow-scrolling:touch}
-  .custom-range-row{flex-direction:column;gap:8px}
-  .custom-range-row .input{max-width:100%;width:100%}
-  .custom-range-row span{display:none}
-  /* approval rows stack */
-  .approval-row{flex-direction:column;align-items:flex-start;gap:10px}
-  .approval-btns{width:100%;display:flex;gap:8px}
-  .approval-btns .btn{flex:1;justify-content:center}
-  /* punch page */
-  .session-bar{flex-wrap:wrap;gap:6px}
+  .routine-grid{grid-template-columns:repeat(auto-fill,minmax(124px,1fr))}
 }
-
-/* ══ SMALL PHONE ≤ 599px ════════════════════════════════ */
-@media(max-width:599px){
-  .range-pills{gap:4px}
-  .range-pill{padding:4px 9px;font-size:11px}
-  .chart-summary-bar{gap:12px}
-  .chart-sum-item strong{font-size:13px}
-  .week-hdr{padding:10px 12px}
-  .week-body{padding:0 12px 12px}
-  .dt-hdr,.dt-row{grid-template-columns:34px 52px 50px 50px 1fr;font-size:11px;padding:5px 6px}
-  .sug-row{padding:10px 0}
-}
-
-/* ══ SMALL PHONE ≤ 480px (iPhone SE, Galaxy A02) ═══════ */
 @media(max-width:480px){
-  .stats-top{gap:9px}
+  .stats-top{gap:11px}
   .stat-card{padding:11px 9px;gap:8px}
   .stat-val{font-size:15px}
-  .stat-lbl{font-size:9.5px}
-  .auth-card{padding:26px 18px}
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(75px,1fr));gap:6px}
-  .day-cell{padding:8px 6px}
-  .day-date{font-size:12px}
-  .record-btn{width:140px;height:140px}
-  .session-bar{padding:10px 12px;gap:5px}
-  .plog-table{font-size:11.5px}
-  .plog-table td,.plog-table th{padding:6px 5px}
-  .card{padding:14px 14px;margin-bottom:12px}
-  .card-title{font-size:12.5px;gap:6px}
-  .section-title{font-size:13px}
-  .page-title{font-size:17px}
-  .page-sub{font-size:11.5px}
-  .lm-stats>div{min-width:60px}
-  .lm-stats span{font-size:9.5px}
-  .lm-stats strong{font-size:11.5px}
-  /* settings */
-  .cycle-toggle{gap:6px}
-  .cycle-opt{padding:9px 10px;font-size:12px}
-  .cycle-opt-sub{font-size:9.5px}
-  .day-check{padding:6px 10px;font-size:11.5px}
-  .settings-grid{gap:10px}
-  /* history */
-  .week-hdr{gap:7px}
-  .wk-bar-out{width:64px}
-  .week-hrs{font-size:14px}
-  .week-dates{font-size:11px}
-  /* schedule */
-  .sch-add-form{grid-template-columns:1fr 1fr;gap:7px}
-  .routine-grid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:7px}
-  .rday-card{padding:9px}
-  /* admin */
-  .ut-hdr,.ut-row{grid-template-columns:1.4fr 1fr;gap:6px}
-  .ut-hdr span:nth-child(n+3),.ut-row span:nth-child(n+3){display:none}
-  .u-name{font-size:12.5px}
-  .u-email{font-size:11px}
+  .auth-card{padding:26px 20px}
+  .week-grid{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))}
+  .record-btn{width:136px;height:136px}
+  .session-bar{padding:11px 12px;gap:6px}
+  .session-stat{min-width:56px}
 }
 
-/* ══ VERY SMALL PHONE ≤ 380px (Galaxy A02s, Honor 8A) ══ */
-@media(max-width:380px){
-  #content{padding:10px 10px}
-  .card{padding:13px 12px}
-  .auth-card{padding:22px 14px}
-  .auth-logo{width:44px;height:44px;font-size:22px}
-  .auth-brand h1{font-size:19px}
-  .hero-time{font-size:30px}
-  .hero-clock{padding:22px 16px;border-radius:16px}
-  .record-btn{width:126px;height:126px}
-  .record-btn-time{font-size:18px}
-  .record-btn-icon{font-size:20px}
-  .record-btn-label{font-size:8.5px;letter-spacing:1.2px}
-  /* session bar: 2×2 grid on tiny screens */
-  .session-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
-  .session-sep{display:none}
-  .session-stat{min-width:unset}
-  .session-stat strong{font-size:15px}
-  /* range pills compact */
-  .range-pill{padding:3px 7px;font-size:10.5px;border-radius:14px}
-  .range-pills{gap:3px}
-  /* stats */
-  .stat-card{padding:10px 8px;gap:7px;border-radius:10px}
-  .stat-icon{width:30px;height:30px;font-size:13px;border-radius:8px}
-  .stat-val{font-size:14px}
-  .ring-card{padding:12px}
-  .progress-ring{width:84px;height:84px}
-  .ring-hours{font-size:16px}
-  /* week grid */
-  .week-grid{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:5px}
-  .day-cell{padding:7px 4px}
-  .day-name{font-size:8.5px}
-  .day-date{font-size:11px}
-  .day-in,.day-out{font-size:9.5px}
-  /* nav brand */
-  .tnav-brand span{display:none}
-  /* page titles */
-  .page-title{font-size:16px}
-  .page-hdr{margin-bottom:14px}
-  /* tap log */
-  .tap-time{font-size:15px}
-  /* badges */
-  .badge{font-size:9.5px;padding:2px 7px}
-  /* admin table: single useful column */
-  .ut-hdr,.ut-row{grid-template-columns:1fr 64px}
-  .ut-hdr span:nth-child(n+2),.ut-row span:nth-child(n+2){display:none}
-  .ut-row span:nth-child(4){display:block} /* show status */
-  .ut-hdr span:nth-child(4){display:block}
-  /* lm stats */
-  .lm-stats{flex-direction:column;gap:7px}
-  .lm-header{flex-direction:column;align-items:flex-start;gap:6px}
-  /* chart */
-  .chart-hdr h3{font-size:12.5px}
-  .chart-sum-item strong{font-size:12px}
-  /* schedule */
-  .sch-add-form{grid-template-columns:1fr}
-  .routine-grid{grid-template-columns:1fr 1fr}
-  /* settings */
-  .day-checkboxes{gap:5px}
-  .day-check{padding:5px 8px;font-size:11px}
-  /* save bar */
-  .save-bar .btn-lg{width:100%;justify-content:center}
-}
-
-/* ══ TINY PHONE ≤ 320px (old Honor, Galaxy J2) ═════════ */
-@media(max-width:320px){
-  #content{padding:8px 8px}
-  .card{padding:11px 10px}
-  .auth-card{padding:18px 12px}
-  .record-btn{width:112px;height:112px}
-  .record-btn-time{font-size:16px}
-  .hero-time{font-size:26px}
-  .session-stat strong{font-size:13px}
-  .page-title{font-size:15px}
-  .range-pill{font-size:9.5px;padding:2px 6px}
-  .week-grid{grid-template-columns:repeat(3,1fr);gap:4px}
-  .day-cell{padding:6px 3px}
-}
-
-/* ══ LANDSCAPE PHONES (height ≤ 450px) ═════════════════ */
-@media(max-height:450px) and (orientation:landscape){
-  .hero-clock{padding:12px 18px}
-  .hero-time{font-size:26px}
-  .record-btn{width:100px;height:100px}
-  .record-wrap{flex-direction:row;gap:18px;align-items:center;margin-bottom:14px}
-  .punch-page{max-width:100%}
-  .record-btn-time{font-size:16px}
-  .record-btn-icon{font-size:18px}
-  .stats-top{grid-template-columns:160px 1fr}
-  .ring-card{flex-direction:row;gap:12px;padding:12px}
-  .progress-ring{width:80px;height:80px}
-  .mini-stats{grid-template-columns:repeat(4,1fr)}
-}
-
-/* ══ PRINT ══════════════════════════════════════════════ */
-@media print{
-  #topnav,#toasts,#global-loader,.record-wrap,.save-bar{display:none!important}
-  body{background:white;color:black}
-  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+/* ── Bar Chart ─────────────────────────────────────────── */
+.chart-wrap{background:var(--surf);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--bdr);margin-bottom:16px}
+.chart-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.chart-title{font-size:13.5px;font-weight:700;color:var(--txt)}
+.chart-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.range-btn{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid var(--bdr);background:transparent;color:var(--txt2);cursor:pointer;transition:all var(--t)}
+.range-btn.active,.range-btn:hover{background:var(--pri);border-color:var(--pri);color:#fff}
+.range-custom-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.range-custom-row .input{padding:5px 8px;font-size:11.5px;max-width:135px}
+.chart-svg-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.chart-empty{text-align:center;padding:32px 0;color:var(--txt3);font-size:12px}
+.chart-bar{transition:opacity .15s;cursor:default}
+.chart-bar:hover{opacity:.72}
+.chart-legend{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:11px;color:var(--txt2);flex-wrap:wrap}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;display:inline-block;margin-right:3px}
+.chart-stats-row{display:flex;flex-wrap:wrap;gap:13px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr)}
+.cs-item{display:flex;flex-direction:column;gap:2px}
+.cs-item span{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--txt2);font-weight:700}
+.cs-item strong{font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--txt)}
+/* ── Punch History ────────────────────────────────────────── */
+.ph-row{display:grid;grid-template-columns:88px 62px 62px 58px 1fr;align-items:center;padding:7px 9px;border-radius:7px;gap:5px;font-size:12.5px;transition:background var(--t)}
+.ph-row:hover{background:var(--surf2)}
+.ph-hdr{background:var(--surf2);border-radius:7px;font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.ph-date{font-weight:600;color:var(--txt)}
+.ph-in{color:var(--ok);font-weight:600;font-family:'JetBrains Mono',monospace}
+.ph-out{color:var(--err);font-weight:600;font-family:'JetBrains Mono',monospace}
+.ph-dur{color:var(--pri);font-weight:700;font-family:'JetBrains Mono',monospace}
+.ph-notes{color:var(--txt3);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ph-row.ph-incomplete{opacity:.6}
+@media(max-width:560px){
+  .ph-row{grid-template-columns:76px 56px 56px 50px}
+  .ph-notes{display:none}
 }
 </style>
 </head>
@@ -646,10 +435,10 @@ button,.btn,.day-check,.nav-item,.range-pill,.collapse-toggle,.week-hdr{touch-ac
 
 <div id="toasts"></div>
 <div id="global-loader" hidden></div>
-<div id="chart-tip" hidden></div>
 
 <!-- ══ AUTH ══════════════════════════════════════════════ -->
 <div id="auth" hidden>
+
   <div id="pg-login">
     <div class="auth-card">
       <div class="auth-brand"><div class="auth-logo">⏱</div><h1>PunchTrack</h1><p>Office Time Management System</p></div>
@@ -709,28 +498,32 @@ button,.btn,.day-check,.nav-item,.range-pill,.collapse-toggle,.week-hdr{touch-ac
       </div>
     </div>
   </div>
+
 </div><!-- /#auth -->
 
-<!-- ══ MAIN APP ══════════════════════════════════════════ -->
+<!-- ══ MAIN APP ════════════════════════════════════════ -->
 <div id="app" hidden>
+
   <nav id="topnav">
     <div class="tnav-brand"><div class="tnav-logo">⏱</div><span>PunchTrack</span></div>
+
     <div class="tnav-links" id="tnav-links">
-      <button class="nav-item active" data-tab="punch"     onclick="switchTab('punch');closeMobileMenu()">⏱ Home</button>
+      <button class="nav-item active" data-tab="punch"    onclick="switchTab('punch');closeMobileMenu()">⏱ Home / Punch</button>
       <button class="nav-item" data-tab="dashboard" onclick="switchTab('dashboard');closeMobileMenu()">⊞ Dashboard</button>
-      <button class="nav-item" data-tab="schedule"  onclick="switchTab('schedule');closeMobileMenu()">📚 Schedule</button>
-      <button class="nav-item" data-tab="history"   onclick="switchTab('history');closeMobileMenu()">📅 History</button>
-      <button class="nav-item" data-tab="settings"  onclick="switchTab('settings');closeMobileMenu()">⚙ Settings</button>
+      <button class="nav-item" data-tab="schedule" onclick="switchTab('schedule');closeMobileMenu()">📚 Schedule</button>
+      <button class="nav-item" data-tab="history"  onclick="switchTab('history');closeMobileMenu()">📅 History</button>
+      <button class="nav-item" data-tab="settings" onclick="switchTab('settings');closeMobileMenu()">⚙ Settings</button>
       <button class="nav-item" data-tab="admin" id="admin-nav-btn" onclick="switchTab('admin');closeMobileMenu()">👥 Admin</button>
     </div>
+
     <div class="tnav-right">
-      <button class="tnav-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="tnav-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode">🌙</button>
       <div class="tnav-user">
         <div class="uava" id="nav-ava">?</div>
         <span class="tnav-uname" id="nav-name">—</span>
       </div>
-      <button class="tnav-btn" onclick="doLogout()" title="Sign out">⏻</button>
-      <button class="tnav-btn tnav-hamburger" id="hamburger" onclick="toggleMobileMenu()">☰</button>
+      <button class="tnav-btn" onclick="doLogout()" title="Sign out" style="font-size:13px">⏻</button>
+      <button class="tnav-btn tnav-hamburger" id="hamburger" onclick="toggleMobileMenu()" title="Menu">☰</button>
     </div>
   </nav>
 
@@ -745,84 +538,87 @@ button,.btn,.day-check,.nav-item,.range-pill,.collapse-toggle,.week-hdr{touch-ac
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  CONFIG — replace with your deployed Apps Script URL
-// ═══════════════════════════════════════════════════════
+// ═══ CONFIG — replace with your deployed Apps Script URL ══
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3-bP6SN7clhD6eO9nODc3ZpHQpfqrZV9-b78dRzziXvl7k3ImUV3Rpmpn9ayZMw5B/exec';
 
-// ═══ HELPERS ════════════════════════════════════════════
-const pad    = n => String(n).padStart(2,'0');
-const $      = id => document.getElementById(id);
-const LS     = {get:k=>localStorage.getItem(k),set:(k,v)=>localStorage.setItem(k,v),del:k=>localStorage.removeItem(k)};
-const pMin   = t => { if(!t||typeof t!=='string') return 0; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
-const mToT   = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
+// ═══ HELPERS ══════════════════════════════════════════════
+const pad   = n => String(n).padStart(2,'0');
+const $     = id => document.getElementById(id);
+const LS    = {get:k=>localStorage.getItem(k),set:(k,v)=>localStorage.setItem(k,v),del:k=>localStorage.removeItem(k)};
+const pMin  = t => { if(!t||typeof t!=='string') return 0; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
+const mToT  = m => `${pad(Math.floor(m/60))}:${pad(m%60)}`;
 const toHrsMin = m => { if(!m||isNaN(m)) return '—'; const h=Math.floor(m/60),mi=m%60; return h&&mi?`${h}h ${mi}m`:h?`${h}h`:`${mi}m`; };
-const fmtRange = (s,e) => {
-  const f = d => new Date(d+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric'});
-  return `${f(s)} – ${new Date(e+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric',year:'numeric'})}`;
-};
-const fmtDateFull = d => new Date(d+'T00:00:00').toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'});
+const fmtRange = (s,e) => { const f=d=>new Date(d+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric'}); return `${f(s)} — ${new Date(e+'T00:00:00').toLocaleDateString('en-BD',{month:'short',day:'numeric',year:'numeric'})}`; };
+const fmtDate  = d => new Date(d+'T00:00:00').toLocaleDateString('en-BD',{weekday:'short',month:'short',day:'numeric'});
 function greeting(){ const h=dhakaNow().getHours(); return h<12?'Morning':h<17?'Afternoon':'Evening'; }
 
-// ═══ DHAKA TIMEZONE HELPERS ═════════════════════════════
+// ── Timezone-safe "now" helpers ──────────────────────────────
+// CRITICAL: never use new Date().toISOString() or browser-local getHours()/getDate() for
+// office-date logic — the browser's timezone may not match the office timezone (Asia/Dhaka),
+// causing manual entries / taps to be silently saved under the wrong date (the original bug).
 const OFFICE_TZ = 'Asia/Dhaka';
-function dhakaParts() {
-  const fmt = new Intl.DateTimeFormat('en-CA',{timeZone:OFFICE_TZ,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-  return Object.fromEntries(fmt.formatToParts(new Date()).map(p=>[p.type,p.value]));
+function dhakaParts(){
+  const fmt = new Intl.DateTimeFormat('en-CA', {
+    timeZone: OFFICE_TZ, year:'numeric', month:'2-digit', day:'2-digit',
+    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+  });
+  const parts = Object.fromEntries(fmt.formatToParts(new Date()).map(p=>[p.type,p.value]));
+  return parts; // {year,month,day,hour,minute,second}
 }
-function dhakaDateStr() { const p=dhakaParts(); return `${p.year}-${p.month}-${p.day}`; }
-function dhakaTimeStr() { const p=dhakaParts(); const h=p.hour==='24'?'00':p.hour; return `${h}:${p.minute}`; }
-function dhakaTimeStrSec() { const p=dhakaParts(); const h=p.hour==='24'?'00':p.hour; return `${h}:${p.minute}:${p.second}`; }
-function dhakaNow() {
+function dhakaDateStr(){ const p=dhakaParts(); return `${p.year}-${p.month}-${p.day}`; }
+function dhakaTimeStr(){ const p=dhakaParts(); let h=p.hour==='24'?'00':p.hour; return `${h}:${p.minute}`; }
+function dhakaTimeStrSec(){ const p=dhakaParts(); let h=p.hour==='24'?'00':p.hour; return `${h}:${p.minute}:${p.second}`; }
+// A Date-like object usable for getHours()/getDay() purposes, expressed in Dhaka local time
+function dhakaNow(){
   const p=dhakaParts();
+  // Build using the parts so .getHours()/.getDay() reflect Dhaka time regardless of browser TZ
   return new Date(`${p.year}-${p.month}-${p.day}T${p.hour==='24'?'00':p.hour}:${p.minute}:${p.second}`);
 }
-function localDateStr(d) {
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-}
-function dhakaDateOffset(days) {
-  const d = dhakaNow(); d.setDate(d.getDate()+days); return localDateStr(d);
-}
 
-// ═══ API ════════════════════════════════════════════════
+// ═══ API ══════════════════════════════════════════════════
 const API = {
   async call(params) {
-    if(!SCRIPT_URL||SCRIPT_URL.startsWith('YOUR_')) { showToast('⚠ Configure SCRIPT_URL in index.html','error',9000); throw new Error('SCRIPT_URL not set'); }
+    if(!SCRIPT_URL||SCRIPT_URL.startsWith('YOUR_')){
+      showToast('⚠ Configure SCRIPT_URL in index.html','error',9000);
+      throw new Error('SCRIPT_URL not set');
+    }
     const url=new URL(SCRIPT_URL);
     Object.entries(params).forEach(([k,v])=>{ if(v!==undefined&&v!==null&&v!=='') url.searchParams.set(k,String(v)); });
     try {
       const r=await fetch(url.toString(),{redirect:'follow'});
       const text=await r.text();
-      try { return JSON.parse(text); }
-      catch(_) { console.error('Non-JSON:',text.slice(0,300)); throw new Error('Server returned non-JSON.'); }
-    } catch(e) { if(e.message==='SCRIPT_URL not set') throw e; throw new Error('Network error: '+e.message); }
+      try{ return JSON.parse(text); }
+      catch(_){ console.error('Non-JSON:',text.slice(0,300)); throw new Error('Server returned non-JSON. Check script URL & permissions.'); }
+    } catch(e){ if(e.message==='SCRIPT_URL not set') throw e; throw new Error('Network error: '+e.message); }
   },
-  token() { return LS.get('pt_token'); },
-  async auth(action,extra={}) { return this.call({action,token:this.token(),...extra}); }
+  token(){ return LS.get('pt_token'); },
+  async auth(action,extra={}){ return this.call({action,token:this.token(),...extra}); }
 };
 
-// ═══ STATE ══════════════════════════════════════════════
-const S = { user:null, settings:null, clockInt:null, punchInTime:null, otpEmail:null, classSlots:[], currentTab:'punch', chartRange:'7d' };
+// ═══ STATE ════════════════════════════════════════════════
+const S = { user:null, settings:null, clockInt:null, punchInTime:null, otpEmail:null, classSlots:[] };
 
-// ═══ TOAST ══════════════════════════════════════════════
-const TOAST_ICONS = {info:'ℹ️',success:'✅',error:'❌',warn:'⚠️'};
-function showToast(msg,type='info',dur=4000) {
-  const t=document.createElement('div'); t.className=`toast toast-${type}`;
-  t.innerHTML=`<span class="toast-icon">${TOAST_ICONS[type]||''}</span><span>${msg}</span>`;
+// ═══ TOAST ════════════════════════════════════════════════
+function showToast(msg,type='info',dur=4000){
+  const t=document.createElement('div'); t.className=`toast toast-${type}`; t.textContent=msg;
   $('toasts').appendChild(t);
   requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
   setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),320); },dur);
 }
 let _lc=0;
-function setLoading(on) { _lc=Math.max(0,_lc+(on?1:-1)); $('global-loader').hidden=_lc===0; }
+function setLoading(on){ _lc=Math.max(0,_lc+(on?1:-1)); $('global-loader').hidden=_lc===0; }
 
-// ═══ MOBILE MENU ════════════════════════════════════════
-function toggleMobileMenu() { const l=$('tnav-links'); l.classList.toggle('open'); $('hamburger').textContent=l.classList.contains('open')?'✕':'☰'; }
-function closeMobileMenu() { $('tnav-links').classList.remove('open'); $('hamburger').textContent='☰'; }
+// ═══ MOBILE MENU ══════════════════════════════════════════
+function toggleMobileMenu(){
+  const links=$('tnav-links');
+  links.classList.toggle('open');
+  $('hamburger').textContent=links.classList.contains('open')?'✕':'☰';
+}
+function closeMobileMenu(){ $('tnav-links').classList.remove('open'); $('hamburger').textContent='☰'; }
 document.addEventListener('click',e=>{ if(!e.target.closest('#topnav')) closeMobileMenu(); });
 
-// ═══ NAVIGATION ═════════════════════════════════════════
-function switchTab(tab) {
+// ═══ NAVIGATION ═══════════════════════════════════════════
+function switchTab(tab){
   S.currentTab=tab;
   document.querySelectorAll('.tab-content').forEach(t=>t.hidden=true);
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -836,28 +632,30 @@ function switchTab(tab) {
   if(tab==='admin')     loadAdmin();
 }
 
-// ═══ AUTH PAGES ═════════════════════════════════════════
-function showAuthPage(page) {
+// ═══ AUTH PAGES ═══════════════════════════════════════════
+function showAuthPage(page){
   ['pg-login','pg-register','pg-otp','pg-pending'].forEach(p=>$(p).hidden=true);
   $(page).hidden=false;
 }
-async function doLogin(e) {
+
+async function doLogin(e){
   e.preventDefault();
   const email=$('login-email').value.trim(), pass=$('login-pass').value;
   if(!email||!pass){showToast('Enter email and password','error');return;}
   const btn=$('login-btn'); btn.disabled=true; btn.textContent='Signing in…';
-  try {
+  try{
     const res=await API.call({action:'login',email,password:pass});
     if(res.success){ LS.set('pt_token',res.token); S.user={email:res.email,name:res.name,role:res.role}; loadApp(); }
-    else {
+    else{
       showToast(res.message||'Login failed','error');
       if(res.code==='PENDING') showAuthPage('pg-pending');
       if(res.code==='UNVERIFIED'){ S.otpEmail=email; $('otp-info').innerHTML=`Enter the code sent to <strong>${email}</strong>`; showAuthPage('pg-otp'); }
     }
-  } catch(err) { showToast('Login failed. Check your connection.','error'); }
-  finally { btn.disabled=false; btn.textContent='Sign In'; }
+  }catch(err){ showToast('Login failed. Check your connection.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Sign In'; }
 }
-async function doRegister(e) {
+
+async function doRegister(e){
   e.preventDefault();
   const name=$('reg-name').value.trim(), email=$('reg-email').value.trim();
   const phone=$('reg-phone').value.trim(), pass=$('reg-pass').value, pass2=$('reg-pass2').value;
@@ -865,89 +663,97 @@ async function doRegister(e) {
   if(pass!==pass2){showToast('Passwords do not match','error');return;}
   if(pass.length<6){showToast('Password must be at least 6 characters','error');return;}
   const btn=$('reg-btn'); btn.disabled=true; btn.textContent='Registering…';
-  try {
+  try{
     const res=await API.call({action:'register',name,email,phone,password:pass});
     if(res.success){ S.otpEmail=email; $('otp-info').innerHTML=`Code sent to <strong>${email}</strong>`; showAuthPage('pg-otp'); setTimeout(()=>$('otp-input').focus(),200); showToast('📧 Check your email for the code','success',6000); }
     else showToast(res.message,'error');
-  } catch(err) { showToast('Registration failed. Try again.','error'); }
-  finally { btn.disabled=false; btn.textContent='Create Account & Send Code'; }
+  }catch(err){ showToast('Registration failed. Try again.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Create Account & Send Code'; }
 }
-async function submitOTP() {
+
+async function submitOTP(){
   const otp=$('otp-input').value.trim(), email=S.otpEmail;
   if(!email){showAuthPage('pg-register');return;}
   if(otp.length!==6){showToast('Enter the complete 6-digit code','error');return;}
   const btn=$('otp-btn'); btn.disabled=true; btn.textContent='Verifying…';
-  try {
+  try{
     const res=await API.call({action:'verifyOTP',email,otp});
     if(res.success){ showToast('✅ Email verified! Awaiting admin approval.','success',7000); $('otp-input').value=''; $('login-email').value=email; S.otpEmail=null; showAuthPage('pg-login'); }
     else showToast(res.message,'error');
-  } catch(err) { showToast('Verification failed. Try again.','error'); }
-  finally { btn.disabled=false; btn.textContent='Verify Code'; }
+  }catch(err){ showToast('Verification failed. Try again.','error'); }
+  finally{ btn.disabled=false; btn.textContent='Verify Code'; }
 }
-async function resendOTPCode() {
+async function resendOTPCode(){
   const email=S.otpEmail;
   if(!email){showToast('Email not found. Please register again.','error');return;}
-  try { const res=await API.call({action:'resendOTP',email}); if(res.success) showToast('📧 New code sent!','success',5000); else showToast(res.message,'error'); }
-  catch(_) { showToast('Failed to resend. Try again.','error'); }
+  try{ const res=await API.call({action:'resendOTP',email}); if(res.success) showToast('📧 New code sent!','success',5000); else showToast(res.message,'error'); }
+  catch(_){ showToast('Failed to resend. Try again.','error'); }
 }
-document.addEventListener('DOMContentLoaded',()=>{ const oi=$('otp-input'); if(oi) oi.addEventListener('input',()=>{ if(oi.value.length===6) submitOTP(); }); });
+document.addEventListener('DOMContentLoaded',()=>{
+  const oi=$('otp-input');
+  if(oi) oi.addEventListener('input',()=>{ if(oi.value.length===6) submitOTP(); });
+});
 
-// ═══ THEME ══════════════════════════════════════════════
-function toggleTheme() {
+// ═══ THEME ════════════════════════════════════════════════
+function toggleTheme(){
   const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next);
   LS.set('pt_theme',next);
   $('theme-btn').textContent=next==='dark'?'☀':'🌙';
 }
 
-// ═══ LOGOUT ═════════════════════════════════════════════
-async function doLogout() {
-  try { await API.auth('logout'); } catch(_) {}
+// ═══ LOGOUT ═══════════════════════════════════════════════
+async function doLogout(){
+  try{ await API.auth('logout'); }catch(_){}
   LS.del('pt_token'); S.user=null; S.punchInTime=null;
   if(S.clockInt){ clearInterval(S.clockInt); S.clockInt=null; }
   $('app').style.display='none'; $('app').hidden=true;
   $('auth').style.display=''; $('auth').hidden=false;
-  showAuthPage('pg-login'); showToast('Signed out successfully','info');
+  showAuthPage('pg-login');
+  showToast('Signed out successfully','info');
 }
 
-// ═══ APP INIT ═══════════════════════════════════════════
-async function init() {
+// ═══ APP INIT ═════════════════════════════════════════════
+async function init(){
   const theme=LS.get('pt_theme')||'light';
   document.documentElement.setAttribute('data-theme',theme);
   $('theme-btn').textContent=theme==='dark'?'☀':'🌙';
+
   const token=LS.get('pt_token');
-  if(token) {
+  if(token){
     setLoading(true);
-    try {
+    try{
       const res=await API.call({action:'checkSession',token});
       if(res.valid){ S.user={email:res.email,name:res.name,role:res.role}; loadApp(); return; }
-    } catch(_) {} finally { setLoading(false); }
+    }catch(_){}finally{ setLoading(false); }
     LS.del('pt_token');
   }
   $('auth').style.display=''; $('auth').hidden=false;
   showAuthPage('pg-login');
 }
-function loadApp() {
+
+function loadApp(){
   $('auth').style.display='none'; $('auth').hidden=true;
   $('app').style.display='flex'; $('app').hidden=false;
   $('nav-ava').textContent=(S.user.name||'?')[0].toUpperCase();
   $('nav-name').textContent=S.user.name;
   if(S.user.role!=='admin') $('admin-nav-btn').style.display='none';
   startClock();
-  switchTab('punch');
+  switchTab('punch'); // Home page = Punch entry, per product requirement
 }
 
-// ═══ CLOCK ══════════════════════════════════════════════
-function startClock() {
+// ═══ CLOCK (Dhaka-timezone-aware, decoupled from device timezone) ═══
+function startClock(){
   if(S.clockInt) clearInterval(S.clockInt);
-  const tick = () => {
-    const ts=dhakaTimeStrSec(), now=dhakaNow();
+  const tick=()=>{
+    const ts=dhakaTimeStrSec();
+    const now=dhakaNow();
     const ds=now.toLocaleDateString('en-BD',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
     const cd=$('clock-display'), cdt=$('clock-date-txt'), rp=$('record-time-preview');
     if(cd) cd.textContent=ts;
     if(cdt) cdt.textContent=ds;
     if(rp) rp.textContent=ts;
-    if(S.punchInTime) {
+    if(S.punchInTime){
       const [ph,pm]=S.punchInTime.split(':').map(Number);
       const st=new Date(now); st.setHours(ph,pm,0,0);
       if(st>now) st.setDate(st.getDate()-1);
@@ -959,24 +765,19 @@ function startClock() {
   tick(); S.clockInt=setInterval(tick,1000);
 }
 
-// ═══ PUNCH PAGE ═════════════════════════════════════════
-async function setupPunchPage() {
+// ═══ HOME / PUNCH PAGE ════════════════════════════════════
+async function setupPunchPage(){
   setLoading(true);
-  try {
-    const today = dhakaDateStr();
-    const histStart = dhakaDateOffset(-20); // 21 days history
-    const [tR,pR,hR] = await Promise.all([
-      API.auth('getTimeTaps'),
-      API.auth('getTodayPunch'),
-      API.auth('getWeekPunches',{start:histStart,end:today})
-    ]);
+  try{
+    const [tR,pR]=await Promise.all([API.auth('getTimeTaps'),API.auth('getTodayPunch')]);
     const taps=(tR.success&&tR.taps)||[];
-    renderPunchPage(taps, pR.success?pR.punch:null, hR.success?hR.punches:[], today, histStart);
-  } catch(err) { showToast('Failed to load punch data','error'); }
-  finally { setLoading(false); }
+    renderPunchPage(taps,pR.success?pR.punch:null);
+  }catch(err){ showToast('Failed to load punch data','error'); }
+  finally{ setLoading(false); }
 }
 
-function renderPunchPage(taps, punch, history, today, histStart) {
+function renderPunchPage(taps,punch){
+  const today=dhakaDateStr();
   S.punchInTime=(taps.length>0&&punch&&!punch.punchOut)?taps[0].time:null;
 
   const sessionBarHtml=punch?`
@@ -987,45 +788,21 @@ function renderPunchPage(taps, punch, history, today, histStart) {
       <div class="session-sep">|</div>
       <div class="session-stat"><span>Total</span><strong class="dur-t">${punch.minutes?toHrsMin(punch.minutes):'—'}</strong></div>
       ${punch.punchIn&&!punch.punchOut?`<div class="session-sep">|</div><div class="session-stat"><span>Elapsed</span><strong class="dur-t" id="elapsed-disp">—</strong></div>`:''}
-    </div>`:''
+    </div>`:'';
+
+  const tapLogHtml=taps.length?taps.map((t,i)=>{
+    const isIn=i===0, isOut=i===taps.length-1&&taps.length>1;
+    const role=isIn?`<span class="tap-role tap-in">▶ IN</span>`:isOut?`<span class="tap-role tap-out">⏹ OUT</span>`:`<span class="tap-role tap-mid">MID</span>`;
+    return `<div class="tap-log-item"><div class="tap-seq">${i+1}</div><div class="tap-time">${t.time}</div>${role}<button class="btn-icon danger" onclick="deleteTapEntry('${t.time}')">✕</button></div>`;
+  }).join(''):`<p class="text-muted" style="font-size:12.5px">No taps today. Tap the button above when you arrive or leave!</p>`;
 
   const tapCount=taps.length;
   const firstTap=tapCount?taps[0].time:null, lastTap=tapCount?taps[tapCount-1].time:null;
 
-  const tapLogHtml=taps.length?taps.map((t,i)=>{
-    const isIn=i===0, isOut=i===taps.length-1&&taps.length>1;
-    const role=isIn?`<span class="tap-role tap-in">▶ IN</span>`:isOut?`<span class="tap-role tap-out">⏹ OUT</span>`:`<span class="tap-role tap-mid">● MID</span>`;
-    return `<div class="tap-log-item"><div class="tap-seq">${i+1}</div><div class="tap-time">${t.time}</div>${role}<button class="btn-icon danger" onclick="deleteTapEntry('${t.time}')">✕</button></div>`;
-  }).join(''):`<p class="text-muted" style="font-size:12.5px;padding:6px 0">No taps today — tap the button above when you arrive or leave!</p>`;
-
-  // Build punch history table (most recent first)
-  const sortedHistory = [...(history||[])].sort((a,b)=>b.date.localeCompare(a.date));
-  const DNAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const histRows = sortedHistory.length
-    ? sortedHistory.map(p=>{
-        const d=new Date(p.date+'T00:00:00');
-        const dayName=DNAMES[d.getDay()];
-        const isToday=p.date===today;
-        return `<tr>
-          <td><span class="badge ${isToday?'badge-pri':'badge-neu'}" style="font-size:10px">${dayName}</span></td>
-          <td style="font-size:11.5px;color:var(--txt2)">${p.date.slice(5)}</td>
-          <td class="plog-in">${p.punchIn||'—'}</td>
-          <td class="plog-out">${p.punchOut||'—'}</td>
-          <td class="plog-hrs">${p.minutes?toHrsMin(p.minutes):'—'}</td>
-          <td><button class="btn-icon danger" onclick="deletePunchEntry('${p.date}')" title="Delete">✕</button></td>
-        </tr>`;
-      }).join('')
-    : `<tr><td colspan="6" style="text-align:center;padding:22px;color:var(--txt3)">No records in the last 21 days.</td></tr>`;
-
   $('tab-punch').innerHTML=`
     <div class="punch-page">
-      <div class="hero-clock">
-        <div class="hero-time" id="clock-display">--:--:--</div>
-        <div class="hero-date" id="clock-date-txt">Loading…</div>
-      </div>
-
+      <div class="hero-clock"><div class="hero-time" id="clock-display">--:--:--</div><div class="hero-date" id="clock-date-txt">Loading…</div></div>
       ${sessionBarHtml}
-
       <div class="record-wrap">
         <button class="record-btn" id="record-tap-btn" onclick="doPunchTap()">
           <span class="record-btn-icon">📍</span>
@@ -1033,50 +810,26 @@ function renderPunchPage(taps, punch, history, today, histStart) {
           <span class="record-btn-time" id="record-time-preview">--:--:--</span>
         </button>
         <div class="tap-count-txt">${tapCount?`<strong>${tapCount}</strong> tap${tapCount>1?'s':''} today${firstTap?` · IN ${firstTap}`:''}${lastTap&&lastTap!==firstTap?` · OUT ${lastTap}`:''}`:'No taps recorded yet today'}</div>
-        <div class="record-sub-hint">First tap = IN &nbsp;·&nbsp; Last tap = OUT</div>
+        <div class="record-sub-hint">First tap of the day = IN &nbsp;·&nbsp; Last tap = OUT</div>
       </div>
 
-      <div class="card">
-        <h3 class="card-title">⏐ Today's Tap Log <span style="font-weight:400;font-size:11.5px;color:var(--txt2)">${tapCount?`(${tapCount} taps)`:''}</span></h3>
-        <div id="tap-log-list">${tapLogHtml}</div>
-      </div>
+      <div class="card"><h3 class="card-title">🕐 Today's Tap Log <span style="font-weight:400;font-size:11.5px;color:var(--txt2)">${tapCount?`(${tapCount})`:''}</span></h3><div id="tap-log-list">${tapLogHtml}</div></div>
 
-      <div class="card">
-        <div class="collapse-toggle" onclick="toggleCollapse('hist-body','hist-chev')">
-          <h3 class="card-title" style="margin:0">📋 Punch IN / OUT History <span style="font-size:11px;font-weight:400;color:var(--txt3)">(last 21 days)</span></h3>
-          <span class="collapse-chev" id="hist-chev">▼</span>
-        </div>
-        <div class="collapse-body" id="hist-body">
-          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px">
-            <table class="plog-table" style="min-width:360px">
-              <thead><tr>
-                <th>Day</th><th>Date</th><th>Punch In</th><th>Punch Out</th><th>Hours</th><th></th>
-              </tr></thead>
-              <tbody>${histRows}</tbody>
-            </table>
-          </div>
-          <p class="hint-text" style="margin-top:10px">Use Manual Entry below to add or correct any record. Deleting from this log removes the punch record but not the taps.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="collapse-toggle" onclick="toggleCollapse('manual-body','manual-chev')">
-          <h3 class="card-title" style="margin:0">✏ Manual Entry / Correction</h3>
+      <div class="card" id="manual-entry-card">
+        <div class="collapse-toggle" onclick="toggleManualEntry()">
+          <h3 class="card-title" style="margin:0">✏ Manual Entry</h3>
           <span class="collapse-chev" id="manual-chev">▼</span>
         </div>
         <div class="collapse-body" id="manual-body">
           <div class="manual-form">
-            <p class="text-muted" style="font-size:12.5px">Set or correct IN/OUT for any date. This writes directly to the Punch sheet.</p>
+            <p class="text-muted" style="font-size:12.5px">Directly set IN/OUT for any date — overrides the tap log for that day.</p>
             <div class="form-row">
               <div class="form-group"><label>Date</label><input type="date" id="man-date" class="input" value="${today}" max="${today}"></div>
               <div class="form-group"><label>Punch In</label><input type="time" id="man-in" class="input"></div>
               <div class="form-group"><label>Punch Out</label><input type="time" id="man-out" class="input"></div>
             </div>
             <div class="form-group"><label>Notes (optional)</label><input type="text" id="man-notes" class="input" placeholder="e.g. Work from home"></div>
-            <div class="form-actions">
-              <button class="btn btn-primary" onclick="saveManualEntry()">💾 Save</button>
-              <button class="btn btn-ghost" onclick="loadManualDate()">↗ Load Date</button>
-            </div>
+            <div class="form-actions"><button class="btn btn-primary" onclick="saveManualEntry()">💾 Save</button><button class="btn btn-ghost" onclick="loadManualDate()">Load Date</button></div>
           </div>
         </div>
       </div>
@@ -1084,148 +837,125 @@ function renderPunchPage(taps, punch, history, today, histStart) {
   startClock();
 }
 
-function toggleCollapse(bodyId, chevId) {
-  const body=$(bodyId), chev=$(chevId);
-  const open=body.classList.toggle('open');
-  if(chev) chev.classList.toggle('open',open);
+function toggleManualEntry(){
+  const body=$('manual-body'), chev=$('manual-chev');
+  const isOpen=body.classList.toggle('open');
+  chev.classList.toggle('open',isOpen);
 }
 
-async function doPunchTap() {
+async function doPunchTap(){
   const time=dhakaTimeStr();
   const btn=$('record-tap-btn'); if(btn) btn.disabled=true;
-  try {
+  try{
     const res=await API.auth('recordTimeTap',{time});
     if(res.success){ showToast(res.totalTaps===1?`✅ Arrival recorded at ${time}`:`✅ Time recorded at ${time} (tap #${res.totalTaps})`,'success',3500); setTimeout(()=>setupPunchPage(),450); }
-    else { showToast(res.message,'error'); if(btn) btn.disabled=false; }
-  } catch(err) { showToast('Recording failed. Try again.','error'); if(btn) btn.disabled=false; }
+    else{ showToast(res.message,'error'); if(btn) btn.disabled=false; }
+  }catch(err){ showToast('Recording failed. Try again.','error'); if(btn) btn.disabled=false; }
 }
-async function deleteTapEntry(time) {
+async function deleteTapEntry(time){
   if(!confirm(`Remove tap at ${time}?`)) return;
   const res=await API.auth('deleteTap',{time,date:dhakaDateStr()});
   if(res.success){ showToast('Tap removed','info'); setupPunchPage(); } else showToast(res.message,'error');
 }
-async function deletePunchEntry(date) {
-  if(!confirm(`Delete punch record for ${date}?`)) return;
-  const res=await API.auth('deletePunch',{date});
-  if(res.success){ showToast('Record deleted','info'); setupPunchPage(); } else showToast(res.message,'error');
-}
-async function saveManualEntry() {
+async function saveManualEntry(){
   const date=$('man-date').value, punchIn=$('man-in').value, punchOut=$('man-out').value, notes=$('man-notes').value;
   if(!date){showToast('Date required','error');return;}
   if(!punchIn){showToast('Punch-in time required','error');return;}
   if(punchOut&&punchOut<=punchIn){showToast('Punch-out must be after punch-in','error');return;}
   const res=await API.auth('updatePunch',{date,punchIn,punchOut,notes});
-  if(res.success){ showToast('✅ '+res.message,'success'); setupPunchPage(); }
+  if(res.success){ showToast('✅ '+res.message,'success'); if(date===dhakaDateStr()) setupPunchPage(); }
   else showToast(res.message,'error');
 }
-async function loadManualDate() {
+async function loadManualDate(){
   const date=$('man-date').value;
   if(!date){showToast('Select a date first','error');return;}
   const res=await API.auth('getWeekPunches',{start:date,end:date});
-  if(res.success&&res.punches&&res.punches.length>0){ const p=res.punches[0]; $('man-in').value=p.punchIn||''; $('man-out').value=p.punchOut||''; $('man-notes').value=p.notes||''; showToast('Record loaded — edit and save','info'); }
-  else { $('man-in').value=$('man-out').value=$('man-notes').value=''; showToast('No record found — fill in to create new','info'); }
+  if(res.success&&res.punches&&res.punches.length>0){ const p=res.punches[0]; $('man-in').value=p.punchIn||''; $('man-out').value=p.punchOut||''; $('man-notes').value=p.notes||''; showToast('Record loaded','info'); }
+  else{ $('man-in').value=$('man-out').value=$('man-notes').value=''; showToast('No record — cleared for new entry','info'); }
 }
 
-// ═══ DASHBOARD ══════════════════════════════════════════
-async function loadDashboard() {
+// ═══ DASHBOARD ════════════════════════════════════════════
+async function loadDashboard(){
   $('tab-dashboard').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try {
-    const [dashR, settR] = await Promise.all([API.auth('getDashboard'), API.auth('getSettings')]);
-    if(!dashR.success){showToast(dashR.message||'Failed','error');return;}
-    if(settR.success) S.settings=settR.settings;
-    renderDashboard(dashR.data);
-    // Load chart after rendering the shell
-    setTimeout(()=>loadChartData(S.chartRange||'7d'), 100);
-  } catch(e) {
-    $('tab-dashboard').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load dashboard.</p><button class="btn btn-primary" style="margin-top:12px" onclick="loadDashboard()">Retry</button></div>`;
-  } finally { setLoading(false); }
+  try{
+    const res=await API.auth('getDashboard');
+    if(!res.success){showToast(res.message||'Failed','error');return;}
+    S.settings=res.data; renderDashboard(res.data);
+  }catch(e){ $('tab-dashboard').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load dashboard.</p><button class="btn btn-primary" style="margin-top:12px" onclick="loadDashboard()">Retry</button></div>`; }
+  finally{ setLoading(false); }
 }
 
-function renderDashboard(d) {
-  const C=318, off=C*(1-Math.min(100,d.pct||0)/100);
-  const rc=d.pct>=100?'var(--ok-l)':d.pct>=60?'var(--pri-l)':'var(--warn-l)';
+function renderDashboard(d){
+  const C=326.7, off=C*(1-Math.min(100,d.pct||0)/100);
+  const rc=d.pct>=100?'var(--ok)':d.pct>=60?'var(--pri)':'var(--warn)';
   const lm=d.lastMonth||{};
-  const periodLabel=d.periodLabel||'This Period';
-  const lmLabel=lm.start&&lm.end?`Salary Period: ${fmtRange(lm.start,lm.end)}`:'Last Salary Period';
+  const periodLabel = d.periodLabel || 'This Period';
+  const lmLabel = lm.start&&lm.end ? `Salary Period: ${fmtRange(lm.start,lm.end)}` : 'Last Salary Period';
 
   $('tab-dashboard').innerHTML=`
     <div class="page-hdr">
       <div><h1 class="page-title">Good ${greeting()}, ${(d.name||'').split(' ')[0]}!</h1><p class="page-sub">${periodLabel} · ${fmtRange(d.periodStart,d.periodEnd)}</p></div>
       ${d.todayPunch&&d.todayPunch.punchIn&&!d.todayPunch.punchOut?`<div class="live-badge"><span class="pulse-dot"></span>Clocked in since ${d.todayPunch.punchIn}</div>`:''}
     </div>
-
     <div class="stats-top">
       <div class="ring-card">
-        <svg class="progress-ring" viewBox="0 0 116 116">
-          <circle cx="58" cy="58" r="50" stroke="var(--bdr2)" stroke-width="10" fill="none"/>
-          <circle cx="58" cy="58" r="50" stroke="${rc}" stroke-width="10" fill="none" stroke-linecap="round"
-            stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 58 58)"
+        <svg class="progress-ring" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" stroke="var(--bdr2)" stroke-width="10" fill="none"/>
+          <circle cx="60" cy="60" r="52" stroke="${rc}" stroke-width="10" fill="none" stroke-linecap="round"
+            stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 60 60)"
             style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)"/>
-          <text x="58" y="55" text-anchor="middle" fill="var(--txt)" font-family="'JetBrains Mono',monospace" font-size="19" font-weight="700">${d.pct}%</text>
-          <text x="58" y="70" text-anchor="middle" fill="var(--txt2)" font-size="9" font-weight="500">of target</text>
+          <text x="60" y="57" text-anchor="middle" fill="var(--txt)" font-family="'JetBrains Mono',monospace" font-size="20" font-weight="600">${d.pct}%</text>
+          <text x="60" y="73" text-anchor="middle" fill="var(--txt2)" font-size="9.5" font-weight="500">of target</text>
         </svg>
-        <div class="ring-info">
-          <div class="ring-hours">${d.doneHrs}h <span>/ ${d.targetHrs}h</span></div>
-          <div class="ring-cap">${periodLabel}</div>
-          <div style="margin-top:4px;font-size:11.5px;color:var(--txt2)">${d.workedDays}/${d.wDaysInPeriod} days</div>
-        </div>
+        <div class="ring-info"><div class="ring-hours">${d.doneHrs}h <span>/ ${d.targetHrs}h</span></div><div class="ring-cap">${periodLabel}</div><div style="margin-top:4px;font-size:11.5px;color:var(--txt2)">${d.workedDays}/${d.wDaysInPeriod} days</div></div>
       </div>
       <div class="mini-stats">
         <div class="stat-card"><div class="stat-icon si-c">⏳</div><div><div class="stat-val">${d.leftHrs}h</div><div class="stat-lbl">Remaining</div></div></div>
         <div class="stat-card"><div class="stat-icon si-a">📅</div><div><div class="stat-val">${d.daysLeft}</div><div class="stat-lbl">Days Left</div></div></div>
-        <div class="stat-card"><div class="stat-icon si-i">📈</div><div><div class="stat-val">${d.avgReqHrs}h</div><div class="stat-lbl">Avg Needed/Day</div></div></div>
-        <div class="stat-card"><div class="stat-icon si-g">✅</div><div><div class="stat-val">${d.avgDoneHrs}h</div><div class="stat-lbl">Avg Done/Day</div></div></div>
+        <div class="stat-card"><div class="stat-icon si-i">📈</div><div><div class="stat-val">${d.avgReqHrs}h/d</div><div class="stat-lbl">Avg Needed</div></div></div>
+        <div class="stat-card"><div class="stat-icon si-g">✅</div><div><div class="stat-val">${d.avgDoneHrs}h/d</div><div class="stat-lbl">Avg Done</div></div></div>
       </div>
     </div>
-
-    <!-- BAR CHART CARD -->
-    <div class="card chart-card">
-      <div class="chart-hdr">
-        <h3 class="card-title" style="margin:0">📊 Daily Work Hours</h3>
-        <div class="range-pills" id="range-pills-container">
-          ${buildRangePills(S.chartRange||'7d')}
-        </div>
-      </div>
-      <div class="custom-range-row" id="custom-range-row" ${(S.chartRange||'7d')!=='custom'?'hidden':''}>
-        <input type="date" id="chart-custom-start" class="input" value="${dhakaDateOffset(-29)}" max="${dhakaDateStr()}">
-        <span>to</span>
-        <input type="date" id="chart-custom-end" class="input" value="${dhakaDateStr()}" max="${dhakaDateStr()}">
-        <button class="btn btn-primary" style="padding:7px 14px;font-size:12.5px" onclick="loadChartData('custom')">Go</button>
-      </div>
-      <div id="chart-range-label" style="font-size:11.5px;color:var(--txt3);margin-bottom:8px"></div>
-      <div class="chart-wrap">
-        <div id="chart-area"><div class="chart-loading"><div class="spinner"></div></div></div>
-      </div>
-      <div id="chart-summary-bar" class="chart-summary-bar" hidden></div>
-      <div class="chart-meta">
-        <span><span class="chart-legend-dot" style="background:var(--pri)"></span>Met minimum</span>
-        <span><span class="chart-legend-dot" style="background:var(--warn-l)"></span>Below minimum</span>
-        <span><span class="chart-legend-dot" style="background:var(--bdr2)"></span>No punch</span>
-        <span><span class="chart-legend-dot" style="background:var(--bdr);opacity:.4"></span>Holiday</span>
-        <span style="color:var(--err);opacity:.7">— — min</span>
-      </div>
-    </div>
-
     <div class="card">
       <h2 class="card-title">📆 ${periodLabel} Attendance</h2>
       <div class="week-grid">
         ${(d.periodGrid||[]).map(day=>`
           <div class="day-cell ${day.isToday?'today':''} ${day.isFuture?'future':''} ${!day.punchIn&&!day.isFuture?'absent':''}">
-            <div class="day-name">${day.day}</div>
-            <div class="day-date">${day.date.slice(5)}</div>
+            <div class="day-name">${day.day}</div><div class="day-date">${day.date.slice(5)}</div>
             ${day.punchIn?`<div class="day-in">▶ ${day.punchIn}</div><div class="day-out${!day.punchOut?' pending':''}">${day.punchOut?'⏹ '+day.punchOut:'● live'}</div><div class="day-hrs ${day.mins>0?(day.mins>=480?'hrs-ok':'hrs-low'):''}">${day.mins?toHrsMin(day.mins):'—'}</div>`:day.isFuture?`<div class="day-future">—</div>`:`<div class="day-absent">No entry</div>`}
           </div>`).join('')}
       </div>
     </div>
+    <div class="chart-wrap">
+      <div class="chart-header">
+        <div class="chart-title">📊 Daily Worked Hours</div>
+        <div class="chart-controls">${RANGE_PRESETS.map(rp=>`<button class="range-btn${rp.id===_chartRange?' active':''}" data-range="${rp.id}" onclick="setChartRange('${rp.id}')">${rp.label}</button>`).join('')}</div>
+      </div>
+      <div class="range-custom-row" id="custom-range-fields" ${_chartRange!=='custom'?'hidden':''}>
+        <input type="date" id="chart-start" class="input" value="${_chartCustom.start}">
+        <span style="color:var(--txt3)">—</span>
+        <input type="date" id="chart-end" class="input" value="${_chartCustom.end}">
+        <button class="btn btn-primary" style="padding:5px 11px;font-size:11px" onclick="applyCustomRange()">Apply</button>
+      </div>
+      <div id="chart-container" style="margin-top:10px"></div>
+    </div>
 
-    <div class="card ${lm.notYetJoined?'card-pri':(lm.willDeduct?'card-warn':'card-ok')}">
-      <div class="lm-header">
-        <div style="display:flex;align-items:center">
-          <span class="lm-icon ${lm.willDeduct?'err':'ok'}">${lm.notYetJoined?'ℹ':lm.willDeduct?'⚠':'✓'}</span>
-          <span class="lm-title">${lmLabel}</span>
+    <div class="card">
+      <div class="collapse-toggle" onclick="togglePunchHistory()">
+        <div class="card-title" style="margin:0">🕐 Punch IN/OUT History <span style="font-weight:400;font-size:11px;color:var(--txt2)">all recorded times</span></div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="display:flex;gap:4px" onclick="event.stopPropagation()">${[30,60,90].map(d=>`<button class="ph-days-btn range-btn${_historyDays===d?' active':''}" data-days="${d}" onclick="setPHDays(${d})">${d}d</button>`).join('')}</div>
+          <span class="collapse-chev" id="ph-chev">▼</span>
         </div>
-        ${lm.notYetJoined?'':lm.willDeduct?`<span class="deduction-badge">BDT ${(lm.totalDed||0).toLocaleString()} deduction</span>`:`<span class="ok-badge">No Deduction</span>`}
+      </div>
+      <div class="collapse-body" id="punch-history-body"></div>
+    </div>
+
+    <div class="card ${lm.notYetJoined?'':(lm.willDeduct?'card-warn':'card-ok')}">
+      <div class="lm-header">
+        <div style="display:flex;align-items:center"><span class="lm-icon ${lm.willDeduct?'err':'ok'}">${lm.notYetJoined?'ℹ':lm.willDeduct?'⚠':'✓'}</span><span class="lm-title">${lmLabel}</span></div>
+        ${lm.notYetJoined?'':(lm.willDeduct?`<span class="deduction-badge">BDT ${(lm.totalDed||0).toLocaleString()} deduction</span>`:`<span class="ok-badge">No Deduction</span>`)}
       </div>
       ${lm.notYetJoined
         ? `<p class="text-muted" style="font-size:12.5px">This salary period is entirely before your join date — nothing to calculate yet.</p>`
@@ -1238,611 +968,494 @@ function renderDashboard(d) {
             ${(lm.dedHols||0)>0?`<div><span>Leave deduction (${lm.dedHols}d)</span><strong class="text-err">BDT ${lm.dedHolDed.toLocaleString()}</strong></div>`:''}
           </div>`}
     </div>`;
+  requestAnimationFrame(() => loadDashboardChart(_chartRange));
 }
 
-// ═══ BAR CHART ══════════════════════════════════════════
-function buildRangePills(active) {
-  const sm = window.innerWidth < 480;
-  const xs = window.innerWidth < 380;
-  const ranges = [
-    {k:'7d',   long:'7 Days',      short:'7D'},
-    {k:'10d',  long:'10 Days',     short:'10D'},
-    {k:'10wd', long:'10 Work Days',short:'10 WD'},
-    {k:'30d',  long:'Month',       short:'30D'},
-    {k:'60d',  long:'2 Months',    short:'2M'},
-    {k:'custom',long:'Custom',     short:'⚙'},
-  ];
-  return ranges.map(r=>`<button class="range-pill ${active===r.k?'active':''}" onclick="setChartRange('${r.k}')" title="${r.long}">${xs?r.short:sm?r.short:r.long}</button>`).join('');
-}
-function setChartRange(range) {
-  S.chartRange=range;
-  const pillsEl=$('range-pills-container');
-  if(pillsEl) pillsEl.innerHTML=buildRangePills(range);
-  const customRow=$('custom-range-row');
-  if(customRow) customRow.hidden=(range!=='custom');
-  if(range!=='custom') loadChartData(range);
-}
+// ═══ BAR CHART & PUNCH HISTORY ════════════════════════════
+let _chartRange = '7d';
+let _chartCustom = {start:'', end:''};
+let _historyDays = 90;
 
-function getChartDateRange(range) {
-  const today=dhakaDateStr();
-  if(range==='7d')   return {start:dhakaDateOffset(-6),  end:today, label:'Last 7 Days'};
-  if(range==='10d')  return {start:dhakaDateOffset(-9),  end:today, label:'Last 10 Days'};
-  if(range==='30d')  return {start:dhakaDateOffset(-29), end:today, label:'Last 30 Days'};
-  if(range==='60d')  return {start:dhakaDateOffset(-59), end:today, label:'Last 2 Months'};
-  if(range==='10wd') {
-    const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
-    const DNAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    let count=0, cur=dhakaNow();
-    while(count<10) {
-      if(!hdays.has(DNAMES[cur.getDay()])) count++;
-      if(count<10) cur.setDate(cur.getDate()-1);
-    }
-    return {start:localDateStr(cur), end:today, label:'Last 10 Working Days'};
+const RANGE_PRESETS = [
+  {id:'7d',   label:'7 days'},
+  {id:'10d',  label:'10 days'},
+  {id:'10w',  label:'10 working days'},
+  {id:'30d',  label:'30 days'},
+  {id:'2m',   label:'2 months'},
+  {id:'custom',label:'Custom'},
+];
+
+function getDateRangeForPreset(preset, custom) {
+  const today = dhakaDateStr();
+  const addDays = (d, n) => { const x=new Date(d+'T00:00:00'); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+  if (preset==='7d')  return {start:addDays(today,-6), end:today};
+  if (preset==='10d') return {start:addDays(today,-9), end:today};
+  if (preset==='30d') return {start:addDays(today,-29), end:today};
+  if (preset==='2m')  { const n=dhakaNow(); const s=new Date(n.getFullYear(),n.getMonth()-2,n.getDate()); return {start:s.toISOString().slice(0,10), end:today}; }
+  if (preset==='10w') {
+    const cfg=S.settings||{}, hdSet=new Set((cfg.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+    const DN=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    let cnt=0, d=new Date(today+'T00:00:00');
+    while(cnt<10){ if(!hdSet.has(DN[d.getDay()])) cnt++; if(cnt<10) d.setDate(d.getDate()-1); }
+    return {start:d.toISOString().slice(0,10), end:today};
   }
-  if(range==='custom') {
-    const cs=$('chart-custom-start')?.value||dhakaDateOffset(-29);
-    const ce=$('chart-custom-end')?.value||today;
-    return {start:cs, end:ce<=today?ce:today, label:`${cs} to ${ce}`};
-  }
-  return {start:today, end:today, label:'Today'};
+  if (preset==='custom'&&custom&&custom.start&&custom.end) return {start:custom.start, end:custom.end};
+  return {start:addDays(today,-6), end:today};
 }
 
-async function loadChartData(range) {
-  const chartArea=$('chart-area');
-  if(!chartArea) return;
-  const {start, end, label}=getChartDateRange(range);
-  const lbl=$('chart-range-label');
-  if(lbl) lbl.textContent=label+': '+fmtRange(start,end);
-  chartArea.innerHTML=`<div class="chart-loading"><div class="spinner sm"></div></div>`;
+async function loadDashboardChart(preset, custom) {
+  if (preset) _chartRange=preset;
+  if (custom)  _chartCustom=custom;
+  const range=getDateRangeForPreset(_chartRange, _chartCustom);
+  const el=$('chart-container');
+  if(!el) return;
+  el.innerHTML='<div class="chart-empty"><div class="spinner" style="margin:0 auto"></div></div>';
   try {
-    const res=await API.auth('getWeekPunches',{start,end});
-    if(!res.success){chartArea.innerHTML=`<p class="text-muted" style="padding:20px 0">Failed to load chart data.</p>`;return;}
-    const items=buildDateItems(start,end,res.punches||[]);
-    renderBarChart(items, S.settings?.minDayHrs||8);
-    renderChartSummary(items, S.settings?.minDayHrs||8);
-  } catch(e) { chartArea.innerHTML=`<p class="text-muted" style="padding:20px 0">Error loading chart data.</p>`; }
+    const res=await API.auth('getPunchRange',{start:range.start, end:range.end});
+    if(!res.success){el.innerHTML='<div class="chart-empty">Failed to load chart data</div>';return;}
+    renderBarChart(el, res, range);
+  } catch(e){ el.innerHTML='<div class="chart-empty">Chart load failed</div>'; }
 }
 
-function buildDateItems(start, end, punches) {
-  const items=[];
-  const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
-  const DNAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const today=dhakaDateStr();
-  let cur=new Date(start+'T00:00:00');
-  const endD=new Date(end+'T00:00:00');
-  while(cur<=endD) {
-    const ds=localDateStr(cur);
-    const dayName=DNAMES[cur.getDay()];
-    const punch=punches.find(p=>p.date===ds);
-    items.push({
-      date:ds, day:dayName.slice(0,3), fullDay:dayName,
-      mins:punch?(parseInt(punch.minutes)||0):0,
-      punchIn:punch?.punchIn||'', punchOut:punch?.punchOut||'',
-      notes:punch?.notes||'',
-      isHoliday:hdays.has(dayName),
-      isToday:ds===today, isFuture:ds>today
-    });
-    cur.setDate(cur.getDate()+1);
+function renderBarChart(el, data, range) {
+  const days=data.days||[];
+  if(!days.length){el.innerHTML='<div class="chart-empty">No data for this range</div>';return;}
+  const totalMins=days.reduce((s,d)=>s+d.mins,0);
+  const workedDays=days.filter(d=>d.mins>0).length;
+  const avgMins=workedDays>0?Math.round(days.filter(d=>d.mins>0).reduce((s,d)=>s+d.mins,0)/workedDays):0;
+  const maxMins=Math.max(...days.map(d=>d.mins),(data.minDayHrs||8)*60,1);
+  const targetLine=(data.minDayHrs||8)*60;
+  const n=days.length;
+  const BAR_W=Math.max(12,Math.min(30,Math.floor(560/n)-4));
+  const GAP=Math.max(3,Math.floor(BAR_W*0.2));
+  const LEFT=34, SVG_H=162, CHART_H=108, BOTTOM=32;
+  const SVG_W=LEFT+n*(BAR_W+GAP)+28;
+  const maxHrsCeil=Math.ceil(maxMins/60);
+  const yStep=maxHrsCeil<=8?2:maxHrsCeil<=16?4:8;
+  let yGrid='',bars='',xLabels='';
+  for(let h=0;h<=maxHrsCeil;h+=yStep){
+    const yPos=SVG_H-BOTTOM-Math.round((h*60/maxMins)*CHART_H);
+    if(yPos>=SVG_H-BOTTOM-CHART_H&&yPos<=SVG_H-BOTTOM)
+      yGrid+=`<line x1="${LEFT-3}" y1="${yPos}" x2="${LEFT+n*(BAR_W+GAP)}" y2="${yPos}" stroke="var(--bdr)" stroke-width="1" stroke-dasharray="${h===0?'0':'3,3'}"/><text x="${LEFT-5}" y="${yPos+3.5}" text-anchor="end" font-size="9" fill="var(--txt3)">${h}h</text>`;
   }
-  return items;
-}
-
-function renderBarChart(dateItems, minDayHrs) {
-  const chartArea=$('chart-area');
-  if(!chartArea||!dateItems.length) { chartArea.innerHTML='<p class="text-muted" style="padding:20px 0">No data for this period.</p>'; return; }
-
-  const minDayMins=minDayHrs*60;
-  const n=dateItems.length;
-  const W=Math.max(600, n*38), H=200;
-  const PAD={t:16, r:36, b:50, l:40};
-  const plotW=W-PAD.l-PAD.r, plotH=H-PAD.t-PAD.b;
-  const maxMins=Math.max(...dateItems.map(d=>d.mins), minDayMins*1.25, 120);
-  const maxHrs=Math.ceil(maxMins/60);
-  const step=maxHrs<=6?1:maxHrs<=12?2:maxHrs<=18?3:maxHrs<=24?4:6;
-  const yTicks=[]; for(let h=0;h<=maxHrs;h+=step) yTicks.push(h);
-  const yPx=mins=>PAD.t+plotH-(Math.min(mins,maxMins)/maxMins)*plotH;
-  const barSlotW=plotW/n;
-  const barW=Math.min(Math.max(barSlotW*0.62,5),34);
-  const showEvery=n<=14?1:n<=30?2:n<=50?3:5;
-
-  let defs=`<defs>
-    <linearGradient id="cg-ok" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA" stop-opacity=".9"/></linearGradient>
-    <linearGradient id="cg-low" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#D97706" stop-opacity=".9"/></linearGradient>
-    <linearGradient id="cg-zero" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CBD5E1"/><stop offset="100%" stop-color="#94A3B8" stop-opacity=".6"/></linearGradient>
-  </defs>`;
-  let grid='', bars='', labels='', hovers='';
-
-  // Y-axis grid lines & labels
-  yTicks.forEach(h=>{
-    const y=yPx(h*60);
-    grid+=`<line x1="${PAD.l}" y1="${y}" x2="${W-PAD.r}" y2="${y}" stroke="var(--bdr)" stroke-width="0.8"/>`;
-    grid+=`<text x="${PAD.l-6}" y="${y+3.5}" text-anchor="end" font-size="9" fill="var(--txt3)" font-family="sans-serif">${h}h</text>`;
+  const tlY=SVG_H-BOTTOM-Math.round((targetLine/maxMins)*CHART_H);
+  if(tlY>=SVG_H-BOTTOM-CHART_H&&tlY<=SVG_H-BOTTOM)
+    yGrid+=`<line x1="${LEFT}" y1="${tlY}" x2="${LEFT+n*(BAR_W+GAP)}" y2="${tlY}" stroke="var(--pri)" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.55"/><text x="${LEFT+n*(BAR_W+GAP)+3}" y="${tlY+4}" font-size="9" fill="var(--pri)" opacity="0.8">min</text>`;
+  const today=dhakaDateStr();
+  days.forEach((d,i)=>{
+    const x=LEFT+i*(BAR_W+GAP);
+    const barH=d.mins>0?Math.max(3,Math.round((d.mins/maxMins)*CHART_H)):0;
+    const y=SVG_H-BOTTOM-barH;
+    const color=!d.isWorkDay&&d.mins===0?'var(--bdr2)':d.mins===0?'var(--err)':d.mins>=targetLine?'var(--ok)':'var(--warn)';
+    const op=!d.isWorkDay&&d.mins===0?'0.32':'1';
+    bars+=`<rect class="chart-bar" x="${x}" y="${y}" width="${BAR_W}" height="${Math.max(barH,0)}" rx="3" fill="${color}" opacity="${op}"><title>${d.date}: ${d.mins?toHrsMin(d.mins):'No entry'}${d.punchIn?' ('+d.punchIn+'\u2192'+(d.punchOut||'open')+')':''}</title></rect>`;
+    const isToday=d.date===today;
+    xLabels+=`<text x="${x+BAR_W/2}" y="${SVG_H-14}" text-anchor="middle" font-size="8.5" font-weight="${isToday?'800':'400'}" fill="${isToday?'var(--pri)':'var(--txt3)'}">${d.day}</text><text x="${x+BAR_W/2}" y="${SVG_H-4}" text-anchor="middle" font-size="7.5" fill="var(--txt3)">${d.date.slice(5)}</text>`;
   });
-  // Min line
-  const minY=yPx(minDayMins);
-  grid+=`<line x1="${PAD.l}" y1="${minY}" x2="${W-PAD.r}" y2="${minY}" stroke="#EF4444" stroke-width="1.4" stroke-dasharray="6,4" opacity=".65"/>`;
-  grid+=`<text x="${W-PAD.r+4}" y="${minY+3.5}" font-size="8.5" fill="#EF4444" opacity=".75" font-family="sans-serif">${minDayHrs}h</text>`;
-
-  // Bars
-  dateItems.forEach((item,i)=>{
-    const cx=PAD.l+i*barSlotW+barSlotW/2;
-    const bx=cx-barW/2;
-    const animDelay=(i*0.025).toFixed(3)+'s';
-    
-    if(item.mins>0) {
-      const barH=Math.max(3,(item.mins/maxMins)*plotH);
-      const by=PAD.t+plotH-barH;
-      const fill=item.mins>=minDayMins?'url(#cg-ok)':'url(#cg-low)';
-      const op=item.isHoliday?.65:1;
-      bars+=`<rect x="${bx}" y="${by}" width="${barW}" height="${barH}" fill="${fill}" opacity="${op}" rx="3" ry="3" class="chart-bar" style="animation-delay:${animDelay}"/>`;
-    } else if(!item.isHoliday && !item.isFuture) {
-      // Absent working day — thin stub
-      bars+=`<rect x="${bx}" y="${PAD.t+plotH-3}" width="${barW}" height="3" fill="var(--err-l)" opacity=".2" rx="1.5"/>`;
-    }
-    // Today ring
-    if(item.isToday) {
-      bars+=`<circle cx="${cx}" cy="${PAD.t+plotH+8}" r="3.5" fill="var(--pri)" opacity=".85"/>`;
-    }
-    // X-axis labels
-    if(i%showEvery===0) {
-      const tc=item.isToday?'var(--pri-l)':'var(--txt3)';
-      const fw=item.isToday?'600':'400';
-      labels+=`<text x="${cx}" y="${PAD.t+plotH+20}" text-anchor="middle" font-size="9" fill="${tc}" font-weight="${fw}" font-family="sans-serif">${item.day}</text>`;
-      labels+=`<text x="${cx}" y="${PAD.t+plotH+31}" text-anchor="middle" font-size="8" fill="var(--txt3)" font-family="sans-serif">${item.date.slice(5)}</text>`;
-    }
-    // Invisible hover area
-    hovers+=`<rect x="${bx-2}" y="${PAD.t}" width="${barW+4}" height="${plotH+4}" fill="transparent" class="chart-bar-hover"
-      data-date="${item.date}" data-mins="${item.mins}" data-in="${item.punchIn}" data-out="${item.punchOut}" data-hol="${item.isHoliday}" data-future="${item.isFuture}"/>`;
-  });
-
-  const isMobile = window.innerWidth < 600;
-  // On mobile with few bars, shrink the viewBox width so bars are larger
-  const renderW = (isMobile && n <= 14) ? Math.max(360, n * 44) : W;
-  const svgHtml=`<svg viewBox="0 0 ${renderW} ${H}" xmlns="http://www.w3.org/2000/svg"
-    style="width:100%;min-width:${isMobile&&n<=10?'100%':Math.min(renderW,300)+'px'};display:block;height:auto;aspect-ratio:${renderW}/${H}">
-    ${defs}${grid}${bars}${labels}${hovers}
-  </svg>`;
-
-  chartArea.innerHTML=`<div class="chart-svg-container" style="-webkit-overflow-scrolling:touch">${svgHtml}</div>`;
-
-  // Mouse hover events (desktop)
-  chartArea.querySelectorAll('.chart-bar-hover').forEach(el=>{
-    el.addEventListener('mouseenter', e=>showChartTip(e,el));
-    el.addEventListener('mousemove',  e=>moveChartTip(e));
-    el.addEventListener('mouseleave', hideChartTip);
-    // Touch events (mobile)
-    el.addEventListener('touchstart', e=>{
-      e.preventDefault();
-      const t=e.touches[0];
-      showChartTip(t,el);
-    },{passive:false});
-    el.addEventListener('touchmove', e=>{
-      const t=e.touches[0]; moveChartTip(t);
-    },{passive:true});
-    el.addEventListener('touchend', ()=>{ setTimeout(hideChartTip, 2200); });
-  });
-}
-
-function showChartTip(e, el) {
-  const tip=$('chart-tip');
-  const date=el.dataset.date, mins=parseInt(el.dataset.mins)||0;
-  const pIn=el.dataset.in, pOut=el.dataset.out;
-  const isHol=el.dataset.hol==='true', isFuture=el.dataset.future==='true';
-  const dateStr=new Date(date+'T00:00:00').toLocaleDateString('en-BD',{weekday:'long',month:'short',day:'numeric'});
-  tip.innerHTML=`
-    <div class="ct-date">${dateStr}</div>
-    ${isHol&&!mins?'<div class="ct-hol">Holiday / Day off</div>':''}
-    ${isFuture&&!mins?'<div class="ct-hol">Upcoming</div>':''}
-    ${pIn?`<div class="ct-row"><span>▶ Punch In</span><strong>${pIn}</strong></div>`:''}
-    ${pOut?`<div class="ct-row"><span>⏹ Punch Out</span><strong>${pOut}</strong></div>`:''}
-    ${mins?`<div class="ct-row"><span>⏱ Duration</span><strong>${toHrsMin(mins)}</strong></div>`:(!isHol&&!isFuture?'<div class="ct-absent">No punch recorded</div>':'')}
-  `;
-  tip.hidden=false;
-  moveChartTip(e);
-}
-function moveChartTip(e) {
-  const tip=$('chart-tip');
-  const tw=tip.offsetWidth,th=tip.offsetHeight;
-  let x=e.clientX+14,y=e.clientY-th/2;
-  if(x+tw>window.innerWidth-10) x=e.clientX-tw-14;
-  if(y<5) y=5;
-  if(y+th>window.innerHeight-5) y=window.innerHeight-th-5;
-  tip.style.left=x+'px'; tip.style.top=y+'px';
-}
-function hideChartTip() { $('chart-tip').hidden=true; }
-
-function renderChartSummary(items, minDayHrs) {
-  const bar=$('chart-summary-bar');
-  if(!bar) return;
-  const workItems=items.filter(d=>!d.isHoliday&&!d.isFuture);
-  const punchedItems=workItems.filter(d=>d.mins>0);
-  const totalMins=items.reduce((s,d)=>s+d.mins,0);
-  const avgMins=punchedItems.length?Math.round(totalMins/punchedItems.length):0;
-  const bestItem=items.reduce((best,d)=>d.mins>best.mins?d:best,{mins:0});
-  const minDayMins=minDayHrs*60;
-  const daysMetMin=items.filter(d=>d.mins>=minDayMins).length;
-  bar.innerHTML=`
-    <div class="chart-sum-item"><span>Total</span><strong>${toHrsMin(totalMins)}</strong></div>
-    <div class="chart-sum-item"><span>Avg/Day</span><strong>${avgMins?toHrsMin(avgMins):'—'}</strong></div>
-    <div class="chart-sum-item"><span>Best Day</span><strong>${bestItem.mins?toHrsMin(bestItem.mins):'—'}</strong></div>
-    <div class="chart-sum-item"><span>Days Attended</span><strong>${punchedItems.length}/${workItems.length}</strong></div>
-    <div class="chart-sum-item"><span>Met Minimum</span><strong>${daysMetMin} days</strong></div>
-  `;
-  bar.hidden=false;
-}
-
-// ═══ HISTORY PAGE ═══════════════════════════════════════
-async function loadHistory() {
-  $('tab-history').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
-  setLoading(true);
-  try { const res=await API.auth('getHistory',{weeks:8}); if(res.success) renderHistory(res.history); else showToast(res.message,'error'); }
-  catch(err) { $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load history.</p></div>`; }
-  finally { setLoading(false); }
-}
-function renderHistory(history) {
-  if(!history||!history.length) { $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>No history yet.</p></div>`; return; }
-  $('tab-history').innerHTML=`
-    <div class="page-hdr"><div><h1 class="page-title">Work History</h1><p class="page-sub">Past completed periods — click to expand</p></div></div>
-    <div class="history-list">${history.map((wk,i)=>`
-      <div class="week-card ${wk.met?'wk-met':'wk-miss'}">
-        <div class="week-hdr" onclick="toggleWeek(${i})">
-          <div class="week-left">
-            <span class="badge ${wk.met?'badge-ok':'badge-warn'}">${wk.met?'✓ Met target':'⚠ Below target'}</span>
-            <span class="week-dates">${fmtRange(wk.start,wk.end)}</span>
-          </div>
-          <div class="week-right">
-            <div class="week-hrs">${wk.hrs}h <span class="wk-target">/ ${wk.targetHrs}h</span></div>
-            <div class="wk-bar-out"><div class="wk-bar-in ${wk.met?'bar-ok':'bar-err'}" style="width:${wk.pct}%"></div></div>
-            <span id="chev-${i}" class="week-chev">▼</span>
-          </div>
-        </div>
-        <div class="week-body" id="wk-${i}" hidden>
-          <div class="dt-hdr"><span>Day</span><span>Date</span><span>In</span><span>Out</span><span>Hours</span></div>
-          ${(wk.days||[]).map(day=>`
-            <div class="dt-row ${!day.punchIn?'dt-absent':''}">
-              <span class="dt-day">${day.day}</span>
-              <span>${day.date.slice(5)}</span>
-              <span class="plog-in">${day.punchIn||'—'}</span>
-              <span class="plog-out">${day.punchOut||'—'}</span>
-              <span class="dt-hrs">${day.mins?toHrsMin(day.mins):'—'}</span>
-            </div>`).join('')}
-          <div class="wk-sum">
-            <span>${wk.worked}/${wk.wDays} days attended</span>
-            <span>${wk.hrs}h of ${wk.targetHrs}h (${wk.pct}%)</span>
-          </div>
-        </div>
-      </div>`).join('')}
+  el.innerHTML=`
+    <div class="chart-svg-wrap"><svg width="${Math.max(SVG_W,300)}" height="${SVG_H}" style="display:block;overflow:visible;min-width:${SVG_W}px">${yGrid}${bars}${xLabels}</svg></div>
+    <div class="chart-legend">
+      <span><span class="legend-dot" style="background:var(--ok)"></span>Met target</span>
+      <span><span class="legend-dot" style="background:var(--warn)"></span>Partial</span>
+      <span><span class="legend-dot" style="background:var(--err)"></span>No entry</span>
+      <span><span class="legend-dot" style="background:var(--bdr2)"></span>Off day</span>
+      <span style="margin-left:4px;color:var(--pri)">— min ${data.minDayHrs}h/day</span>
+    </div>
+    <div class="chart-stats-row">
+      <div class="cs-item"><span>Total</span><strong>${toHrsMin(totalMins)}</strong></div>
+      <div class="cs-item"><span>Days worked</span><strong>${workedDays}/${n}</strong></div>
+      <div class="cs-item"><span>Avg/worked day</span><strong>${toHrsMin(avgMins)}</strong></div>
+      <div class="cs-item"><span>Period</span><strong style="font-size:11px">${fmtRange(range.start,range.end)}</strong></div>
     </div>`;
 }
-function toggleWeek(i) { const d=$(`wk-${i}`),c=$(`chev-${i}`); d.hidden=!d.hidden; if(c) c.textContent=d.hidden?'▼':'▲'; }
 
-// ═══ SCHEDULE PAGE ══════════════════════════════════════
+function setChartRange(preset) {
+  _chartRange=preset;
+  document.querySelectorAll('.range-btn[data-range]').forEach(b=>b.classList.toggle('active',b.dataset.range===preset));
+  const cust=$('custom-range-fields');
+  if(cust) cust.hidden=preset!=='custom';
+  if(preset!=='custom') loadDashboardChart(preset);
+}
+function applyCustomRange() {
+  const s=$('chart-start').value, e=$('chart-end').value;
+  if(!s||!e){showToast('Select start and end dates','error');return;}
+  if(s>e){showToast('Start must be before end date','error');return;}
+  _chartCustom={start:s,end:e}; loadDashboardChart('custom',{start:s,end:e});
+}
+
+async function loadPunchHistory() {
+  const el=$('punch-history-body');
+  if(!el) return;
+  el.innerHTML='<div style="text-align:center;padding:22px"><div class="spinner" style="margin:0 auto"></div></div>';
+  try{
+    const res=await API.auth('getPunchHistory',{days:_historyDays});
+    if(!res.success){el.innerHTML='<p class="text-muted">Failed to load</p>';return;}
+    renderPunchHistory(el, res.records);
+  }catch(e){el.innerHTML='<p class="text-muted">Load error</p>';}
+}
+function renderPunchHistory(el, records) {
+  if(!records||!records.length){el.innerHTML='<div class="chart-empty"><div class="empty-icon" style="font-size:30px">📭</div><p>No records found.</p></div>';return;}
+  const rowsH=records.map(r=>`<div class="ph-row ${r.punchIn&&r.punchOut?'':'ph-incomplete'}">
+    <span class="ph-date">${fmtDate(r.date)}</span>
+    <span class="ph-in">${r.punchIn||'<span style="color:var(--txt3)">—</span>'}</span>
+    <span class="ph-out">${r.punchOut||'<span style="color:var(--txt3)">—</span>'}</span>
+    <span class="ph-dur">${r.minutes?toHrsMin(r.minutes):'—'}</span>
+    <span class="ph-notes">${r.notes||''}</span>
+  </div>`).join('');
+  el.innerHTML=`<div class="ph-row ph-hdr"><span>Date</span><span>In</span><span>Out</span><span>Duration</span><span>Notes</span></div>${rowsH}<div style="font-size:11px;color:var(--txt3);margin-top:10px;text-align:center">${records.length} records · last ${_historyDays} days</div>`;
+}
+function togglePunchHistory() {
+  const body=$('punch-history-body'), chev=$('ph-chev');
+  if(!body) return;
+  const isOpen=body.classList.toggle('open');
+  if(chev) chev.classList.toggle('open',isOpen);
+  if(isOpen) loadPunchHistory();
+}
+function setPHDays(d) {
+  _historyDays=d;
+  document.querySelectorAll('.ph-days-btn').forEach(b=>b.classList.toggle('active',b.dataset.days==d));
+  loadPunchHistory();
+}
+
+// ═══ SCHEDULE / CLASS ROUTINE ════════════════════════════
 const ALL_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 let _schedResult=null;
-async function loadSchedule() {
+
+async function loadSchedule(){
   $('tab-schedule').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try {
+  try{
     const [cR,sR]=await Promise.all([API.auth('getClassRoutine'),API.auth('getSettings')]);
     S.classSlots=(cR.success&&cR.slots)||[];
     if(sR.success) S.settings=sR.settings;
     renderScheduleTab();
-  } catch(err) { showToast('Failed to load schedule data','error'); }
-  finally { setLoading(false); }
+  }catch(err){ showToast('Failed to load schedule data','error'); }
+  finally{ setLoading(false); }
 }
-function renderScheduleTab() {
+
+function renderScheduleTab(){
   const cfg=S.settings||{};
   const hdays=new Set((cfg.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
   $('tab-schedule').innerHTML=`
-    <div class="page-hdr"><div><h1 class="page-title">📚 Class Routine &amp; Planner</h1><p class="page-sub">Add your class slots — the system suggests work windows to meet your hour targets</p></div></div>
+    <div class="page-hdr"><div><h1 class="page-title">📚 Class Routine &amp; Schedule Planner</h1><p class="page-sub">Enter your classes — the system suggests optimal work slots to meet your hour targets</p></div></div>
     <div class="card">
       <h3 class="section-title">Add Class Slot</h3>
       <div class="sch-add-form">
         <div class="form-group" style="margin:0"><label>Day</label>
-          <select id="cls-day" class="input">${ALL_DAYS.map(d=>`<option value="${d}"${hdays.has(d)?' disabled style="color:var(--txt3)"':''}>${d}${hdays.has(d)?' (off)':''}</option>`).join('')}</select>
+          <select id="cls-day" class="input">${ALL_DAYS.map(d=>`<option value="${d}" ${hdays.has(d)?'disabled style="color:var(--txt3)"':''}>${d}${hdays.has(d)?' (off)':''}</option>`).join('')}</select>
         </div>
         <div class="form-group" style="margin:0"><label>Start</label><input type="time" id="cls-start" class="input"></div>
         <div class="form-group" style="margin:0"><label>End</label><input type="time" id="cls-end" class="input"></div>
-        <div class="form-group" style="margin:0"><label>Subject</label><input type="text" id="cls-sub" class="input" placeholder="e.g. CSE 3101"></div>
-        <div class="form-group" style="margin:0"><label>&nbsp;</label><button class="btn btn-primary" style="width:100%" onclick="addClassSlot()">+ Add</button></div>
+        <div class="form-group" style="margin:0"><label>Subject / Label</label><input type="text" id="cls-sub" class="input" placeholder="e.g. CSE 3101"></div>
+        <div class="form-group" style="margin:0"><label>&nbsp;</label><button class="btn btn-primary" style="width:100%" onclick="addClassSlot()">+ Add Slot</button></div>
       </div>
     </div>
     <div class="card">
-      <h3 class="section-title">Weekly Class Schedule</h3>
+      <h3 class="section-title">Your Weekly Class Schedule</h3>
       <div class="routine-grid" id="routine-grid">${renderRoutineGrid(hdays)}</div>
     </div>
     <div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px">
-        <h3 class="section-title" style="margin:0">💼 Suggested Work Windows</h3>
-        <button class="btn btn-primary" onclick="computeAndRenderSchedule()">⚡ Compute</button>
+        <h3 class="section-title" style="margin:0">💼 Suggested Work Schedule</h3>
+        <button class="btn btn-primary" onclick="computeAndRenderSchedule()">⚡ Compute Schedule</button>
       </div>
       <div id="sug-result">
         <div style="text-align:center;padding:28px 0;color:var(--txt3)">
           <div style="font-size:32px;margin-bottom:9px">🔮</div>
-          <p>Add your class routine, then click <strong>Compute</strong> to see optimal work slots.</p>
-          <p style="margin-top:6px;font-size:11.5px">Target: ${cfg.targetHrs||48}h · Min: ${cfg.minWkHrs||40}h · Min/day: ${cfg.minDayHrs||8}h</p>
+          <p>Add your class routine above, then click <strong>Compute Schedule</strong> to see your optimal work slots.</p>
+          <p style="margin-top:6px;font-size:11.5px">Uses your saved Rules &amp; Settings: target ${cfg.targetHrs||48}h, min ${cfg.minWkHrs||40}h, min/day ${cfg.minDayHrs||8}h</p>
         </div>
       </div>
     </div>`;
 }
-function renderRoutineGrid(hdays) {
+
+function renderRoutineGrid(hdays){
   return ALL_DAYS.map(day=>{
     const isHol=hdays.has(day);
     const slots=S.classSlots.filter(c=>c.day===day).sort((a,b)=>pMin(a.start)-pMin(b.start));
     return `<div class="rday-card">
       <div class="rday-hdr"><span class="rday-name">${day.slice(0,3)}</span>${isHol?'<span class="rday-hol">Off</span>':''}</div>
-      ${slots.length?slots.map(s=>`<div class="class-chip"><span class="class-chip-time">${s.start}–${s.end}</span><span class="class-chip-sub">${s.subject||'Class'}</span><button class="btn-icon danger" style="padding:0 3px;font-size:11px" onclick="deleteClassSlot('${day}','${s.start}','${s.end}')">✕</button></div>`).join(''):`<div class="no-class-txt">${isHol?'—':'No classes'}</div>`}
+      ${slots.length?slots.map(s=>`
+        <div class="class-chip">
+          <span class="class-chip-time">${s.start}–${s.end}</span>
+          <span class="class-chip-sub">${s.subject||'Class'}</span>
+          <button class="btn-icon danger" style="padding:0 3px;font-size:11px" onclick="deleteClassSlot('${day}','${s.start}','${s.end}')">✕</button>
+        </div>`).join(''):`<div class="no-class-txt">${isHol?'—':'No classes'}</div>`}
     </div>`;
   }).join('');
 }
-async function addClassSlot() {
+
+async function addClassSlot(){
   const day=$('cls-day').value, start=$('cls-start').value, end=$('cls-end').value, subject=$('cls-sub').value;
   if(!start||!end){showToast('Start and end times required','error');return;}
   if(start>=end){showToast('End must be after start','error');return;}
   const res=await API.auth('saveClassSlot',{day,start,end,subject});
-  if(res.success){ S.classSlots.push({day,start,end,subject}); showToast(`Class added for ${day}`,'success'); const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim())); $('routine-grid').innerHTML=renderRoutineGrid(hdays); $('cls-start').value=$('cls-end').value=$('cls-sub').value=''; }
-  else showToast(res.message,'error');
+  if(res.success){
+    S.classSlots.push({day,start,end,subject});
+    showToast(`Class added for ${day}`,'success');
+    const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+    $('routine-grid').innerHTML=renderRoutineGrid(hdays);
+    $('cls-start').value=$('cls-end').value=$('cls-sub').value='';
+  } else showToast(res.message,'error');
 }
-async function deleteClassSlot(day,start,end) {
+
+async function deleteClassSlot(day,start,end){
   if(!confirm(`Remove ${start}–${end} on ${day}?`)) return;
   const res=await API.auth('deleteClassSlot',{day,start,end});
-  if(res.success){ S.classSlots=S.classSlots.filter(c=>!(c.day===day&&c.start===start&&c.end===end)); showToast('Slot removed','info'); const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim())); $('routine-grid').innerHTML=renderRoutineGrid(hdays); if(_schedResult) computeAndRenderSchedule(); }
-  else showToast(res.message,'error');
+  if(res.success){
+    S.classSlots=S.classSlots.filter(c=>!(c.day===day&&c.start===start&&c.end===end));
+    showToast('Slot removed','info');
+    const hdays=new Set((S.settings?.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
+    $('routine-grid').innerHTML=renderRoutineGrid(hdays);
+    if(_schedResult) computeAndRenderSchedule();
+  } else showToast(res.message,'error');
 }
-function computeAndRenderSchedule() {
+
+function computeAndRenderSchedule(){
   const cfg=S.settings||{};
-  const result=computeSchedule(S.classSlots,cfg); _schedResult=result;
+  const result=computeSchedule(S.classSlots,cfg);
+  _schedResult=result;
   const el=$('sug-result');
+
   const rowsHtml=result.rows.map(r=>{
     const classDesc=r.cls.length?r.cls.map(c=>`${c.start}–${c.end}${c.subject?' ('+c.subject+')':''}`).join(', '):'No classes';
     const tlHtml=buildTimeline(r);
-    let slotHtml=r.wMins>0?`<div class="sug-slot"><span class="sug-slot-time">${r.wStart} → ${r.wEnd}</span><span class="sug-slot-dur">${toHrsMin(r.wMins)}</span><span class="badge ${r.ok?'badge-ok':'badge-warn'}">${r.ok?'✓ OK':'⚠ Short'}</span>${r.warn?`<span style="font-size:11px;color:var(--warn-l)">⚠ ${r.warn}</span>`:''}</div>`:`<div class="sug-slot"><span class="badge badge-err">No free window</span></div>`;
-    return `<div class="sug-row"><div class="sug-day-name">${r.day}${r.cls.length?`<span class="badge badge-neu" style="font-size:10px">${r.cls.length} class${r.cls.length>1?'es':''}</span>`:''}</div><div style="font-size:11.5px;color:var(--txt2);margin-bottom:4px">Classes: ${classDesc}</div>${tlHtml}<div style="font-size:10.5px;color:var(--txt3)">Free window: ${r.fStart||'07:00'} – ${r.fEnd||'22:00'} (${toHrsMin(r.fMins||0)} available)</div>${slotHtml}</div>`;
+    let slotHtml='';
+    if(r.wMins>0){
+      const slotBadge=r.ok?`<span class="badge badge-ok">${toHrsMin(r.wMins)} ✓</span>`:`<span class="badge badge-warn">${toHrsMin(r.wMins)} ⚠</span>`;
+      slotHtml=`<div class="sug-slot"><span class="sug-slot-time">${r.wStart} → ${r.wEnd}</span><span class="sug-slot-dur">${toHrsMin(r.wMins)}</span>${slotBadge}${r.warn?`<span style="font-size:11px;color:var(--warn)">⚠ ${r.warn}</span>`:''}</div>`;
+    } else {
+      slotHtml=`<div class="sug-slot"><span class="badge badge-err">No free window</span></div>`;
+    }
+    return `<div class="sug-row">
+      <div class="sug-day-name">${r.day}${r.cls.length?`<span class="badge badge-neu" style="font-size:10px">${r.cls.length} class${r.cls.length>1?'es':''}</span>`:''}</div>
+      <div style="font-size:11.5px;color:var(--txt2);margin-bottom:4px">Classes: ${classDesc}</div>
+      ${tlHtml}
+      <div style="font-size:10.5px;color:var(--txt3)">Free window: ${r.fStart||'07:00'} – ${r.fEnd||'22:00'} (${toHrsMin(r.fMins||0)} available)</div>
+      ${slotHtml}
+    </div>`;
   }).join('');
-  el.innerHTML=`<div style="font-size:11.5px;color:var(--txt2);margin-bottom:13px">Work window: <strong>07:00 – 22:00</strong> · Min daily: <strong>${cfg.minDayHrs||8}h</strong> · Min: <strong>${cfg.minWkHrs||40}h</strong> · Target: <strong>${cfg.targetHrs||48}h</strong></div>${rowsHtml}
-    <div class="sug-total-bar ${result.belowMin?'card-warn':result.aboveTarget?'card-warn':'card-ok'}" style="margin-top:13px">
+
+  const statusClass=result.belowMin?'card-warn':result.aboveTarget?'card-warn':'card-ok';
+  const statusMsg=result.belowMin?`⚠ ${toHrsMin(result.minWk-result.total)} short of ${result.minWkHrs}h minimum`:result.aboveTarget?`⚠ ${toHrsMin(result.total-result.tgtWk)} over ${result.tgtWkHrs}h target`:`✓ Meets all requirements`;
+
+  el.innerHTML=`
+    <div style="font-size:11.5px;color:var(--txt2);margin-bottom:13px">
+      Work window: <strong>07:00 – 22:00</strong> · Min daily: <strong>${cfg.minDayHrs||8}h</strong> · Min: <strong>${cfg.minWkHrs||40}h</strong> · Target: <strong>${cfg.targetHrs||48}h</strong>
+    </div>
+    ${rowsHtml}
+    <div class="sug-total-bar ${statusClass}" style="margin-top:13px">
       <div><div class="sug-total-hrs">${toHrsMin(result.total)}<span style="font-size:13px;font-weight:400;color:var(--txt2)">/period</span></div><div class="sug-total-meta">Total suggested work hours</div></div>
-      <div style="text-align:right"><div style="font-size:12.5px;font-weight:600;color:${result.belowMin||result.aboveTarget?'var(--warn-l)':'var(--ok-l)'}">${result.belowMin?`⚠ ${toHrsMin(result.minWk-result.total)} short of ${result.minWkHrs}h`:result.aboveTarget?`⚠ ${toHrsMin(result.total-result.tgtWk)} over ${result.tgtWkHrs}h`:'✓ Meets requirements'}</div><div class="sug-total-meta">Min: ${result.minWkHrs}h | Target: ${result.tgtWkHrs}h</div></div>
+      <div style="text-align:right"><div style="font-size:12.5px;font-weight:600;color:${result.belowMin||result.aboveTarget?'var(--warn)':'var(--ok)'}">${statusMsg}</div><div class="sug-total-meta">Min: ${result.minWkHrs}h &nbsp;|&nbsp; Target: ${result.tgtWkHrs}h</div></div>
     </div>
     <div style="margin-top:10px;text-align:right"><button class="btn btn-ghost" onclick="copyScheduleText()" style="font-size:11.5px">📋 Copy as Text</button></div>`;
 }
-function buildTimeline(r) {
-  const TSTART=7*60,SPAN=15*60;
-  const tlPct=m=>((m-TSTART)/SPAN*100).toFixed(2)+'%', tlW=m=>(m/SPAN*100).toFixed(2)+'%';
+
+function buildTimeline(r){
+  const TSTART=7*60, SPAN=15*60;
+  const tlPct=m=>((m-TSTART)/SPAN*100).toFixed(2)+'%';
+  const tlW  =m=>(m/SPAN*100).toFixed(2)+'%';
   let segs='';
-  (r.cls||[]).forEach(c=>{const s=pMin(c.start),e=pMin(c.end); if(s>=TSTART&&s<TSTART+SPAN) segs+=`<div class="tl-seg tl-class" style="left:${tlPct(s)};width:${tlW(e-s)}" title="${c.start}–${c.end}${c.subject?' '+c.subject:''}">${c.subject||'Class'}</div>`;});
+  (r.cls||[]).forEach(c=>{
+    const s=pMin(c.start),e=pMin(c.end);
+    if(s>=TSTART&&s<TSTART+SPAN) segs+=`<div class="tl-seg tl-class" style="left:${tlPct(s)};width:${tlW(e-s)}" title="${c.start}–${c.end}${c.subject?' '+c.subject:''}">${c.subject||'Class'}</div>`;
+  });
   if(r.wMins>0&&r.wS!==undefined) segs+=`<div class="tl-seg tl-work" style="left:${tlPct(r.wS)};width:${tlW(r.wMins)}" title="Work: ${r.wStart}–${r.wEnd}">Work</div>`;
   return `<div class="tl-wrap">${segs}</div><div class="tl-axis"><span>07:00</span><span>10:00</span><span>13:00</span><span>16:00</span><span>19:00</span><span>22:00</span></div>`;
 }
-function computeSchedule(classSlots, cfg) {
-  const WSTART=7*60,WEND=22*60,minDay=(cfg.minDayHrs||8)*60,tgtWk=(cfg.targetHrs||48)*60,minWk=(cfg.minWkHrs||40)*60;
+
+function computeSchedule(classSlots,cfg){
+  const WSTART=7*60, WEND=22*60;
+  const minDay=(cfg.minDayHrs||8)*60, tgtWk=(cfg.targetHrs||48)*60, minWk=(cfg.minWkHrs||40)*60;
   const hdays=new Set((cfg.holidayDays||'Friday,Saturday').split(',').map(d=>d.trim()));
   const wDays=ALL_DAYS.filter(d=>!hdays.has(d));
   let rows=[],total=0;
   for(const day of wDays){
     const cls=classSlots.filter(c=>c.day===day).sort((a,b)=>pMin(a.start)-pMin(b.start));
     const free=[]; let cur=WSTART;
-    for(const c of cls){const s=pMin(c.start),e=pMin(c.end);if(cur<s) free.push({s:cur,e:s,d:s-cur});cur=Math.max(cur,e);}
+    for(const c of cls){ const s=pMin(c.start),e=pMin(c.end); if(cur<s) free.push({s:cur,e:s,d:s-cur}); cur=Math.max(cur,e); }
     if(cur<WEND) free.push({s:cur,e:WEND,d:WEND-cur});
     const lastEnd=cls.length?Math.max(...cls.map(c=>pMin(c.end))):WSTART;
     let chosen=null;
     const postFit=free.filter(w=>w.s>=lastEnd&&w.d>=minDay);
     if(postFit.length) chosen=postFit[0];
-    else{const fits=free.filter(w=>w.d>=minDay);chosen=fits.length?fits.reduce((a,b)=>b.d>a.d?b:a):free.length?free.reduce((a,b)=>b.d>a.d?b:a):null;}
-    if(!chosen){rows.push({day,cls,free,chosen:null,wS:null,wE:null,wMins:0,ok:false,fMins:0,fStart:mToT(WSTART),fEnd:mToT(WEND)});continue;}
-    const wMins=Math.min(chosen.d,minDay),wS=chosen.s,wE=wS+wMins;
+    else{ const fits=free.filter(w=>w.d>=minDay); chosen=fits.length?fits.reduce((a,b)=>b.d>a.d?b:a):free.length?free.reduce((a,b)=>b.d>a.d?b:a):null; }
+    if(!chosen){ rows.push({day,cls,free,chosen:null,wS:null,wE:null,wMins:0,ok:false,fMins:0,fStart:mToT(WSTART),fEnd:mToT(WEND)}); continue; }
+    const wMins=Math.min(chosen.d,minDay), wS=chosen.s, wE=wS+wMins;
     total+=wMins;
     rows.push({day,cls,free,chosen,wS,wE,wMins,wStart:mToT(wS),wEnd:mToT(wE),fStart:mToT(chosen.s),fEnd:mToT(chosen.e),fMins:chosen.d,ok:wMins>=minDay,warn:wMins<minDay?`Only ${toHrsMin(wMins)} available`:null});
   }
-  if(total>tgtWk){let excess=total-tgtWk;const sorted=[...rows].filter(r=>r.wMins>0).sort((a,b)=>b.fMins-a.fMins);for(const r of sorted){if(excess<=0)break;const trim=Math.min(excess,Math.max(0,r.wMins-Math.floor(minDay*0.5)));if(trim>0){r.wMins-=trim;r.wE=r.wS+r.wMins;r.wEnd=mToT(r.wE);total-=trim;excess-=trim;r.ok=r.wMins>=minDay;if(!r.ok)r.warn=`Reduced to ${toHrsMin(r.wMins)} to stay within target`;}}}
+  if(total>tgtWk){
+    let excess=total-tgtWk;
+    const sorted=[...rows].filter(r=>r.wMins>0).sort((a,b)=>b.fMins-a.fMins);
+    for(const r of sorted){ if(excess<=0) break; const trim=Math.min(excess,Math.max(0,r.wMins-Math.floor(minDay*0.5))); if(trim>0){r.wMins-=trim;r.wE=r.wS+r.wMins;r.wEnd=mToT(r.wE);total-=trim;excess-=trim;r.ok=r.wMins>=minDay;if(!r.ok)r.warn=`Reduced to ${toHrsMin(r.wMins)} to stay within target`;} }
+  }
   return{rows,total,totalHrs:toHrsMin(total),minWk,tgtWk,minWkHrs:minWk/60,tgtWkHrs:tgtWk/60,meetsMin:total>=minWk,aboveTarget:total>tgtWk,belowMin:total<minWk};
 }
-function copyScheduleText() {
+
+function copyScheduleText(){
   if(!_schedResult) return;
   const lines=['PunchTrack — Suggested Work Schedule','─'.repeat(40)];
-  _schedResult.rows.forEach(r=>{lines.push(`${r.day.padEnd(12)}: ${r.wMins>0?r.wStart+' → '+r.wEnd+' ('+toHrsMin(r.wMins)+')':`No available window`}`);});
-  lines.push('─'.repeat(40)); lines.push(`Total: ${toHrsMin(_schedResult.total)} | Min: ${_schedResult.minWkHrs}h | Target: ${_schedResult.tgtWkHrs}h`);
-  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Schedule copied!','success')).catch(()=>showToast('Copy failed','warn'));
+  _schedResult.rows.forEach(r=>{ lines.push(`${r.day.padEnd(12)}: ${r.wMins>0?r.wStart+' → '+r.wEnd+' ('+toHrsMin(r.wMins)+')':`No available window`}`); });
+  lines.push('─'.repeat(40));
+  lines.push(`Total: ${toHrsMin(_schedResult.total)} | Min: ${_schedResult.minWkHrs}h | Target: ${_schedResult.tgtWkHrs}h`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>showToast('Schedule copied to clipboard!','success')).catch(()=>showToast('Copy failed — please copy manually','warn'));
 }
 
-// ═══ SETTINGS PAGE ══════════════════════════════════════
+// ═══ HISTORY ══════════════════════════════════════════════
+async function loadHistory(){
+  $('tab-history').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
+  setLoading(true);
+  try{ const res=await API.auth('getHistory',{weeks:8}); if(res.success) renderHistory(res.history); else showToast(res.message,'error'); }
+  catch(err){ $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">⚠</div><p>Could not load history.</p></div>`; }
+  finally{ setLoading(false); }
+}
+function renderHistory(history){
+  if(!history||!history.length){ $('tab-history').innerHTML=`<div class="empty-state"><div class="empty-icon">📅</div><p>No history yet.</p></div>`; return; }
+  $('tab-history').innerHTML=`
+    <div class="page-hdr"><div><h1 class="page-title">Work History</h1><p class="page-sub">Past completed periods</p></div></div>
+    <div class="history-list">${history.map((wk,i)=>`
+      <div class="week-card ${wk.met?'wk-met':'wk-miss'}">
+        <div class="week-hdr" onclick="toggleWeek(${i})">
+          <div class="week-left"><span class="badge ${wk.met?'badge-ok':'badge-warn'}">${wk.met?'✓ Met target':'⚠ Below target'}</span><span class="week-dates">${fmtRange(wk.start,wk.end)}</span></div>
+          <div class="week-right"><div class="week-hrs">${wk.hrs}h <span class="wk-target">/ ${wk.targetHrs}h</span></div><div class="wk-bar-out"><div class="wk-bar-in ${wk.met?'bar-ok':'bar-err'}" style="width:${wk.pct}%"></div></div><span id="chev-${i}" class="week-chev">▼</span></div>
+        </div>
+        <div class="week-body" id="wk-${i}" hidden>
+          <div class="dt-hdr"><span>Day</span><span>Date</span><span>In</span><span>Out</span><span>Hours</span></div>
+          ${(wk.days||[]).map(day=>`<div class="dt-row ${!day.punchIn?'dt-absent':''}"><span class="dt-day">${day.day}</span><span>${day.date.slice(5)}</span><span>${day.punchIn||'—'}</span><span>${day.punchOut||'—'}</span><span class="dt-hrs">${day.mins?toHrsMin(day.mins):'—'}</span></div>`).join('')}
+          <div class="wk-sum"><span>${wk.worked}/${wk.wDays} days attended</span><span>${wk.hrs}h of ${wk.targetHrs}h (${wk.pct}%)</span></div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+}
+function toggleWeek(i){ const d=$(`wk-${i}`),c=$(`chev-${i}`); d.hidden=!d.hidden; c.textContent=d.hidden?'▼':'▲'; }
+
+// ═══ SETTINGS ═════════════════════════════════════════════
 const WDAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-let _activeCycleType=null;
-async function loadSettings() {
+async function loadSettings(){
   $('tab-settings').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try {
-    const [sR,gR,pR]=await Promise.all([API.auth('getSettings'),API.auth('getGovHols'),API.auth('getPersonalHols')]);
-    if(sR.success){ S.settings=sR.settings; _activeCycleType=sR.settings.cycleType||'weekly'; renderSettings(sR.settings,gR.holidays||[],pR.holidays||[]); }
-    else showToast(sR.message,'error');
-  } catch(err) { showToast('Failed to load settings','error'); }
-  finally { setLoading(false); }
+  try{ const [sR,gR,pR]=await Promise.all([API.auth('getSettings'),API.auth('getGovHols'),API.auth('getPersonalHols')]); if(sR.success){ S.settings=sR.settings; renderSettings(sR.settings,gR.holidays||[],pR.holidays||[]); } else showToast(sR.message,'error'); }
+  catch(err){ showToast('Failed to load settings','error'); }
+  finally{ setLoading(false); }
 }
-
-function renderSettings(cfg, govHols, persHols) {
-  const chk=(cfg.holidayDays||'').split(',').map(d=>d.trim());
-  const today=dhakaDateStr(), isNDays=cfg.cycleType==='ndays';
+function renderSettings(cfg,govHols,persHols){
+  const chk=(cfg.holidayDays||'').split(',').map(d=>d.trim()), today=dhakaDateStr();
+  const isNDays = cfg.cycleType==='ndays';
   $('tab-settings').innerHTML=`
-    <div class="page-hdr"><h1 class="page-title">Rules &amp; Settings</h1><p class="page-sub">Each user can have entirely different rules — fully per-account</p></div>
+    <div class="page-hdr"><h1 class="page-title">Rules &amp; Settings</h1><p class="page-sub">Fully customizable per-user — different teammates can have entirely different rules</p></div>
 
     <div class="card">
       <h3 class="section-title">👤 Employment Details</h3>
       <div class="settings-grid">
         <div class="form-group"><label>Join Date</label><input type="date" id="s-join" class="input" value="${cfg.joinDate||''}" max="${today}"></div>
       </div>
-      <p class="hint-text">💡 No work or deductions are counted before this date.</p>
+      <p class="hint-text">💡 No work or deduction is expected before this date — history, dashboard, and salary calculations all start from here.</p>
     </div>
 
     <div class="card">
-      <h3 class="section-title">🔁 Tracking Cycle</h3>
+      <h3 class="section-title">🔁 Tracking Cycle Type</h3>
       <div class="cycle-toggle">
-        <div class="cycle-opt ${!isNDays?'active':''}" id="cyc-weekly" onclick="setCycleType('weekly')">Weekly<span class="cycle-opt-sub">Calendar week (Sun–Sat etc.)</span></div>
-        <div class="cycle-opt ${isNDays?'active':''}" id="cyc-ndays" onclick="setCycleType('ndays')">N Working Days<span class="cycle-opt-sub">e.g. every 10 working days</span></div>
+        <div class="cycle-opt ${!isNDays?'active':''}" id="cyc-weekly" onclick="setCycleType('weekly')">
+          Weekly<span class="cycle-opt-sub">Calendar week (Sun–Sat etc.)</span>
+        </div>
+        <div class="cycle-opt ${isNDays?'active':''}" id="cyc-ndays" onclick="setCycleType('ndays')">
+          N Working Days<span class="cycle-opt-sub">e.g. every 10 working days</span>
+        </div>
       </div>
       <div class="settings-grid" id="cycle-fields">
         <div class="form-group" id="field-weekstart" ${isNDays?'hidden':''}><label>Week Starts On</label><select id="s-week-start" class="input">${WDAYS.map(d=>`<option value="${d}"${cfg.weekStart===d?' selected':''}>${d}</option>`).join('')}</select></div>
         <div class="form-group" id="field-cycledays" ${!isNDays?'hidden':''}><label>Cycle Length (working days)</label><input type="number" id="s-cycle-days" class="input" value="${cfg.cycleDays||10}" min="1" max="60"></div>
-        <div class="form-group"><label id="lbl-target">Target Hours / ${isNDays?'Cycle':'Week'}</label><input type="number" id="s-target" class="input" value="${cfg.targetHrs||48}" min="1" max="400" step="0.5"></div>
-        <div class="form-group"><label id="lbl-minwk">Min Hours / ${isNDays?'Cycle':'Week'} (deduction threshold)</label><input type="number" id="s-min-wk" class="input" value="${cfg.minWkHrs||40}" min="1" max="400" step="0.5"></div>
-        <div class="form-group"><label>Min Hours / Single Day <span style="font-weight:400;text-transform:none">(indicator only)</span></label><input type="number" id="s-min-day" class="input" value="${cfg.minDayHrs||8}" min="1" max="24" step="0.5"></div>
+        <div class="form-group"><label>Target Hours / ${isNDays?'Cycle':'Week'}</label><input type="number" id="s-target" class="input" value="${cfg.targetHrs||48}" min="1" max="400" step="0.5"></div>
+        <div class="form-group"><label>Min Hours / ${isNDays?'Cycle':'Week'} (deduction threshold)</label><input type="number" id="s-min-wk" class="input" value="${cfg.minWkHrs||40}" min="1" max="400" step="0.5"></div>
+        <div class="form-group"><label>Min Hours / Single Day <span style="font-weight:400;text-transform:none">(dashboard indicator only)</span></label><input type="number" id="s-min-day" class="input" value="${cfg.minDayHrs||8}" min="1" max="24" step="0.5"></div>
       </div>
+      <p class="hint-text" id="cycle-hint">${isNDays?'💡 Example: 10-day cycle with 60h minimum means every 10 working days you must complete at least 60 hours.':'💡 Example: 40h/week minimum, scaled proportionally to working days in the salary period.'}</p>
     </div>
 
     <div class="card">
-      <h3 class="section-title">💰 Salary &amp; Deductions</h3>
+      <h3 class="section-title">💰 Salary &amp; Deduction</h3>
       <div class="settings-grid">
         <div class="form-group"><label>Monthly Gross Salary (BDT)</label><input type="number" id="s-salary" class="input" value="${cfg.salary||0}" min="0" step="500"></div>
         <div class="form-group"><label>Working Days / Month</label><input type="number" id="s-month-days" class="input" value="${cfg.monthDays||22}" min="18" max="31"></div>
         <div class="form-group"><label>Salary Period Start Day</label><input type="number" id="s-salary-start" class="input" value="${cfg.salaryCycleStart||1}" min="1" max="28"></div>
       </div>
-      <p class="hint-text">💡 <strong>25</strong> = salary period runs 25th → 24th of next month. <strong>1</strong> = standard calendar month.</p>
+      <p class="hint-text">💡 E.g. <strong>25</strong> means salary period runs the 25th to the 24th of the next month. <strong>1</strong> = standard calendar month.</p>
     </div>
 
-    <div class="card">
-      <h3 class="section-title">🗓 Weekly Off Days</h3>
-      <div class="day-checkboxes" id="hol-day-boxes">
-        ${WDAYS.map(d=>{
-          const checked=chk.includes(d);
-          return `<label class="day-check${checked?' checked':''}" id="dc-${d}"><input type="checkbox" class="hol-day-cb" value="${d}"${checked?' checked':''} onchange="updateHolCount()"> ${d.slice(0,3)}</label>`;
-        }).join('')}
-      </div>
-      <div class="holiday-count-display" id="hol-count-display">
-        <strong>${chk.length}</strong> ${chk.length===1?'day':'days'} off per week
-        ${chk.length?`<span style="color:var(--txt3);margin-left:6px">(${chk.join(', ')})</span>`:''}
-      </div>
+    <div class="card"><h3 class="section-title">🗓 Weekly Off Days</h3>
+      <div class="day-checkboxes">${WDAYS.map(d=>`<label class="day-check${chk.includes(d)?' checked':''}"><input type="checkbox" class="hol-day-cb" value="${d}"${chk.includes(d)?' checked':''} onchange="this.closest('label').classList.toggle('checked',this.checked)">${d.slice(0,3)}</label>`).join('')}</div>
     </div>
 
-    <div class="card">
-      <h3 class="section-title">🏖 Personal Leaves</h3>
-      <div class="add-hol-form">
-        <input type="date" id="ph-date" class="input" max="${today}" style="max-width:170px">
-        <select id="ph-type" class="input" style="max-width:215px"><option value="false">Non-deductible (paid/approved)</option><option value="true">Deductible (unpaid/unapproved)</option></select>
-        <input type="text" id="ph-reason" class="input" placeholder="Reason">
-        <button class="btn btn-primary" onclick="addPersHol()">Add Leave</button>
-      </div>
-      <div class="hols-list">${persHols.length?persHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item${h.deductible?' hol-ded':''}"><div><strong>${fmtDateFull(h.date)}</strong><span class="hol-type">${h.deductible?'Deductible':'Approved'}</span>${h.reason?`<span class="hol-reason">· ${h.reason}</span>`:''}</div><button class="btn-icon danger" onclick="removePersHol('${h.date}')">✕</button></div>`).join(''):`<p class="text-muted">No personal leaves recorded.</p>`}</div>
+    <div class="card"><h3 class="section-title">🏖 Personal Leaves</h3>
+      <div class="add-hol-form"><input type="date" id="ph-date" class="input" max="${today}" style="max-width:170px"><select id="ph-type" class="input" style="max-width:225px"><option value="false">Non-deductible (approved/paid)</option><option value="true">Deductible (unpaid/unapproved)</option></select><input type="text" id="ph-reason" class="input" placeholder="Reason"><button class="btn btn-primary" onclick="addPersHol()">Add</button></div>
+      <div class="hols-list">${persHols.length?persHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item${h.deductible?' hol-ded':''}"><div><strong>${fmtDate(h.date)}</strong><span class="hol-type">${h.deductible?'Deductible':'Approved'}</span>${h.reason?`<span class="hol-reason">${h.reason}</span>`:''}</div><button class="btn-icon danger" onclick="removePersHol('${h.date}')">✕</button></div>`).join(''):`<p class="text-muted">No personal holidays recorded.</p>`}</div>
     </div>
 
-    <div class="card">
-      <h3 class="section-title">🏛 Government Holidays ${S.user?.role==='admin'?'<span class="admin-tag">Admin</span>':''}</h3>
-      ${S.user?.role==='admin'?`<div class="add-hol-form"><input type="date" id="gh-date" class="input" style="max-width:170px"><input type="text" id="gh-label" class="input" placeholder="e.g. Eid ul-Fitr"><button class="btn btn-primary" onclick="addGovHol()">Add Holiday</button></div>`:''}
-      <div class="hols-list">${govHols.length?govHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item"><div><strong>${fmtDateFull(h.date)}</strong><span class="hol-reason">· ${h.label}</span></div>${S.user?.role==='admin'?`<button class="btn-icon danger" onclick="removeGovHol('${h.date}')">✕</button>`:''}</div>`).join(''):`<p class="text-muted">No government holidays on record.</p>`}</div>
+    <div class="card"><h3 class="section-title">🏛 Government Holidays ${S.user?.role==='admin'?'<span class="admin-tag">Admin</span>':''}</h3>
+      ${S.user?.role==='admin'?`<div class="add-hol-form"><input type="date" id="gh-date" class="input" style="max-width:170px"><input type="text" id="gh-label" class="input" placeholder="e.g. Eid ul-Fitr"><button class="btn btn-primary" onclick="addGovHol()">Add</button></div>`:``}
+      <div class="hols-list">${govHols.length?govHols.sort((a,b)=>b.date.localeCompare(a.date)).map(h=>`<div class="hol-item"><div><strong>${fmtDate(h.date)}</strong><span class="hol-reason">${h.label}</span></div>${S.user?.role==='admin'?`<button class="btn-icon danger" onclick="removeGovHol('${h.date}')">✕</button>`:''}</div>`).join(''):`<p class="text-muted">No government holidays on record.</p>`}</div>
     </div>
 
     <div class="save-bar"><button class="btn btn-primary btn-lg" onclick="saveSettings()">💾 Save All Settings</button></div>`;
-  
-  // Sync checkbox visual state
-  document.querySelectorAll('.hol-day-cb').forEach(cb=>{
-    cb.closest('label').classList.toggle('checked',cb.checked);
-  });
 }
 
-function updateHolCount() {
-  // Sync visual state
-  document.querySelectorAll('.hol-day-cb').forEach(cb=>{
-    cb.closest('label').classList.toggle('checked',cb.checked);
-  });
-  const checked=[...document.querySelectorAll('.hol-day-cb:checked')].map(c=>c.value);
-  const disp=$('hol-count-display');
-  if(disp) disp.innerHTML=`<strong>${checked.length}</strong> ${checked.length===1?'day':'days'} off per week${checked.length?`<span style="color:var(--txt3);margin-left:6px">(${checked.join(', ')})</span>`:''}`;
+let _activeCycleType = null;
+function setCycleType(type){
+  _activeCycleType = type;
+  const isNDays = type==='ndays';
+  $('cyc-weekly').classList.toggle('active', !isNDays);
+  $('cyc-ndays').classList.toggle('active', isNDays);
+  $('field-weekstart').hidden = isNDays;
+  $('field-cycledays').hidden = !isNDays;
+  document.querySelectorAll('#cycle-fields label')[2].textContent = `Target Hours / ${isNDays?'Cycle':'Week'}`;
+  document.querySelectorAll('#cycle-fields label')[3].textContent = `Min Hours / ${isNDays?'Cycle':'Week'} (deduction threshold)`;
+  $('cycle-hint').textContent = isNDays
+    ? '💡 Example: 10-day cycle with 60h minimum means every 10 working days you must complete at least 60 hours.'
+    : '💡 Example: 40h/week minimum, scaled proportionally to working days in the salary period.';
 }
 
-function setCycleType(type) {
-  _activeCycleType=type;
-  const isNDays=type==='ndays';
-  $('cyc-weekly').classList.toggle('active',!isNDays);
-  $('cyc-ndays').classList.toggle('active',isNDays);
-  $('field-weekstart').hidden=isNDays;
-  $('field-cycledays').hidden=!isNDays;
-  const lt=$('lbl-target'), lm=$('lbl-minwk');
-  if(lt) lt.textContent=`Target Hours / ${isNDays?'Cycle':'Week'}`;
-  if(lm) lm.textContent=`Min Hours / ${isNDays?'Cycle':'Week'} (deduction threshold)`;
-}
-
-async function saveSettings() {
+async function saveSettings(){
   const hd=[...document.querySelectorAll('.hol-day-cb:checked')].map(c=>c.value).join(',');
-  const cycleType=_activeCycleType||(S.settings?.cycleType==='ndays'?'ndays':'weekly');
+  const cycleType = _activeCycleType || (S.settings?.cycleType==='ndays'?'ndays':'weekly');
   const res=await API.auth('saveSettings',{
     targetHrs:$('s-target').value, minDayHrs:$('s-min-day').value, minWkHrs:$('s-min-wk').value,
-    weekStart:$('s-week-start')?.value||'Sunday', salary:$('s-salary').value,
-    monthDays:$('s-month-days').value, holidayDays:hd, joinDate:$('s-join').value,
-    cycleType, cycleDays:$('s-cycle-days')?.value||10, salaryCycleStart:$('s-salary-start').value
+    weekStart:$('s-week-start')?.value||'Sunday', salary:$('s-salary').value, monthDays:$('s-month-days').value,
+    holidayDays:hd, joinDate:$('s-join').value, cycleType, cycleDays:$('s-cycle-days')?.value||10,
+    salaryCycleStart:$('s-salary-start').value
   });
-  if(res.success){ showToast('✅ Settings saved!','success'); S.settings=null; } else showToast(res.message,'error');
+  if(res.success) showToast('✅ Settings saved!','success'); else showToast(res.message,'error');
 }
-async function addPersHol() {
-  const d=$('ph-date').value,t=$('ph-type').value,r=$('ph-reason').value;
-  if(!d){showToast('Select a date','error');return;}
-  const res=await API.auth('addPersonalHol',{date:d,deductible:t,reason:r});
-  if(res.success){showToast('Leave added','success');loadSettings();}else showToast(res.message,'error');
-}
-async function removePersHol(date) {
-  if(!confirm('Remove this leave record?'))return;
-  const res=await API.auth('removePersonalHol',{date});
-  if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error');
-}
-async function addGovHol() {
-  const d=$('gh-date').value,l=$('gh-label').value;
-  if(!d||!l){showToast('Date and name required','error');return;}
-  const res=await API.auth('addGovHol',{date:d,label:l});
-  if(res.success){showToast('Holiday added','success');loadSettings();}else showToast(res.message,'error');
-}
-async function removeGovHol(date) {
-  if(!confirm('Remove this holiday?'))return;
-  const res=await API.auth('removeGovHol',{date});
-  if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error');
-}
+async function addPersHol(){ const d=$('ph-date').value,t=$('ph-type').value,r=$('ph-reason').value; if(!d){showToast('Select a date','error');return;} const res=await API.auth('addPersonalHol',{date:d,deductible:t,reason:r}); if(res.success){showToast('Holiday added','success');loadSettings();}else showToast(res.message,'error'); }
+async function removePersHol(date){ if(!confirm('Remove this holiday?'))return; const res=await API.auth('removePersonalHol',{date}); if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error'); }
+async function addGovHol(){ const d=$('gh-date').value,l=$('gh-label').value; if(!d||!l){showToast('Date and name required','error');return;} const res=await API.auth('addGovHol',{date:d,label:l}); if(res.success){showToast('Added','success');loadSettings();}else showToast(res.message,'error'); }
+async function removeGovHol(date){ if(!confirm('Remove?'))return; const res=await API.auth('removeGovHol',{date}); if(res.success){showToast('Removed','info');loadSettings();}else showToast(res.message,'error'); }
 
-// ═══ ADMIN PAGE ═════════════════════════════════════════
-async function loadAdmin() {
+// ═══ ADMIN ════════════════════════════════════════════════
+async function loadAdmin(){
   if(!S.user||S.user.role!=='admin'){$('tab-admin').innerHTML=`<div class="empty-state"><div class="empty-icon">🔒</div><p>Admin access required.</p></div>`;return;}
   $('tab-admin').innerHTML=`<div class="loading-ph"><div class="spinner"></div></div>`;
   setLoading(true);
-  try { const [pR,aR]=await Promise.all([API.auth('getPendingUsers'),API.auth('getAllUsers')]); renderAdmin(pR.users||[],aR.users||[]); }
-  catch(err) { showToast('Failed to load admin data','error'); }
-  finally { setLoading(false); }
+  try{ const [pR,aR]=await Promise.all([API.auth('getPendingUsers'),API.auth('getAllUsers')]); renderAdmin(pR.users||[],aR.users||[]); }
+  catch(err){ showToast('Failed to load admin data','error'); }
+  finally{ setLoading(false); }
 }
-function renderAdmin(pending, all) {
+function renderAdmin(pending,all){
   const sb=s=>{const m={approved:'badge-ok',pending:'badge-warn',rejected:'badge-err'};return `<span class="badge ${m[s]||''}">${s}</span>`;};
   $('tab-admin').innerHTML=`
-    <div class="page-hdr"><div><h1 class="page-title">Admin Panel</h1><p class="page-sub">User management &amp; approvals</p></div></div>
-    <div class="card">
-      <h3 class="card-title">⏳ Pending Approvals ${pending.length?`<span class="badge badge-warn">${pending.length}</span>`:''}</h3>
-      ${pending.length?pending.map(u=>`<div class="approval-row"><div class="user-info"><div class="uava lg">${(u.name||'?')[0].toUpperCase()}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div>${u.phone?`<div style="font-size:11.5px;color:var(--txt2)">📞 ${u.phone}</div>`:''}<div class="u-meta">Applied: ${u.date||'—'} · Email: ${u.verified==='true'?'✅ Verified':'⚠ Not verified'}</div></div></div><div class="approval-btns"><button class="btn btn-ok" onclick="approveUser('${u.email}','${u.name.replace(/'/g,"\\'")}')">✓ Approve</button><button class="btn btn-err" onclick="rejectUser('${u.email}')">✕ Reject</button></div></div>`).join(''):`<p class="text-muted">No pending approvals. All clear! ✅</p>`}
+    <div class="page-hdr"><div><h1 class="page-title">Admin Panel</h1><p class="page-sub">Manage users and organisation settings</p></div></div>
+    <div class="card"><h3 class="card-title">⏳ Pending Approvals ${pending.length?`<span class="badge badge-warn">${pending.length}</span>`:''}</h3>
+      ${pending.length?pending.map(u=>`<div class="approval-row"><div class="user-info"><div class="uava lg">${(u.name||'?')[0].toUpperCase()}</div><div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div>${u.phone?`<div style="font-size:11.5px;color:var(--txt2)">📞 ${u.phone}</div>`:''}<div class="u-meta">Applied: ${u.date||'—'} | Email: ${u.verified==='true'?'✅ Verified':'⚠ Not verified'}</div></div></div><div class="approval-btns"><button class="btn btn-ok" onclick="approveUser('${u.email}','${u.name.replace(/'/g,"\\'")}')">✓ Approve</button><button class="btn btn-err" onclick="rejectUser('${u.email}')">✕ Reject</button></div></div>`).join(''):`<p class="text-muted">No pending approvals. All clear! ✅</p>`}
     </div>
-    <div class="card">
-      <h3 class="card-title">👥 All Users <span style="color:var(--txt2);font-weight:400">(${all.length})</span></h3>
-      <div class="ut-hdr" style="overflow:hidden"><span>Name</span><span>Email</span><span>Role</span><span>Status</span><span>Joined</span></div>
+    <div class="card"><h3 class="card-title">👥 All Users <span style="color:var(--txt2);font-weight:400">(${all.length})</span></h3>
+      <div class="ut-hdr"><span>Name</span><span>Email</span><span>Role</span><span>Status</span><span>Joined</span></div>
       ${all.map(u=>`<div class="ut-row"><span class="ut-name"><div class="uava sm">${(u.name||'?')[0].toUpperCase()}</div>${u.name}</span><span class="ut-email">${u.email}</span><span><span class="badge ${u.role==='admin'?'badge-pri':''}">${u.role}</span></span><span>${sb(u.status)}</span><span style="font-size:11.5px;color:var(--txt2)">${u.date||'—'}</span></div>`).join('')}
     </div>`;
 }
-async function approveUser(email,name) {
-  if(!confirm(`Approve ${name}?`))return;
-  const res=await API.auth('approveUser',{userEmail:email});
-  if(res.success){showToast('✅ '+res.message,'success');loadAdmin();}else showToast(res.message,'error');
-}
-async function rejectUser(email) {
-  if(!confirm('Reject this registration?'))return;
-  const res=await API.auth('rejectUser',{userEmail:email});
-  if(res.success){showToast('User rejected.','info');loadAdmin();}else showToast(res.message,'error');
-}
+async function approveUser(email,name){ if(!confirm(`Approve ${name}?`))return; const res=await API.auth('approveUser',{userEmail:email}); if(res.success){showToast('✅ '+res.message,'success');loadAdmin();}else showToast(res.message,'error'); }
+async function rejectUser(email){ if(!confirm('Reject this registration?'))return; const res=await API.auth('rejectUser',{userEmail:email}); if(res.success){showToast('User rejected.','info');loadAdmin();}else showToast(res.message,'error'); }
 
-// ═══ RESIZE HANDLER (re-renders responsive elements) ═════
-let _resizeTimer;
-window.addEventListener('resize', ()=>{
-  clearTimeout(_resizeTimer);
-  _resizeTimer = setTimeout(()=>{
-    // Rebuild range pills with correct short/long labels
-    const pillsEl=$('range-pills-container');
-    if(pillsEl) pillsEl.innerHTML=buildRangePills(S.chartRange||'7d');
-    // Re-render chart if visible to fit new viewport width
-    if(S.currentTab==='dashboard' && S.chartRange) {
-      loadChartData(S.chartRange);
-    }
-  }, 250);
-});
-
-// ═══ START ══════════════════════════════════════════════
+// ═══ START ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
